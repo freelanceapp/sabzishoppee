@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.fragment.ContactUsFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="10sp"
+        android:layout_marginRight="10sp">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_layout1"
+            android:hint="Name"
+            android:padding="6sp"
+            android:textSize="16sp"
+            android:lines="1"
+            android:layout_margin="6sp"
+            android:textColor="@color/red_a"/>
+
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_layout1"
+            android:hint="Email Address"
+            android:padding="6sp"
+            android:textSize="16sp"
+            android:lines="1"
+            android:inputType="textEmailAddress"
+            android:layout_margin="6sp"
+            android:textColor="@color/red_a"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_layout1"
+            android:hint="Subject"
+            android:padding="6sp"
+            android:textSize="16sp"
+            android:lines="1"
+            android:inputType="text"
+            android:layout_margin="6sp"
+            android:textColor="@color/red_a"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="100sp"
+            android:background="@drawable/bg_layout1"
+            android:hint="Message"
+            android:gravity="start"
+            android:padding="6sp"
+            android:textSize="16sp"
+            android:maxLines="4"
+            android:lines="4"
+            android:inputType="text"
+            android:layout_margin="6sp"
+            android:textColor="@color/red_a"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_darkred"
+            android:layout_margin="10sp"
+            android:text="Submit"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textAllCaps="false"/>
+    </LinearLayout>
+
+</RelativeLayout>

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/ll_product1"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="4sp"
+        app:cardCornerRadius="4sp"
+        app:cardElevation="4sp"
+        android:id="@+id/llItem">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="100sp"
+                android:layout_height="100sp"
+                android:src="@drawable/fresh_strawberry"
+                android:layout_gravity="center"
+                android:layout_marginTop="4sp"
+                android:id="@+id/ivProductImg"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Strawberry"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:paddingLeft="6sp"
+                android:paddingTop="2sp"
+                android:paddingBottom="2sp"
+                android:id="@+id/tvProductName"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Strawberry"
+                android:textSize="10sp"
+                android:textColor="@color/gray_c"
+                android:paddingLeft="6sp"
+                android:paddingTop="1sp"
+                android:paddingBottom="1sp"
+                android:id="@+id/tvProductType"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="1 Kg"
+                android:textSize="12sp"
+                android:textColor="@color/black"
+                android:paddingLeft="6sp"
+                android:paddingRight="6sp"
+                android:id="@+id/tvProductQuality"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Rs. 50"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/green_dark"
+                    android:layout_marginLeft="6sp"
+                    android:id="@+id/tvProductsellingPrice"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Rs. 50"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/gray_d"
+                    android:layout_marginLeft="2sp"
+                    android:id="@+id/tvProductPrice"
+                    style="@style/sectionHeader"
+                    />
+            </LinearLayout>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginLeft="2sp"
+                android:gravity="center_vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Min Order Qty: 1kg"
+                    android:padding="4sp"
+                    android:textSize="8sp"
+                    android:background="@drawable/bg_darkgray"
+                    android:id="@+id/tvMinOrder"
+                    android:layout_centerVertical="true"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Add"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="6sp"
+                    android:textColor="@color/white"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:background="@drawable/bg_darkgreencirle"
+                    android:id="@+id/btnAdd"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="4sp"
+                    android:layout_marginBottom="2dp"/>
+            </RelativeLayout>
+            <LinearLayout
+                android:id="@+id/ll_adpcart_action"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginRight="5dp"
+                android:orientation="horizontal"
+                android:layout_gravity="end">
+                <ImageView
+                    android:id="@+id/iv_product_plus"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_plus" />
+                <TextView
+                    android:id="@+id/tv_product_qty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center"
+                    android:text="1"
+                    android:textColor="@color/black"
+                    android:textSize="20dp" />
+
+                <ImageView
+                    android:id="@+id/iv_product_minus"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentBottom="true"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_minus" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+</LinearLayout>
