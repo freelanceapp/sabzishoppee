@@ -1,15 +1,9 @@
 package ibt.sabzishoppee.ui.fragment;
 
-import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,23 +12,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.viewpagerindicator.CirclePageIndicator;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.TreeSet;
 
 import ibt.sabzishoppee.R;
 import ibt.sabzishoppee.adapter.ProductListAdapter;
@@ -43,22 +30,17 @@ import ibt.sabzishoppee.constant.Constant;
 import ibt.sabzishoppee.database.DatabaseHandler;
 import ibt.sabzishoppee.model.PriceProductSorter;
 import ibt.sabzishoppee.model.ProductDetail;
-import ibt.sabzishoppee.model.User;
 import ibt.sabzishoppee.model.banner_responce.BannerModel;
-import ibt.sabzishoppee.model.login_responce.LoginModel;
 import ibt.sabzishoppee.model.productlist_responce.Product;
 import ibt.sabzishoppee.model.productlist_responce.ProductListModel;
 import ibt.sabzishoppee.retrofit_provider.RetrofitService;
 import ibt.sabzishoppee.retrofit_provider.WebResponse;
-import ibt.sabzishoppee.ui.activity.AddtoCartActivity;
-import ibt.sabzishoppee.ui.activity.HomeActivity;
 import ibt.sabzishoppee.ui.activity.ProductDetailsActivity;
 import ibt.sabzishoppee.utils.Alerts;
 import ibt.sabzishoppee.utils.AppPreference;
 import ibt.sabzishoppee.utils.BaseFragment;
 import ibt.sabzishoppee.utils.ConnectionDetector;
 import ibt.sabzishoppee.utils.ConnectionDirector;
-import ibt.sabzishoppee.utils.EmailChecker;
 import retrofit2.Response;
 
 import static ibt.sabzishoppee.ui.activity.HomeActivity.cart_count;
@@ -141,7 +123,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
         adapter = new ProductListAdapter(mContext, productArrayListAll, this );
         rvproductList.setHasFixedSize(true);
-        rvproductList.setLayoutManager(new GridLayoutManager(mContext, 2));
+        //rvproductList.setLayoutManager(new GridLayoutManager(mContext, 2));
+        rvproductList.setLayoutManager(new LinearLayoutManager(mContext));
         rvproductList.setAdapter(adapter);
 
         btn_fruits.setOnClickListener(this);
@@ -266,7 +249,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                 productDetail.setPrice(productArrayList.get(position).getSellingPrice());
                 productDetail.setType(productArrayList.get(position).getType());
                 productDetail.setQuantity(1);
-                addtoCart();
+                addToCart(position);
                 break;
 
             case R.id.btn_fruits :
@@ -355,7 +338,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
             case R.id.iv_product_plus :
                 int pos = Integer.parseInt(view.getTag().toString());
                 plusItem(view, pos);
-
                 break;
 
             case R.id.iv_product_minus :
@@ -366,7 +348,10 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     }
 
 
-    private void addtoCart() {
+    private void addToCart(int pos) {
+
+        View v = rvproductList.getChildAt(pos);
+
         if (databaseCart.getContactsCount()) {
             cartProductList = databaseCart.getAllUrlList();
         }
@@ -381,6 +366,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                     cart_number.setText("" + cart_count);
                     AppPreference.setIntegerPreference(mContext, Constant.CART_ITEM_COUNT, cart_count);
                     Toast.makeText(mContext, "Added to Cart", Toast.LENGTH_SHORT).show();
+                    v.findViewById(R.id.btnAdd).setVisibility(View.GONE);
+                    v.findViewById(R.id.ll_product_action).setVisibility(View.VISIBLE);
                     databaseCart.addItemCart(productDetail);
                 }
             } else {
@@ -388,6 +375,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                 cart_number.setText("" + cart_count);
                 AppPreference.setIntegerPreference(mContext, Constant.CART_ITEM_COUNT, cart_count);
                 Toast.makeText(mContext, "Added to Cart", Toast.LENGTH_SHORT).show();
+                v.findViewById(R.id.btnAdd).setVisibility(View.GONE);
+                v.findViewById(R.id.ll_product_action).setVisibility(View.VISIBLE);
                 databaseCart.addItemCart(productDetail);
             }
         }
@@ -413,35 +402,44 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
             cartProductList = databaseCart.getAllUrlList();
         }
             if (cartProductList.size() > 0) {
-                if (databaseCart.verification(productDetail.getId())) {
-                    ProductDetail productDetail = cartProductList.get(pos);
-                    View v = rvproductList.getChildAt(pos);
-                    TextView tvQty = (TextView) v.findViewById(R.id.tv_product_qty);
-                    ImageView minus_iv = (ImageView) v.findViewById(R.id.iv_product_minus);
+                        if (databaseCart.verification(productDetail.getId())) {
+                            int q = 0;
+                            for(int p = 0; p<cartProductList.size(); p++){
+                                ProductDetail pd = cartProductList.get(p);
+                                if (pd.getId().equals(productDetail.getId())){
+                                    q=p;
+                                }
+                            }
+                            //Toast.makeText(mContext, "position : "+exctPos, Toast.LENGTH_SHORT).show();
+                            ProductDetail productDetail = cartProductList.get(q);//why cart product list
+                            View v = rvproductList.getChildAt(pos);
+                            TextView tvQty = (TextView) v.findViewById(R.id.tv_product_qty);
+                            ImageView minus_iv = (ImageView) v.findViewById(R.id.iv_product_minus);
 
-                    int qty = Integer.parseInt(tvQty.getText().toString());
-                    if (qty < Integer.parseInt(productArrayListAll.get(pos).getQuantity()))
-                    {
-                        qty++;
-                        productDetail.setQuantity(qty);
-                        productArrayListAll.get(pos).setProductQuantity(""+qty);
-                        databaseCart.updateUrl(productDetail);
-                    }else {
+                            int qty = Integer.parseInt(tvQty.getText().toString());
+                            if (qty < Integer.parseInt(productArrayListAll.get(pos).getQuantity()))
+                            {
+                                qty++;
+                                productDetail.setQuantity(qty);
+                                productArrayListAll.get(pos).setProductQuantity(""+qty);
+                                databaseCart.updateUrl(productDetail);
+                                adapter.notifyDataSetChanged();
+                            }else {
 
-                    }
-                    //tvQty.setText(qty + "");
-                     setTotal();
-                    if (qty > 1) {
-                        minus_iv.setImageResource(R.drawable.ic_minus);
-                    } else {
-                       // minus_iv.setImageResource(R.drawable.ic_delete);
-                    }
-                } else {
-                    cart_count = cart_count + 1;
-                    cart_number.setText("" + cart_count);
-                    AppPreference.setIntegerPreference(mContext, Constant.CART_ITEM_COUNT, cart_count);
-                    databaseCart.addItemCart(productDetail);
-                }
+                            }
+                            //tvQty.setText(qty + "");
+                             setTotal();
+                            if (qty > 1) {
+                                minus_iv.setImageResource(R.drawable.icf_round_minus);
+                            } else {
+                               // minus_iv.setImageResource(R.drawable.ic_delete);
+                            }
+                        } else {
+                            cart_count = cart_count + 1;
+                            cart_number.setText("" + cart_count);
+                            AppPreference.setIntegerPreference(mContext, Constant.CART_ITEM_COUNT, cart_count);
+                            databaseCart.addItemCart(productDetail);
+                        }
             } else {
                 cart_count = cart_count + 1;
                 cart_number.setText("" + cart_count);
@@ -474,12 +472,25 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         }
             if (cartProductList.size() > 0) {
                 if (databaseCart.verification(productDetail.getId())) {
-                    ProductDetail productDetail = cartProductList.get(pos);
+                    int minQty = 0;
+                    int q = 0;
+                    for(int p = 0; p<cartProductList.size(); p++){
+                        ProductDetail pd = cartProductList.get(p);
+                        if (pd.getId().equals(productDetail.getId())){
+                            q=p;
+                        }
+                    }
+                    ProductDetail productDetail = cartProductList.get(q);
                     View v = rvproductList.getChildAt(pos);
                     TextView tvQty = (TextView) v.findViewById(R.id.tv_product_qty);
                     ImageView minus_iv = (ImageView) v.findViewById(R.id.iv_product_minus);
                     int qty = Integer.parseInt(tvQty.getText().toString());
-                    if (qty == 1) {
+                    try {
+                        minQty = Integer.parseInt(productDetail.getMin_quantity());
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                    }
+                    if (qty == minQty) {
                        /* databaseCart.deleteContact(productDetail);
                         cartProductList.remove(pos);
                         adapter.notifyDataSetChanged();*/
@@ -488,10 +499,10 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                         productDetail.setQuantity(qty);
                         productArrayListAll.get(pos).setProductQuantity(""+qty);
                         databaseCart.updateUrl(productDetail);
-                       // tvQty.setText(qty + "");
+                        //tvQty.setText(qty + "");
                     }
                     if (qty > 1) {
-                        minus_iv.setImageResource(R.drawable.ic_minus);
+                        minus_iv.setImageResource(R.drawable.icf_round_minus);
                     } else {
                        // minus_iv.setImageResource(R.drawable.ic_delete);
                     }

@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -144,7 +145,11 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
            }
        });*/
 
-        viewHolder.tv_product_qty.setText(product.getProductQuantity());
+        if (product.getProductQuantity().equals("0")) {
+            viewHolder.tv_product_qty.setText(product.getMinQuantity());
+        } else {
+            viewHolder.tv_product_qty.setText(product.getProductQuantity());
+        }
     }
 
     @Override
@@ -165,9 +170,10 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     public class ViewHolder extends RecyclerView.ViewHolder {
         private ImageView ivProductImg;
         private LinearLayout llSubcategory;
-        private TextView btnAdd,tvProductPrice,tvProductQuality,tvProductName,tvMinOrder, tvProductType, tvProductsellingPrice, tv_product_qty;
+        private RelativeLayout llItem, ll_product_action;
+        private TextView tvProductPrice,tvProductQuality,tvProductName,tvMinOrder, tvProductType, tvProductsellingPrice, tv_product_qty;
         private ImageView iv_product_plus, iv_product_minus;
-        private CardView llItem;
+        private CardView btnAdd;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -182,6 +188,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             tv_product_qty = itemView.findViewById(R.id.tv_product_qty);
             iv_product_plus = itemView.findViewById(R.id.iv_product_plus);
             iv_product_minus = itemView.findViewById(R.id.iv_product_minus);
+            ll_product_action = itemView.findViewById(R.id.ll_product_action);
             llItem = itemView.findViewById(R.id.llItem);
 
         }

@@ -53,7 +53,18 @@ public class AdapterCart extends RecyclerView.Adapter<AdapterCart.MyViewHolder> 
     }
 
     @Override
+    public long getItemId(int position) {
+        return (position);
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return (position);
+    }
+
+    @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
+        int minQty = 1;
         ProductDetail productDetail = list.get(position);
         holder.name_tv.setText(productDetail.getTitle());
         float price = Float.parseFloat(productDetail.getPrice());
@@ -72,10 +83,16 @@ public class AdapterCart extends RecyclerView.Adapter<AdapterCart.MyViewHolder> 
             holder.pro_image_iv.setImageResource(R.drawable.logo2);
         }
 
+        try {
+            minQty = Integer.parseInt(productDetail.getMin_quantity());
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+
         Log.e("Image", productDetail.getImage());
         int qty = Integer.parseInt(holder.qty_tv.getText().toString());
-        if (qty > 1) {
-            holder.minus_iv.setImageResource(R.drawable.ic_minus);
+        if (qty > minQty) {
+            holder.minus_iv.setImageResource(R.drawable.icf_round_minus);
         } else {
             holder.minus_iv.setImageResource(R.drawable.ic_delete);
         }

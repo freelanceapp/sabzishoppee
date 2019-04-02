@@ -56,7 +56,7 @@ public class Product implements Parcelable, Comparable<Product> {
     private String createdDate;
     @SerializedName("product_quantity")
     @Expose
-    private String productQuantity = "1";
+    private String productQuantity = "0";
 
     ArrayList<Product> jobCandidate = new ArrayList<>();
 

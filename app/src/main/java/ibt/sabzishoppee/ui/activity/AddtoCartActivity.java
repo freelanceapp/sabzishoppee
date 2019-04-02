@@ -33,7 +33,7 @@ import static ibt.sabzishoppee.ui.activity.HomeActivity.cart_number;
 import static ibt.sabzishoppee.ui.activity.HomeActivity.cart_price;
 
 
-public class AddtoCartActivity extends BaseActivity implements View.OnClickListener{
+public class AddtoCartActivity extends BaseActivity implements View.OnClickListener {
     Context ctx;
     RecyclerView recyclerView;
     Button place_bt;
@@ -93,18 +93,18 @@ public class AddtoCartActivity extends BaseActivity implements View.OnClickListe
 
             float percent = Float.parseFloat(total_list.get(i).getDiscount());
             float pr = Float.parseFloat(total_list.get(i).getPrice());
-            float dis1 =  pr * ((100-percent)/100);
+            float dis1 = pr * ((100 - percent) / 100);
             int qty = total_list.get(i).getQuantity();
 
             float tot = dis1 * qty;
             total += tot;
             total = Math.round(total);
         }
-       // place_bt.setText("Place this Order :   Rs " + total);
+        // place_bt.setText("Place this Order :   Rs " + total);
 
-        tvTotalItem.setText("Total Items :"+total_list.size());
-        tvTotalPrice.setText("Rs. "+total);
-        cart_price.setText(""+total);
+        tvTotalItem.setText("Total Items :" + total_list.size());
+        tvTotalPrice.setText("Rs. " + total);
+        cart_price.setText("" + total);
 
     }
 
@@ -140,13 +140,14 @@ public class AddtoCartActivity extends BaseActivity implements View.OnClickListe
                 plusItem(view);
                 break;
             case R.id.btnBack:
-               // onBackClick();
+                // onBackClick();
                 finish();
                 break;
         }
     }
 
     private void plusItem(View view) {
+        int minQty = 1;
         int pos = Integer.parseInt(view.getTag().toString());
         ProductDetail productDetail = cartProductList.get(pos);
         View v = recyclerView.getChildAt(pos);
@@ -159,10 +160,16 @@ public class AddtoCartActivity extends BaseActivity implements View.OnClickListe
         databaseCart.updateUrl(productDetail);
         tvQty.setText(qty + "");
         setTotal();
-        cart_number.setText(""+qty);
+        cart_number.setText("" + qty);
 
-        if (qty > 1) {
-            minus_iv.setImageResource(R.drawable.ic_minus);
+        try {
+            minQty = Integer.parseInt(productDetail.getMin_quantity());
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+
+        if (qty > minQty) {
+            minus_iv.setImageResource(R.drawable.icf_round_minus);
         } else {
             minus_iv.setImageResource(R.drawable.ic_delete);
         }
@@ -170,6 +177,7 @@ public class AddtoCartActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void minusItem(View view) {
+        int minQty = 1;
         int pos = Integer.parseInt(view.getTag().toString());
         ProductDetail productDetail = cartProductList.get(pos);
         View v = recyclerView.getChildAt(pos);
@@ -177,9 +185,20 @@ public class AddtoCartActivity extends BaseActivity implements View.OnClickListe
         ImageView minus_iv = (ImageView) v.findViewById(R.id.iv_adpcart_minus);
 
         int qty = Integer.parseInt(tvQty.getText().toString());
-        if (qty == 1) {
+
+        try {
+            minQty = Integer.parseInt(productDetail.getMin_quantity());
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+
+        if (qty == minQty) {
             databaseCart.deleteContact(productDetail);
-            cartProductList.remove(pos);
+            //cartProductList.remove(pos);
+            cartProductList.clear();
+            if (databaseCart.getContactsCount()) {
+                cartProductList.addAll(databaseCart.getAllUrlList());
+            }
             adapterCart.notifyDataSetChanged();
         } else {
             qty--;
@@ -187,18 +206,15 @@ public class AddtoCartActivity extends BaseActivity implements View.OnClickListe
             databaseCart.updateUrl(productDetail);
             tvQty.setText(qty + "");
         }
-        if (qty > 1) {
-            minus_iv.setImageResource(R.drawable.ic_minus);
+        if (qty > minQty) {
+            minus_iv.setImageResource(R.drawable.icf_round_minus);
         } else {
             minus_iv.setImageResource(R.drawable.ic_delete);
         }
         setTotal();
-        cart_number.setText(""+qty);
+        cart_number.setText("" + qty);
         AppPreference.setIntegerPreference(ctx, Constant.CART_ITEM_COUNT, list.size());
     }
-
-
-
 
     private void locationPermission() {
         try {
@@ -225,7 +241,7 @@ public class AddtoCartActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void placeThisOrder() {
-        if ( !AppPreference.getBooleanPreference(mContext, Constant.Is_Login)) {
+        if (!AppPreference.getBooleanPreference(mContext, Constant.Is_Login)) {
             startActivity(new Intent(ctx, LoginActivity.class));
             finish();
         } else {

@@ -108,10 +108,10 @@
 
             <ImageView
                 android:id="@+id/iv_adpcart_plus"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:padding="8dp"
-                android:src="@drawable/ic_plus" />
+                android:src="@drawable/icf_rounded_add" />
 
             <TextView
                 android:id="@+id/tv_adpcart_qty"
@@ -125,8 +125,8 @@
 
             <ImageView
                 android:id="@+id/iv_adpcart_minus"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:padding="8dp"
                 android:src="@drawable/ic_delete" />

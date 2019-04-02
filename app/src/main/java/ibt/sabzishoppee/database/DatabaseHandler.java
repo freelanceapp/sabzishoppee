@@ -201,4 +201,23 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             }
         }
     }
+
+    //check exist data
+    public int getPosition(String _username) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        int count = -1;
+        Cursor c = null;
+        try {
+            String query = "SELECT COUNT(*) FROM " + TABLE_URL + " WHERE " + TABLE_CART_ID + " = ?";
+            c = db.rawQuery(query, new String[]{_username});
+            if (c.moveToFirst()) {
+                count = c.getInt(0);
+            }
+            return count;
+        } finally {
+            if (c != null) {
+                c.close();
+            }
+        }
+    }
 }
