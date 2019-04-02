@@ -15,7 +15,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import ibt.sabzishoppee.R;
-import ibt.sabzishoppee.model.order_history_responce.Product;
+import ibt.sabzishoppee.model.history_single_order_responce.Product;
 
 
 public class OrderProductHistoryAdapter extends RecyclerView.Adapter<OrderProductHistoryAdapter.ViewHolder>  {

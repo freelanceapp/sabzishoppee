@@ -5,7 +5,12 @@ import android.app.Dialog;
 
 import ibt.sabzishoppee.constant.Constant;
 import ibt.sabzishoppee.model.address_add_responce.AddAddressModel;
+import ibt.sabzishoppee.model.address_show_responce.AddressShowModel;
+import ibt.sabzishoppee.model.banner_responce.BannerModel;
+import ibt.sabzishoppee.model.contact_responce.ContcatModel;
+import ibt.sabzishoppee.model.contact_us_responce.ContactUsModel;
 import ibt.sabzishoppee.model.edit_profile_responce.EditProfileModel;
+import ibt.sabzishoppee.model.history_single_order_responce.HistorySingleOrderModel;
 import ibt.sabzishoppee.model.login_responce.LoginModel;
 import ibt.sabzishoppee.model.order_history_responce.OrderHistoryModel;
 import ibt.sabzishoppee.model.order_responce.Order;
@@ -14,6 +19,7 @@ import ibt.sabzishoppee.model.productdetail_responce.ProductDetailModel;
 import ibt.sabzishoppee.model.productlist_responce.ProductListModel;
 import ibt.sabzishoppee.model.signup_responce.SignUpModel;
 import ibt.sabzishoppee.utils.AppProgressDialog;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -32,6 +38,9 @@ public class RetrofitService {
                 .build();
         client = retrofit.create(RetrofitApiClient.class);
     }
+
+
+
 
     public static RetrofitApiClient getRxClient() {
         Retrofit retrofit = new Retrofit.Builder()
@@ -199,6 +208,28 @@ public class RetrofitService {
         });
     }
 
+    public static void getAddress(final Dialog dialog, final Call<AddressShowModel> method, final WebResponse webResponse) {
+        if (dialog != null)
+            AppProgressDialog.show(dialog);
+
+        method.enqueue(new Callback<AddressShowModel>() {
+            @Override
+            public void onResponse(Call<AddressShowModel> call, Response<AddressShowModel> response) {
+                if (dialog != null)
+                    AppProgressDialog.hide(dialog);
+                WebServiceResponse.handleResponse(response, webResponse);
+            }
+
+            @Override
+            public void onFailure(Call<AddressShowModel> call, Throwable throwable) {
+                if (dialog != null)
+                    AppProgressDialog.hide(dialog);
+                webResponse.onResponseFailed(throwable.getMessage());
+            }
+        });
+    }
+
+
     public static void addAddress(final Dialog dialog, final Call<AddAddressModel> method, final WebResponse webResponse) {
         if (dialog != null)
             AppProgressDialog.show(dialog);
@@ -242,7 +273,29 @@ public class RetrofitService {
     }
 
 
-    public static void getOrderHistory(final Dialog dialog, final Call<OrderHistoryModel> method, final WebResponse webResponse) {
+    public static void getOrderHistory(final Dialog dialog, final Call<HistorySingleOrderModel> method, final WebResponse webResponse) {
+        if (dialog != null)
+            AppProgressDialog.show(dialog);
+
+        method.enqueue(new Callback<HistorySingleOrderModel>() {
+            @Override
+            public void onResponse(Call<HistorySingleOrderModel> call, Response<HistorySingleOrderModel> response) {
+                if (dialog != null)
+                    AppProgressDialog.hide(dialog);
+                WebServiceResponse.handleResponse(response, webResponse);
+            }
+
+            @Override
+            public void onFailure(Call<HistorySingleOrderModel> call, Throwable throwable) {
+                if (dialog != null)
+                    AppProgressDialog.hide(dialog);
+                webResponse.onResponseFailed(throwable.getMessage());
+            }
+        });
+    }
+
+
+    public static void getOrderHistory1(final Dialog dialog, final Call<OrderHistoryModel> method, final WebResponse webResponse) {
         if (dialog != null)
             AppProgressDialog.show(dialog);
 
@@ -256,6 +309,72 @@ public class RetrofitService {
 
             @Override
             public void onFailure(Call<OrderHistoryModel> call, Throwable throwable) {
+                if (dialog != null)
+                    AppProgressDialog.hide(dialog);
+                webResponse.onResponseFailed(throwable.getMessage());
+            }
+        });
+    }
+
+
+    public static void getBannerData(final Dialog dialog, final Call<BannerModel> method, final WebResponse webResponse) {
+        if (dialog != null)
+            AppProgressDialog.show(dialog);
+
+        method.enqueue(new Callback<BannerModel>() {
+            @Override
+            public void onResponse(Call<BannerModel> call, Response<BannerModel> response) {
+                if (dialog != null)
+                    AppProgressDialog.hide(dialog);
+                WebServiceResponse.handleResponse(response, webResponse);
+            }
+
+            @Override
+            public void onFailure(Call<BannerModel> call, Throwable throwable) {
+                if (dialog != null)
+                    AppProgressDialog.hide(dialog);
+                webResponse.onResponseFailed(throwable.getMessage());
+            }
+        });
+    }
+
+
+    public static void getContactData(final Dialog dialog, final Call<ContcatModel> method, final WebResponse webResponse) {
+        if (dialog != null)
+            AppProgressDialog.show(dialog);
+
+        method.enqueue(new Callback<ContcatModel>() {
+            @Override
+            public void onResponse(Call<ContcatModel> call, Response<ContcatModel> response) {
+                if (dialog != null)
+                    AppProgressDialog.hide(dialog);
+                WebServiceResponse.handleResponse(response, webResponse);
+            }
+
+            @Override
+            public void onFailure(Call<ContcatModel> call, Throwable throwable) {
+                if (dialog != null)
+                    AppProgressDialog.hide(dialog);
+                webResponse.onResponseFailed(throwable.getMessage());
+            }
+        });
+    }
+
+
+    public static void contactUs(final Dialog dialog, final Call<ContactUsModel> method, final WebResponse webResponse) {
+        if (dialog != null)
+            AppProgressDialog.show(dialog);
+
+        method.enqueue(new Callback<ContactUsModel>() {
+            @Override
+            public void onResponse(Call<ContactUsModel> call, Response<ContactUsModel> response) {
+                if (dialog != null)
+                    AppProgressDialog.hide(dialog);
+                WebServiceResponse.handleResponse(response, webResponse);
+            }
+
+            @Override
+            public void onFailure(Call<ContactUsModel> call, Throwable throwable) {
                 if (dialog != null)
                     AppProgressDialog.hide(dialog);
                 webResponse.onResponseFailed(throwable.getMessage());

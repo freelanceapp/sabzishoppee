@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "864880235929",
+    "firebase_url": "https://sabzishoppee-95f94.firebaseio.com",
+    "project_id": "sabzishoppee-95f94",
+    "storage_bucket": "sabzishoppee-95f94.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:864880235929:android:d48ea6f7cc174900",
+        "android_client_info": {
+          "package_name": "ibt.sabzishoppee"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "864880235929-aji0fcsntufpv02gss5tsn2u1mmq18ms.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCt76Nj6GUvmLcb0QqxrT7iwIYjY3LU_9g"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

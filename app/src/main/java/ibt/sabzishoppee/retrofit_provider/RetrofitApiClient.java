@@ -4,7 +4,12 @@ package ibt.sabzishoppee.retrofit_provider;
 
 import ibt.sabzishoppee.constant.Constant;
 import ibt.sabzishoppee.model.address_add_responce.AddAddressModel;
+import ibt.sabzishoppee.model.address_show_responce.AddressShowModel;
+import ibt.sabzishoppee.model.banner_responce.BannerModel;
+import ibt.sabzishoppee.model.contact_responce.ContcatModel;
+import ibt.sabzishoppee.model.contact_us_responce.ContactUsModel;
 import ibt.sabzishoppee.model.edit_profile_responce.EditProfileModel;
+import ibt.sabzishoppee.model.history_single_order_responce.HistorySingleOrderModel;
 import ibt.sabzishoppee.model.login_responce.LoginModel;
 import ibt.sabzishoppee.model.order_history_responce.OrderHistoryModel;
 import ibt.sabzishoppee.model.order_responce.OrderModel;
@@ -27,6 +32,13 @@ public interface RetrofitApiClient {
     @GET(Constant.PRODUCTS_API)
     Call<ProductListModel> productData();
 
+
+    @GET(Constant.BANNER_API)
+    Call<BannerModel> bannerImage();
+
+
+    @GET(Constant.CONTACT_API)
+    Call<ContcatModel> contact();
 
 
     @FormUrlEncoded
@@ -113,8 +125,23 @@ public interface RetrofitApiClient {
 
 
     @FormUrlEncoded
+    @POST(Constant.CONTACT_US)
+    Call<ContactUsModel> contactUs(
+            @Field("name") String name,
+            @Field("email") String email,
+            @Field("subject") String subject,
+            @Field("message") String message);
+
+
+    @FormUrlEncoded
+    @POST(Constant.ORDER_PRODUCT_API)
+    Call<HistorySingleOrderModel> orderDetails(
+            @Field("order_id") String order_id);
+
+
+    @FormUrlEncoded
     @POST(Constant.GET_ADDRESS)
-    Call<AddAddressModel> getAddress(
+    Call<AddressShowModel> getAddress(
             @Field("user_id") String user_id);
 
 

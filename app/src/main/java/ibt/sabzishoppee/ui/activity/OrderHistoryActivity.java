@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -35,7 +36,7 @@ public class OrderHistoryActivity extends BaseActivity implements View.OnClickLi
     private OrderHistoryAdapter adapter;
     private ArrayList<Order> orderArrayList = new ArrayList<>();
     ArrayList<Product> products = new ArrayList<>();
-
+    ImageView btn_history_back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +53,8 @@ public class OrderHistoryActivity extends BaseActivity implements View.OnClickLi
         rvOrderHistory.setLayoutManager(new GridLayoutManager(mContext, 1));
         rvOrderHistory.setAdapter(adapter);
 
+        btn_history_back = findViewById(R.id.btn_history_back);
+        btn_history_back.setOnClickListener(this);
         historyDetailApi();
     }
 
@@ -62,15 +65,15 @@ public class OrderHistoryActivity extends BaseActivity implements View.OnClickLi
         {
             case R.id.ll_history :
                 int pos = Integer.parseInt(view.getTag().toString());
-
                 products.addAll(orderArrayList.get(pos).getProduct());
-
                 Intent intent = new Intent(OrderHistoryActivity.this, OrderProductHistoryActivity.class);
+                intent.putExtra("OrderId", orderArrayList.get(pos).getOrderId());
                 intent.putParcelableArrayListExtra("ProductData", products);
                 startActivity(intent);
+                break;
 
-
-
+            case R.id.btn_history_back :
+                finish();
                 break;
         }
     }
@@ -79,7 +82,7 @@ public class OrderHistoryActivity extends BaseActivity implements View.OnClickLi
     private void historyDetailApi() {
         if (cd.isNetWorkAvailable()) {
             String userId = AppPreference.getStringPreference(mContext, Constant.User_Id);
-            RetrofitService.getOrderHistory(new Dialog(mContext), retrofitApiClient.getOrderHistory("17"), new WebResponse() {
+            RetrofitService.getOrderHistory1(new Dialog(mContext), retrofitApiClient.getOrderHistory(userId), new WebResponse() {
                 @Override
                 public void onResponseSuccess(Response<?> result) {
                     OrderHistoryModel orderHistoryModel = (OrderHistoryModel) result.body();

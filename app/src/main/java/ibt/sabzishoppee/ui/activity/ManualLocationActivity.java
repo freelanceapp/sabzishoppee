@@ -1,5 +1,6 @@
 package ibt.sabzishoppee.ui.activity;
 
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -13,6 +14,8 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -48,9 +51,9 @@ import java.util.Locale;
 import ibt.sabzishoppee.R;
 import ibt.sabzishoppee.adapter.PlaceArrayAdapter;
 
-
 public class ManualLocationActivity extends AppCompatActivity implements  GoogleApiClient.OnConnectionFailedListener,
         GoogleApiClient.ConnectionCallbacks, OnMapReadyCallback, LocationListener, View.OnClickListener{
+
 
     private static final String LOG_TAG = "MainActivity";
     private SupportMapFragment mapFragment;
@@ -70,13 +73,16 @@ public class ManualLocationActivity extends AppCompatActivity implements  Google
     Double latitude1,longitude1;
     private static final int MY_PERMISSIONS_REQUEST_CODE = 123;
     TextView current_location_btn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manual_location);
+
         //Creating the instance of ArrayAdapter containing list of fruit names
         mGoogleApiClient = new GoogleApiClient.Builder(ManualLocationActivity.this)
                 .addApi(Places.GEO_DATA_API)
+                .addApi(Places.PLACE_DETECTION_API)
                 .enableAutoManage(ManualLocationActivity.this, GOOGLE_API_CLIENT_ID, this)
                 .addConnectionCallbacks(this)
                 .build();
@@ -125,7 +131,7 @@ public class ManualLocationActivity extends AppCompatActivity implements  Google
             @Override
             public void onClick(View view) {
                 if (postal_address.length() != 0) {
-                  /*  Intent intent = new Intent(ManualLocationActivity.this, NearRestaurantActivity.class);
+                   /* Intent intent = new Intent(ManualLocationActivity.this, NearRestaurantActivity.class);
                     intent.getDoubleExtra("latitude",latitude1);
                     intent.getDoubleExtra("longitude",longitude1);
                     startActivity(intent);
@@ -135,6 +141,7 @@ public class ManualLocationActivity extends AppCompatActivity implements  Google
                 }
             }
         });
+
     }
 
     private AdapterView.OnItemClickListener mAutocompleteClickListener
@@ -150,6 +157,7 @@ public class ManualLocationActivity extends AppCompatActivity implements  Google
             Log.i(LOG_TAG, "Fetching details for ID: " + item.placeId);
         }
     };
+
 
     private ResultCallback<PlaceBuffer> mUpdatePlaceDetailsCallback
             = new ResultCallback<PlaceBuffer>() {
@@ -171,19 +179,16 @@ public class ManualLocationActivity extends AppCompatActivity implements  Google
             latitude1 = place.getLatLng().latitude;
             longitude1 = place.getLatLng().longitude;
 
-            mapFragment.getMapAsync(new OnMapReadyCallback() {
-                @Override
-                public void onMapReady(GoogleMap googleMap) {
-                    googleMap.clear();
-                    googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+            mapFragment.getMapAsync(googleMap -> {
+                googleMap.clear();
+                googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
-                    googleMap.addMarker(new MarkerOptions()
-                            .position(new LatLng(place.getLatLng().latitude, place.getLatLng().longitude))
-                            .title("" + place.getName())
-                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+                googleMap.addMarker(new MarkerOptions()
+                        .position(new LatLng(place.getLatLng().latitude, place.getLatLng().longitude))
+                        .title("" + place.getName())
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
 
-                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(place.getLatLng().latitude, place.getLatLng().longitude), 15));
-                }
+                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(place.getLatLng().latitude, place.getLatLng().longitude), 15));
             });
 
             next_btn.setVisibility(View.VISIBLE);
@@ -191,20 +196,48 @@ public class ManualLocationActivity extends AppCompatActivity implements  Google
     };
 
     @Override
-    public void onConnected(Bundle bundle) {
-        mPlaceArrayAdapter.setGoogleApiClient(mGoogleApiClient);
-        Log.i(LOG_TAG, "Google Places API connected.");
+    public void onLocationChanged(Location location) {
+        Toast.makeText(ManualLocationActivity.this, "Please Enable GPS and Internet", Toast.LENGTH_SHORT).show();
+
+        try {
+            Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+            mLocation = location;
+            strLat = String.valueOf(location.getLatitude());
+            strLng = String.valueOf(location.getLongitude());
+            List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+            Toast.makeText(ManualLocationActivity.this, "Location " + addresses.get(0).getAddressLine(0) + ", " +
+                    addresses.get(0).getAddressLine(1) + ", " + addresses.get(0).getAddressLine(2) + location.getLatitude() + " " + location.getLongitude(), Toast.LENGTH_SHORT).show();
+            //restaurantActivity();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onStatusChanged(String s, int i, Bundle bundle) {
 
     }
 
     @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-        Log.e("Main", "Google Places API connection failed with error code: "
-                + connectionResult.getErrorCode());
+    public void onProviderEnabled(String s) {
+        Toast.makeText(ManualLocationActivity.this, "Please Enable GPS and Internet" + s, Toast.LENGTH_SHORT).show();
 
-        Toast.makeText(ManualLocationActivity.this, "Google Places API connection failed with error code:" +
-                        connectionResult.getErrorCode(),
-                Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onProviderDisabled(String s) {
+
+    }
+
+    @Override
+    public void onClick(View view) {
+
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        mPlaceArrayAdapter.setGoogleApiClient(mGoogleApiClient);
+        Log.e(LOG_TAG, "Google Places API connected.");
     }
 
     @Override
@@ -214,25 +247,17 @@ public class ManualLocationActivity extends AppCompatActivity implements  Google
     }
 
     @Override
-    public void onMapReady(GoogleMap googleMap) {
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Log.e("Main", "Google Places API connection failed with error code: " + connectionResult.getErrorCode());
 
-       /* googleMap.addMarker(new MarkerOptions()
-                .position(new LatLng(37.4233438, -122.0728817))
-                .title("LinkedIn")
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
-
-        googleMap.addMarker(new MarkerOptions()
-                .position(new LatLng(37.4629101,-122.2449094))
-                .title("Facebook")
-                .snippet("Facebook HQ: Menlo Park"));
-
-        googleMap.addMarker(new MarkerOptions()
-                .position(new LatLng(37.3092293, -122.1136845))
-                .title("Apple"));
-
-        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(37.4233438, -122.0728817), 10));*/
+        Toast.makeText(ManualLocationActivity.this, "Google Places API connection failed with error code:" +
+                        connectionResult.getErrorCode(), Toast.LENGTH_LONG).show();
     }
 
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+
+    }
 
     protected void checkPermission() {
         if (ContextCompat.checkSelfPermission
@@ -304,7 +329,7 @@ public class ManualLocationActivity extends AppCompatActivity implements  Google
     void getLocation() {
         try {
             locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 5, (LocationListener) this);
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 5, (android.location.LocationListener) this);
 
             if (!strLat.isEmpty()) {
                 restaurantActivity();
@@ -314,48 +339,10 @@ public class ManualLocationActivity extends AppCompatActivity implements  Google
         }
     }
 
-    @Override
-    public void onLocationChanged(Location location) {
-        Toast.makeText(ManualLocationActivity.this, "Please Enable GPS and Internet", Toast.LENGTH_SHORT).show();
-
-        try {
-            Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-            mLocation = location;
-            strLat = String.valueOf(location.getLatitude());
-            strLng = String.valueOf(location.getLongitude());
-            List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-            Toast.makeText(ManualLocationActivity.this, "Location " + addresses.get(0).getAddressLine(0) + ", " +
-                    addresses.get(0).getAddressLine(1) + ", " + addresses.get(0).getAddressLine(2) + location.getLatitude() + " " + location.getLongitude(), Toast.LENGTH_SHORT).show();
-            //restaurantActivity();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-        Toast.makeText(ManualLocationActivity.this, "Please Enable GPS and Internet", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-
-    }
-
     private void restaurantActivity() {
-       /* Intent intent = new Intent(ManualLocationActivity.this, NearRestaurantActivity.class);
+        /*Intent intent = new Intent(ManualLocationActivity.this, NearRestaurantActivity.class);
         startActivity(intent);
         finish();*/
     }
 
-    @Override
-    public void onClick(View view) {
-
-    }
 }

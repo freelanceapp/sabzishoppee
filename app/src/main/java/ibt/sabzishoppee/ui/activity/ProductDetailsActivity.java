@@ -92,8 +92,6 @@ public class ProductDetailsActivity extends BaseActivity implements View.OnClick
         btnAddtoCart.setOnClickListener(this);
 
         productDetailApi();
-
-
     }
 
     private void productDetailApi() {
@@ -122,16 +120,16 @@ public class ProductDetailsActivity extends BaseActivity implements View.OnClick
 
                         double percent = Double.parseDouble(productDetailModel.getProduct().getDiscount());
                         double salling = Double.parseDouble(productDetailModel.getProduct().getSellingPrice());
-                        double dis = 100-percent;
-                        double orizinal_price = (salling*100)/dis;
+                        double dis =  salling * ((100-percent)/100);
+                       // double dis = 100-percent;
+                       // double orizinal_price = (salling*100)/dis;
 
-                        tvProductDetailSallingPrice.setText("Rs. "+new DecimalFormat("##.##").format(orizinal_price));
+                        tvProductDetailSallingPrice.setText("Rs. "+productDetailModel.getProduct().getSellingPrice());
                         tvProductDetailSallingPrice.setPaintFlags(tvProductDetailSallingPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG );
 
-                        tvProductDetailPrice.setText("Rs. "+productDetailModel.getProduct().getSellingPrice());
-                        tvProductDetailCostPrice.setText("Rs. "+productDetailModel.getProduct().getSellingPrice());
-                        tvProductDetailDescription.setText(productDetailModel.getProduct().getDiscount());
-
+                        tvProductDetailPrice.setText("Rs. "+new DecimalFormat("##.##").format(dis));
+                        tvProductDetailCostPrice.setText("Rs. "+new DecimalFormat("##.##").format(dis));
+                        tvProductDetaildiscount.setText(productDetailModel.getProduct().getDiscount()+"%");
                         if (productDetailModel.getProduct().getQuantityType().equals("1")) {
                             tvProductDetailMinOrder.setText(productDetailModel.getProduct().getMinQuantity() + " Kg");
                             tvProductDetailStockQuantity.setText(productDetailModel.getProduct().getQuantity() + " Kg" );

@@ -9,9 +9,11 @@ import android.support.annotation.NonNull;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 
-public class Product implements Parcelable {
+public class Product implements Parcelable, Comparable<Product> {
 
     @SerializedName("id")
     @Expose
@@ -52,6 +54,12 @@ public class Product implements Parcelable {
     @SerializedName("created_date")
     @Expose
     private String createdDate;
+    @SerializedName("product_quantity")
+    @Expose
+    private String productQuantity = "1";
+
+    ArrayList<Product> jobCandidate = new ArrayList<>();
+
     public final static Parcelable.Creator<Product> CREATOR = new Creator<Product>() {
 
 
@@ -83,6 +91,7 @@ public class Product implements Parcelable {
         this.rating = ((String) in.readValue((String.class.getClassLoader())));
         this.minQuantity = ((String) in.readValue((String.class.getClassLoader())));
         this.createdDate = ((String) in.readValue((String.class.getClassLoader())));
+        this.productQuantity = ((String) in.readValue((String.class.getClassLoader())));
     }
 
     public Product() {
@@ -257,6 +266,14 @@ public class Product implements Parcelable {
         return this;
     }
 
+    public String getProductQuantity() {
+        return productQuantity;
+    }
+
+    public void setProductQuantity(String productQuantity) {
+        this.productQuantity = productQuantity;
+    }
+
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(id);
         dest.writeValue(title);
@@ -271,6 +288,7 @@ public class Product implements Parcelable {
         dest.writeValue(rating);
         dest.writeValue(minQuantity);
         dest.writeValue(createdDate);
+        dest.writeValue(productQuantity);
     }
 
     public int describeContents() {
@@ -278,4 +296,38 @@ public class Product implements Parcelable {
     }
 
 
+    public static final Comparator<Product> BY_NAME_ALPHABETICAL = new Comparator<Product>() {
+        @Override
+        public int compare(Product movie, Product t1) {
+
+            return movie.getSellingPrice().compareTo(t1.getSellingPrice());
+        }
+    };
+
+
+    @Override
+    public int compareTo(@NonNull Product product) {
+        return (Integer.parseInt(this.getSellingPrice()) < Integer.parseInt(product.getSellingPrice()) ? -1 :
+                (this.getSellingPrice() == product.getSellingPrice() ? 0 : 1));
+    }
+
+    public static Comparator<Product> hightolowComparator = new Comparator<Product>() {
+        @Override
+        public int compare(Product jc1, Product jc2) {
+            return (Integer.parseInt(jc1.getSellingPrice()) > Integer.parseInt(jc2.getSellingPrice()) ? -1 :
+                    (jc1.getSellingPrice() == jc2.getSellingPrice() ? 0 : 1));
+        }
+    };
+
+    public static Comparator<Product> nameComparator = new Comparator<Product>() {
+        @Override
+        public int compare(Product jc1, Product jc2) {
+            return (int) (jc1.getType().compareTo(jc2.getType()));
+        }
+    };
+
+    @Override
+    public String toString() {
+        return " Name: " + this.getTitle() + ", Price: " + this.getSellingPrice() + ", Type:" + this.getType();
+    }
 }

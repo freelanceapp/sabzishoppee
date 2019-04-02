@@ -5,22 +5,40 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <ScrollView
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:id="@+id/sv"
+        android:layout_marginBottom="50dp">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_margin="10sp"
             android:layout_weight="1"
             android:orientation="vertical">
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="120sp"
+                android:id="@+id/rv_address"/>
 
             <LinearLayout
                 android:id="@+id/ll_shopping_newadd"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_marginTop="6sp">
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Current Location"
+                    android:layout_margin="6sp"
+                    android:background="@color/red_a"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    android:id="@+id/btn_current_location"/>
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
@@ -330,7 +348,7 @@
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-    </ScrollView>
+    </android.support.v4.widget.NestedScrollView>
 
     <LinearLayout
         android:id="@+id/ll_shopping_continuepay"
@@ -361,5 +379,6 @@
         android:src="@android:drawable/ic_input_add"
         android:tint="@color/white"
         android:background="@color/red_a"
-        android:id="@+id/btn_placeorder"/>
+        android:id="@+id/btn_placeorder"
+        android:visibility="gone"/>
 </RelativeLayout>

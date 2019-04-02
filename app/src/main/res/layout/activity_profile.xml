@@ -30,10 +30,11 @@
 
                     <ImageView
                         android:layout_width="35dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="30dp"
                         android:layout_margin="4sp"
                         android:src="@drawable/ic_back"
-                        android:tint="@color/white" />
+                        android:tint="@color/white"
+                        android:id="@+id/btn_profile_btn"/>
 
                     <TextView
                         android:layout_width="wrap_content"

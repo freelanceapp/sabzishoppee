@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -43,8 +44,9 @@ public class SlidingImage_Adapter1 extends PagerAdapter {
 
         assert imageLayout != null;
         final ImageView imageView = (ImageView) imageLayout.findViewById(R.id.imageView);
-        Picasso.get().load(Constant.IMAGE_URL + IMAGES.get(position))
-                .placeholder(R.drawable.fresh_strawberry).error(R.drawable.fresh_strawberry).into(imageView);
+
+        Glide.with(context).load(IMAGES.get(position)).into(imageView);
+
         view.addView(imageLayout, 0);
         return imageLayout;
     }

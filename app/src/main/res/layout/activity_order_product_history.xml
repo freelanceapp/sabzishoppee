@@ -18,7 +18,7 @@
             android:layout_height="match_parent"
             android:src="@drawable/ic_back"
             android:layout_marginLeft="6sp"
-            android:id="@+id/btn_back"/>
+            android:id="@+id/btn_product_back"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -28,6 +28,55 @@
             android:textColor="@color/white"
             android:layout_marginLeft="6sp"/>
     </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Order Number"
+        android:textSize="18sp"
+        android:padding="4sp"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textColor="@color/red_a"
+        android:id="@+id/tv_order_number"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Address"
+        android:textSize="14sp"
+        android:padding="4sp"
+        android:textColor="@color/red_a"
+        android:id="@+id/tv_order_Address"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Order Date"
+        android:textSize="14sp"
+        android:padding="4sp"
+        android:textColor="@color/red_a"
+        android:id="@+id/tv_order_date1"/>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Total Amount"
+        android:textSize="14sp"
+        android:padding="4sp"
+        android:textColor="@color/red_a"
+        android:id="@+id/tv_order_amount"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Transaction Id"
+        android:textSize="14sp"
+        android:padding="4sp"
+        android:textColor="@color/red_a"
+        android:id="@+id/tv_transaction_id"
+        android:visibility="gone"/>
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"

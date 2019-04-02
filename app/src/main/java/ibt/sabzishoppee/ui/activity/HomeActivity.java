@@ -22,6 +22,7 @@ import ibt.sabzishoppee.model.User;
 import ibt.sabzishoppee.retrofit_provider.RetrofitService;
 import ibt.sabzishoppee.ui.fragment.AboutFragment;
 import ibt.sabzishoppee.ui.fragment.ContactUsFragment;
+import ibt.sabzishoppee.ui.fragment.HelpFragment;
 import ibt.sabzishoppee.ui.fragment.HomeFragment;
 import ibt.sabzishoppee.utils.AppPreference;
 import ibt.sabzishoppee.utils.BaseActivity;
@@ -34,8 +35,9 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
     private RelativeLayout rv_home,rv_cart, rv_history, rv_profile;
     public static TextView cart_number;
     public static int cart_count = 0;
-    private ImageView iv_ShowUserImage;
-    private TextView tv_ShowUserName;
+    public static ImageView iv_ShowUserImage;
+    public static TextView tv_ShowUserName;
+    public static TextView cart_price;
     private ImageView btnSearch;
 
     @Override
@@ -47,8 +49,10 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         setSupportActionBar(toolbar);
 
         cart_number = (TextView)findViewById(R.id.cart_number);
+        cart_price = (TextView)findViewById(R.id.cart_price);
         btnSearch = (ImageView) findViewById(R.id.btnSearch);
-
+        cart_count = AppPreference.getIntegerPreference(mContext, Constant.CART_ITEM_COUNT);
+        cart_number.setText("" + cart_count);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -134,7 +138,8 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
             ContactUsFragment fragment = new ContactUsFragment();
             Utility.setFragment(fragment , mContext , Constant.ContactUsFragment);
         } else if (id == R.id.nav_help) {
-
+            HelpFragment fragment = new HelpFragment();
+            Utility.setFragment(fragment , mContext , Constant.ContactUsFragment);
         } else if (id == R.id.nav_setting) {
 
         } else if (id == R.id.nav_logout) {

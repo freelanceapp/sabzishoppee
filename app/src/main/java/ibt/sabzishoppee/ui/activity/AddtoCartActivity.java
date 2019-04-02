@@ -30,6 +30,7 @@ import ibt.sabzishoppee.utils.BaseActivity;
 import ibt.sabzishoppee.utils.GpsTracker;
 
 import static ibt.sabzishoppee.ui.activity.HomeActivity.cart_number;
+import static ibt.sabzishoppee.ui.activity.HomeActivity.cart_price;
 
 
 public class AddtoCartActivity extends BaseActivity implements View.OnClickListener{
@@ -37,16 +38,13 @@ public class AddtoCartActivity extends BaseActivity implements View.OnClickListe
     RecyclerView recyclerView;
     Button place_bt;
     ArrayList<ProductDetail> list = new ArrayList<>();
-
     HelperManager helperManager;
-
     Activity activity;
     String user_id = "0";
     private String DATABASE_CART = "cart.db";
     public DatabaseHandler databaseCart;
     private ArrayList<ProductDetail> cartProductList = new ArrayList<>();
     private AdapterCart adapterCart;
-
     TextView tvTotalItem, tvTotalPrice;
 
     @Override
@@ -71,7 +69,6 @@ public class AddtoCartActivity extends BaseActivity implements View.OnClickListe
         setTotal();
     }
 
-
     private void initDatabase() {
         databaseCart = new DatabaseHandler(ctx, DATABASE_CART);
         cartProductList.clear();
@@ -93,10 +90,13 @@ public class AddtoCartActivity extends BaseActivity implements View.OnClickListe
         cart_number.setText("" + total_list.size());
         AppPreference.setIntegerPreference(ctx, Constant.CART_ITEM_COUNT, total_list.size());
         for (int i = 0; i < total_list.size(); i++) {
+
+            float percent = Float.parseFloat(total_list.get(i).getDiscount());
             float pr = Float.parseFloat(total_list.get(i).getPrice());
+            float dis1 =  pr * ((100-percent)/100);
             int qty = total_list.get(i).getQuantity();
 
-            float tot = pr * qty;
+            float tot = dis1 * qty;
             total += tot;
             total = Math.round(total);
         }
@@ -104,6 +104,7 @@ public class AddtoCartActivity extends BaseActivity implements View.OnClickListe
 
         tvTotalItem.setText("Total Items :"+total_list.size());
         tvTotalPrice.setText("Rs. "+total);
+        cart_price.setText(""+total);
 
     }
 
@@ -158,6 +159,8 @@ public class AddtoCartActivity extends BaseActivity implements View.OnClickListe
         databaseCart.updateUrl(productDetail);
         tvQty.setText(qty + "");
         setTotal();
+        cart_number.setText(""+qty);
+
         if (qty > 1) {
             minus_iv.setImageResource(R.drawable.ic_minus);
         } else {
@@ -190,6 +193,7 @@ public class AddtoCartActivity extends BaseActivity implements View.OnClickListe
             minus_iv.setImageResource(R.drawable.ic_delete);
         }
         setTotal();
+        cart_number.setText(""+qty);
         AppPreference.setIntegerPreference(ctx, Constant.CART_ITEM_COUNT, list.size());
     }
 

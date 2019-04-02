@@ -42,6 +42,7 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
     private EditText et_login_email, et_login_password;
     private String strEmailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
     private TextView tv_signUp, tv_forgot_password;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -82,10 +83,9 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
                 startFragment(Constant.SignUpFragment, new SignUpFragment());
                 break;
 
-                case R.id.tv_forgot_password:
+            case R.id.tv_forgot_password:
                 startFragment(Constant.SignUpFragment, new ForgotPasswordFragment1());
                 break;
-
 
 
         }
@@ -95,12 +95,9 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
         if (cd.isNetWorkAvailable()) {
             strEmail = ((EditText) rootview.findViewById(R.id.et_login_email)).getText().toString();
             strPassword = ((EditText) rootview.findViewById(R.id.et_login_password)).getText().toString();
-            if (strEmail.isEmpty()) {
-                ((EditText) rootview.findViewById(R.id.et_login_email)).setError("Please enter email address");
-            }else if (!EmailChecker.isValid(strEmail)) {
+            if (!EmailChecker.isValid(strEmail)) {
                 et_login_email.setError("Please enter valid email address !!!");
-            }
-            else if (strPassword.isEmpty()) {
+            } else if (strPassword.isEmpty()) {
                 ((EditText) rootview.findViewById(R.id.et_login_password)).setError("Please enter password");
             } else {
                 RetrofitService.getLoginData(new Dialog(mContext), retrofitApiClient.loginData(strEmail, strPassword), new WebResponse() {
@@ -108,21 +105,22 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
                     public void onResponseSuccess(Response<?> result) {
                         LoginModel loginModel = (LoginModel) result.body();
 
-                        if (!loginModel.getError())
-                        {
+                        if (!loginModel.getError()) {
                             Alerts.show(mContext, loginModel.getMessage());
 
-                            AppPreference.setBooleanPreference(mContext, Constant.Is_Login , true);
-                            AppPreference.setStringPreference(mContext, Constant.User_Id , loginModel.getUser().getId());
+                            AppPreference.setBooleanPreference(mContext, Constant.Is_Login, true);
+                            AppPreference.setStringPreference(mContext, Constant.User_Id, loginModel.getUser().getId());
 
                             Gson gson = new GsonBuilder().setLenient().create();
                             String data = gson.toJson(loginModel);
                             AppPreference.setStringPreference(mContext, Constant.User_Data, data);
                             User.setUser(loginModel);
 
-                            Intent intent = new Intent(mContext , HomeActivity.class);
+                            Intent intent = new Intent(mContext, HomeActivity.class);
                             mContext.startActivity(intent);
                             getActivity().finish();
+                        }else {
+                            Alerts.show(mContext, loginModel.getMessage());
                         }
                     }
 
@@ -132,7 +130,7 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
                     }
                 });
             }
-        }else {
+        } else {
             cd.show(mContext);
         }
     }

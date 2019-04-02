@@ -9,12 +9,9 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -30,10 +27,11 @@
 
                     <ImageView
                         android:layout_width="35dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="30dp"
                         android:layout_margin="4sp"
                         android:src="@drawable/ic_back"
-                        android:tint="@color/white" />
+                        android:tint="@color/white"
+                        android:id="@+id/btn_editprofile_back"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -146,19 +144,34 @@
                         android:textSize="14sp"
                         android:textStyle="bold"/>
 
-                    <EditText
-                        android:id="@+id/et_dob"
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginRight="10dp"
-                        android:inputType="phone"
-                        android:padding="10dp"
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        android:textStyle="normal"
-                        android:background="@color/white"/>
+                        android:gravity="center">
+                        <TextView
+                            android:id="@+id/et_dob"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginRight="10dp"
+                            android:inputType="phone"
+                            android:padding="10dp"
+                            android:textColor="@color/black"
+                            android:textSize="14sp"
+                            android:textStyle="normal"
+                            android:layout_toLeftOf="@id/btn_calender"
+                            android:background="@color/white"/>
+                        <ImageButton
+                            android:layout_width="40sp"
+                            android:layout_height="40sp"
+                            android:layout_alignParentRight="true"
+                            android:id="@+id/btn_calender"
+                            android:src="@drawable/ic_calendar"
+                            android:layout_marginRight="6dp"/>
+
+                    </RelativeLayout>
+
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1sp"
@@ -255,11 +268,11 @@
                     android:layout_width="120sp"
                     android:layout_height="120sp"
                     android:layout_marginTop="50dp"
-                    android:src="@drawable/profile_img"
-                    android:id="@+id/ci_profile"/>
+                    android:src="@drawable/ic_user"
+                    android:id="@+id/ci_profile" />
                 <ImageView
-                    android:layout_width="60sp"
-                    android:layout_height="60sp"
+                    android:layout_width="50sp"
+                    android:layout_height="50sp"
                     android:layout_alignParentBottom="true"
                     android:src="@drawable/ic_photo"
                     android:tint="@color/transparent"

@@ -103,6 +103,12 @@ public class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.Vi
             params.setMargins(12, 6, 12, 6);
             viewHolder.llItem.setLayoutParams(params);
         }
+
+
+        viewHolder.iv_product_plus.setTag(i);
+        viewHolder.iv_product_plus.setOnClickListener(onClickListener);
+        viewHolder.iv_product_minus.setTag(i);
+        viewHolder.iv_product_minus.setOnClickListener(onClickListener);
     }
 
     @Override
@@ -152,8 +158,9 @@ public class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.Vi
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private ImageView ivProductImg;
-        private LinearLayout ll_product1;
-        private TextView btnAdd,tvProductPrice,tvProductQuality,tvProductName,tvMinOrder, tvProductType;
+        private LinearLayout ll_product1, ll_product_action;
+        private TextView btnAdd,tvProductPrice,tvProductQuality,tvProductName,tvMinOrder, tvProductType, tv_product_qty;
+        private ImageView iv_product_plus, iv_product_minus;
         CardView llItem;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -165,7 +172,12 @@ public class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.Vi
             tvMinOrder = itemView.findViewById(R.id.tvMinOrder);
             tvProductType = itemView.findViewById(R.id.tvProductType);
             llItem = itemView.findViewById(R.id.llItem);
+            tv_product_qty = itemView.findViewById(R.id.tv_product_qty);
+            iv_product_plus = itemView.findViewById(R.id.iv_product_plus);
+            iv_product_minus = itemView.findViewById(R.id.iv_product_minus);
             ll_product1 = itemView.findViewById(R.id.ll_product1);
+            ll_product_action = itemView.findViewById(R.id.ll_product_action);
+            ll_product_action.setVisibility(View.GONE);
         }
     }
 

@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 
@@ -26,6 +27,7 @@ import ibt.sabzishoppee.retrofit_provider.RetrofitService;
 import ibt.sabzishoppee.utils.AppPreference;
 import ibt.sabzishoppee.utils.BaseActivity;
 import ibt.sabzishoppee.utils.ConnectionDirector;
+import io.fabric.sdk.android.Fabric;
 
 public class SplashActivity extends BaseActivity {
     public static String mypreference = "sabzishoppe";
@@ -34,6 +36,7 @@ public class SplashActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_splash);
 
         mContext = this;

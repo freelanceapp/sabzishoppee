@@ -21,12 +21,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -59,13 +61,16 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Response;
 
+import static ibt.sabzishoppee.ui.activity.HomeActivity.iv_ShowUserImage;
+
 public class EditProfileActivity extends BaseActivity implements View.OnClickListener {
 
-    private EditText et_fullname, et_dob;
-    private TextView et_address, et_email_address,et_email, et_mobile;
+    private EditText et_fullname;
+    private TextView et_address, et_dob, et_email_address,et_email, et_mobile;
     private RadioGroup rb_gender;
     private CircleImageView ci_profile;
-    private ImageView btn_camera;
+    private ImageView btn_camera, btn_editprofile_back;
+    private ImageButton btn_calender;
     private Button btnUpdate;
     private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
     private String userChoosenTask;
@@ -98,13 +103,16 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
         et_address = findViewById(R.id.et_address);
         et_mobile = findViewById(R.id.et_mobile);
         et_dob = findViewById(R.id.et_dob);
+        btn_calender = findViewById(R.id.btn_calender);
         ci_profile = findViewById(R.id.ci_profile);
         btn_camera = findViewById(R.id.btn_camera);
         btnUpdate = findViewById(R.id.btnUpdate);
         rgGendar = findViewById(R.id.rgGender1);
+        btn_editprofile_back = findViewById(R.id.btn_editprofile_back);
         myStringRandomGen = new MyStringRandomGen();
         btn_camera.setOnClickListener(this);
         btnUpdate.setOnClickListener(this);
+        btn_editprofile_back.setOnClickListener(this);
         signUpApi();
         setDateTimeField();
         rgGendar.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -116,12 +124,10 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
                     //   Toast.makeText(mContext, rb.getText(), Toast.LENGTH_SHORT).show();
                     strGender = rb.getText().toString();
                 }
-
             }
         });
 
-
-        et_dob.setOnClickListener(new View.OnClickListener() {
+        btn_calender.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 fromDatePickerDialog.show();
@@ -141,13 +147,13 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_camera:
-
                 selectImage();
-
                 break;
-
             case R.id.btnUpdate :
                 api();
+                break;
+            case R.id.btn_editprofile_back :
+                finish();
                 break;
         }
     }
@@ -335,6 +341,16 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
                         String data = gson.toJson(loginModal);
                         AppPreference.setStringPreference(mContext, Constant.User_Data, data);
                         User.setUser(loginModal);
+
+                        if (User.getUser().getUser().getUserProfilePicture() == null) {
+                            iv_ShowUserImage.setImageResource(R.drawable.profile_img);
+                        } else {
+                            Glide.with(mContext).load(loginModal.getUser().getUserProfilePicture()).into(iv_ShowUserImage);
+                        }
+
+                        Intent intent = new Intent(EditProfileActivity.this, ProfileActivity.class);
+                        startActivity(intent);
+                        finish();
 
                     }
 

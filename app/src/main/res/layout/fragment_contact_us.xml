@@ -23,7 +23,8 @@
             android:textSize="16sp"
             android:lines="1"
             android:layout_margin="6sp"
-            android:textColor="@color/red_a"/>
+            android:textColor="@color/red_a"
+            android:id="@+id/et_contact_name"/>
 
 
         <EditText
@@ -36,7 +37,8 @@
             android:lines="1"
             android:inputType="textEmailAddress"
             android:layout_margin="6sp"
-            android:textColor="@color/red_a"/>
+            android:textColor="@color/red_a"
+            android:id="@+id/et_contact_email"/>
 
         <EditText
             android:layout_width="match_parent"
@@ -48,7 +50,8 @@
             android:lines="1"
             android:inputType="text"
             android:layout_margin="6sp"
-            android:textColor="@color/red_a"/>
+            android:textColor="@color/red_a"
+            android:id="@+id/et_contact_subject"/>
 
         <EditText
             android:layout_width="match_parent"
@@ -62,7 +65,8 @@
             android:lines="4"
             android:inputType="text"
             android:layout_margin="6sp"
-            android:textColor="@color/red_a"/>
+            android:textColor="@color/red_a"
+            android:id="@+id/et_contact_message"/>
 
         <Button
             android:layout_width="match_parent"
@@ -72,7 +76,8 @@
             android:text="Submit"
             android:textColor="@color/white"
             android:textStyle="bold"
-            android:textAllCaps="false"/>
+            android:textAllCaps="false"
+            android:id="@+id/btn_contact_submit"/>
     </LinearLayout>
 
 </RelativeLayout>

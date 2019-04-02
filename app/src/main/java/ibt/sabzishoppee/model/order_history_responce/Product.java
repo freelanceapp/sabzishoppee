@@ -18,7 +18,7 @@ public class Product implements Parcelable
     private String productId;
     @SerializedName("product_name")
     @Expose
-    private Object productName;
+    private String productName;
     @SerializedName("product_type")
     @Expose
     private String productType;
@@ -57,7 +57,7 @@ public class Product implements Parcelable
     protected Product(Parcel in) {
         this.productOrderDetailsId = ((String) in.readValue((String.class.getClassLoader())));
         this.productId = ((String) in.readValue((String.class.getClassLoader())));
-        this.productName = ((Object) in.readValue((Object.class.getClassLoader())));
+        this.productName = ((String) in.readValue((String.class.getClassLoader())));
         this.productType = ((String) in.readValue((String.class.getClassLoader())));
         this.productQuantity = ((String) in.readValue((String.class.getClassLoader())));
         this.productPrice = ((String) in.readValue((String.class.getClassLoader())));
@@ -95,15 +95,15 @@ public class Product implements Parcelable
         return this;
     }
 
-    public Object getProductName() {
+    public String getProductName() {
         return productName;
     }
 
-    public void setProductName(Object productName) {
+    public void setProductName(String productName) {
         this.productName = productName;
     }
 
-    public Product withProductName(Object productName) {
+    public Product withProductName(String productName) {
         this.productName = productName;
         return this;
     }

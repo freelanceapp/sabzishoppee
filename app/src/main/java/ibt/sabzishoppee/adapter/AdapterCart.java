@@ -1,7 +1,11 @@
 package ibt.sabzishoppee.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +17,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 import ibt.sabzishoppee.R;
@@ -51,21 +56,23 @@ public class AdapterCart extends RecyclerView.Adapter<AdapterCart.MyViewHolder> 
     public void onBindViewHolder(MyViewHolder holder, final int position) {
         ProductDetail productDetail = list.get(position);
         holder.name_tv.setText(productDetail.getTitle());
-
         float price = Float.parseFloat(productDetail.getPrice());
-        float round_pr = Math.round(price);
+        float percent = Float.parseFloat(productDetail.getDiscount());
+        float dis1 =  price * ((100-percent)/100);
+        float round_pr = Math.round(dis1);
         holder.price_tv.setText("" + round_pr+"Rs");
         holder.type_tv.setText(" " + productDetail.getQuantity_type());
         holder.quantity_tv.setText(productDetail.getOrder_quantity()+"Kg");
         holder.qty_tv.setText(list.get(position).getQuantity() + "");
 
-
         if (productDetail.getImage() != null) {
+
             Glide.with(context).load(productDetail.getImage()).error(R.drawable.logo2).into(holder.pro_image_iv);
         } else {
             holder.pro_image_iv.setImageResource(R.drawable.logo2);
         }
 
+        Log.e("Image", productDetail.getImage());
         int qty = Integer.parseInt(holder.qty_tv.getText().toString());
         if (qty > 1) {
             holder.minus_iv.setImageResource(R.drawable.ic_minus);

@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -64,7 +65,7 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
         cPassword = rootview.findViewById(R.id.et_cpassword);
         cPhone = rootview.findViewById(R.id.et_mobile);
         btn_signUp.setOnClickListener(this);
-        ((TextView) rootview.findViewById(R.id.tv_Login)).setOnClickListener(this);
+        ((LinearLayout) rootview.findViewById(R.id.tv_Login)).setOnClickListener(this);
     }
 
     private void startFragment(String tag, Fragment fragment) {
@@ -96,19 +97,17 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
             strPassword = password.getText().toString();
             strConfirmPassword = cPassword.getText().toString();
             strMobile = cPhone.getText().toString();
-            if (strName.isEmpty()) {
-                fullname.setError("Please enter fullname !!!");
-            } else if (strMobile.isEmpty()) {
+            if (strMobile.length() != 10) {
                 cPhone.setError("Please enter Mobile !!!");
             } else if (!strEmailAddress.matches(emailPattern)) {
                 emailAddress.setError("Please enter email address !!!");
             } else if (!EmailChecker.isValid(strEmailAddress)) {
                 emailAddress.setError("Please enter valid email address !!!");
-            } else if (strPassword.isEmpty()) {
+            } else if (strPassword.length() > 6) {
                 password.setError("Please enter password !!!");
-            } else if (strConfirmPassword.isEmpty()) {
+            } else if (strConfirmPassword.length() > 6) {
                 password.setError("please reter password!!!");
-            } else if (!strPassword.equalsIgnoreCase(strConfirmPassword)) {
+            } else if (!strPassword.matches(strConfirmPassword)) {
                 password.setError("Password not match !!!");
             } else {
                 RetrofitService.getSignData(new Dialog(mContext), retrofitApiClient.signUp(strName, strEmailAddress , strMobile, strPassword), new WebResponse() {

@@ -8,29 +8,38 @@ import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 import ibt.sabzishoppee.R;
+import ibt.sabzishoppee.adapter.AddressShowAdapter;
+import ibt.sabzishoppee.adapter.OrderHistoryAdapter;
 import ibt.sabzishoppee.constant.Constant;
 import ibt.sabzishoppee.model.User;
 import ibt.sabzishoppee.model.address_add_responce.AddAddressModel;
+import ibt.sabzishoppee.model.address_show_responce.AddressShowModel;
 import ibt.sabzishoppee.model.productlist_responce.ProductListModel;
 import ibt.sabzishoppee.retrofit_provider.RetrofitService;
 import ibt.sabzishoppee.retrofit_provider.WebResponse;
+import ibt.sabzishoppee.ui.activity.AddressLocationActivity;
 import ibt.sabzishoppee.ui.activity.ManualLocationActivity;
 import ibt.sabzishoppee.utils.Alerts;
 import ibt.sabzishoppee.utils.AppPreference;
@@ -46,6 +55,10 @@ import retrofit2.Response;
 @SuppressLint("ValidFragment")
 public class ShoppingFragment extends BaseFragment implements View.OnClickListener, AdapterView.OnItemSelectedListener {
 
+    AddressShowAdapter addressShowAdapter;
+    ArrayList<ibt.sabzishoppee.model.address_show_responce.Address> addressArrayList = new ArrayList<>();
+    RecyclerView rvAddress;
+
     Context ctx;
     Activity activity;
     LinearLayout continue_pay_ll;
@@ -55,6 +68,7 @@ public class ShoppingFragment extends BaseFragment implements View.OnClickListen
     EditText name_et1, mobile_et1, address_et1, country_et1, state_et1, city_et1, zipcode_et1;
     Spinner sp_newaddress_type;
     String address = "";
+    Button btn_current_location;
    // ConnectionDetector connectionDetector;
     SessionManager sessionManager;
     FloatingActionButton btn_placeorder;
@@ -64,7 +78,7 @@ public class ShoppingFragment extends BaseFragment implements View.OnClickListen
     double latitude; // latitude
     double longitude; // longitude
     private Dialog dialog;
-    private String strName, strAddress, strHouseNo, strType, strCity, strState, strCountry, strZipCode, strAddressType;
+    private String strName, strAddress, strHouseNo, strType, strCity, strState, strCountry, strZipCode, strAddressType, strLat,strLong;
     String[] AddressType={"Home","Office"};
     @SuppressLint("ValidFragment")
     public ShoppingFragment(Context ctx) {
@@ -92,7 +106,7 @@ public class ShoppingFragment extends BaseFragment implements View.OnClickListen
     private void initXml(View view) {
 
         ctx = getActivity();
-        getAddressApi();
+
         continue_pay_ll = view.findViewById(R.id.ll_shopping_continuepay);
         address_et = view.findViewById(R.id.et_newaddress_adress);
         country_et = view.findViewById(R.id.et_newaddress_country);
@@ -112,9 +126,12 @@ public class ShoppingFragment extends BaseFragment implements View.OnClickListen
         name_et1 = view.findViewById(R.id.et_newaddress_name1);
         mobile_et1 = view.findViewById(R.id.et_newaddress_number1);
         btn_placeorder = view.findViewById(R.id.btn_placeorder);
+        rvAddress = view.findViewById(R.id.rv_address);
+        btn_current_location = view.findViewById(R.id.btn_current_location);
 
         continue_pay_ll.setOnClickListener(this);
         btn_placeorder.setOnClickListener(this);
+        btn_current_location.setOnClickListener(this);
 
         sp_newaddress_type.setOnItemSelectedListener(this);
 
@@ -123,6 +140,15 @@ public class ShoppingFragment extends BaseFragment implements View.OnClickListen
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //Setting the ArrayAdapter data on the Spinner
         sp_newaddress_type.setAdapter(aa);
+
+
+        addressShowAdapter = new AddressShowAdapter(mContext, addressArrayList, this );
+        rvAddress.setHasFixedSize(true);
+        rvAddress.setLayoutManager(new GridLayoutManager(mContext, 1));
+        rvAddress.setAdapter(addressShowAdapter);
+
+        getAddressApi();
+
     }
 
     //Performing action onItemSelected and onNothing selected
@@ -149,10 +175,10 @@ public class ShoppingFragment extends BaseFragment implements View.OnClickListen
         name_et.setText(name);
         mobile_et.setText(mobile);
 
-      //  getLatLong();
+        getLatLong();
     }
 
-    /*private void getLatLong() {
+    private void getLatLong() {
         GpsTracker gpsTracker = new GpsTracker(ctx);
         latitude = gpsTracker.getLatitude();
         longitude = gpsTracker.getLongitude();
@@ -166,6 +192,9 @@ public class ShoppingFragment extends BaseFragment implements View.OnClickListen
             List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
             if (addresses.size() > 0) {
                 AppProgressDialog.hide(dialog);
+
+                strLat = String.valueOf(addresses.get(0).getLatitude());
+                strLong = String.valueOf(addresses.get(0).getLongitude());
                 address_et.setText(addresses.get(0).getAddressLine(0));
                 city_et.setText(addresses.get(0).getLocality());
                 state_et.setText(addresses.get(0).getAdminArea());
@@ -173,18 +202,18 @@ public class ShoppingFragment extends BaseFragment implements View.OnClickListen
                 zipcode_et.setText(addresses.get(0).getPostalCode());
             } else {
                 AppProgressDialog.show(dialog);
-                //    new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run () {
-                    getLatLong();
-
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        getLatLong();
+                    }
                 }, 3000);
-
-        } catch (
-    IOException e) {
+            }
+        } catch (IOException e) {
             e.printStackTrace();
         }
-    }*/
+    }
+
 
     @Override
     public void onClick(View v) {
@@ -194,8 +223,28 @@ public class ShoppingFragment extends BaseFragment implements View.OnClickListen
                 break;
 
             case R.id.btn_placeorder:
-                Intent intent = new Intent(getActivity(), ManualLocationActivity.class);
+                Intent intent = new Intent(getActivity(), AddressLocationActivity.class);
                 getActivity().startActivity(intent);
+                break;
+
+            case R.id.btn_current_location :
+                setData();
+                break;
+
+            case R.id.ll_show_address :
+                int pos = Integer.parseInt(v.getTag().toString());
+                ibt.sabzishoppee.model.address_show_responce.Address address = addressArrayList.get(pos);
+
+                strLat = String.valueOf(address.getLat());
+                strLong = String.valueOf(address.getLong());
+                address_et.setText(address.getAddress());
+                city_et.setText(address.getUserCity());
+                state_et.setText(address.getState());
+                country_et.setText("India");
+                hourse_no_et.setText(address.getHouseNumber());
+                zipcode_et.setText(address.getZipcode());
+
+
                 break;
         }
     }
@@ -209,7 +258,7 @@ public class ShoppingFragment extends BaseFragment implements View.OnClickListen
          strCity = city_et.getText().toString();
          strZipCode = zipcode_et.getText().toString();
          strHouseNo = hourse_no_et.getText().toString();
-         strType = address_type_et.getText().toString();
+         //strType = address_type_et.getText().toString();
 
         String name1 = name_et1.getText().toString();
         String mobile1 = mobile_et1.getText().toString();
@@ -220,7 +269,7 @@ public class ShoppingFragment extends BaseFragment implements View.OnClickListen
         String zipcode1 = zipcode_et1.getText().toString();
 
         if (strName.equals("") || strAddress.equals("") || strCountry.equals("") || strState.equals("") ||
-                strCity.equals("") || strZipCode.equals("")) {
+                strCity.equals("") || strZipCode.equals("") || strHouseNo.equals("")) {
 
             Utility.toastView(ctx, "Enter all details");
         } /*else if (mobile.length()>10 || mobile.length()<10){
@@ -253,8 +302,6 @@ public class ShoppingFragment extends BaseFragment implements View.OnClickListen
             sessionManager.setData(SessionManager.KEY_ORDER_CITY1, city1);
 
             addAddressApi();
-
-
             // ((CheckOutActivity) getActivity()).setPosition(1);
         }
     }
@@ -263,7 +310,7 @@ public class ShoppingFragment extends BaseFragment implements View.OnClickListen
     private void addAddressApi() {
         String strUser_id = AppPreference.getStringPreference(mContext, Constant.User_Id);
         if (cd.isNetWorkAvailable()) {
-            RetrofitService.addAddress(new Dialog(mContext), retrofitApiClient.addAddress(strUser_id,strAddress,strAddress,strCity,strState,strAddressType,"7.231322","123.131212",strHouseNo,"450404"), new WebResponse() {
+            RetrofitService.addAddress(new Dialog(mContext), retrofitApiClient.addAddress(strUser_id,strAddress,strAddress,strCity,strState,strAddressType,strLong,strLat,strHouseNo,strZipCode), new WebResponse() {
                 @Override
                 public void onResponseSuccess(Response<?> result) {
                     AddAddressModel addressModel = (AddAddressModel) result.body();
@@ -293,18 +340,22 @@ public class ShoppingFragment extends BaseFragment implements View.OnClickListen
     private void getAddressApi() {
         String strUser_id = AppPreference.getStringPreference(mContext, Constant.User_Id);
         if (cd.isNetWorkAvailable()) {
-            RetrofitService.addAddress(new Dialog(mContext), retrofitApiClient.getAddress(strUser_id), new WebResponse() {
+            RetrofitService.getAddress(new Dialog(mContext), retrofitApiClient.getAddress(strUser_id), new WebResponse() {
                 @Override
                 public void onResponseSuccess(Response<?> result) {
-                    AddAddressModel addressModel = (AddAddressModel) result.body();
+                    AddressShowModel addressModel = (AddressShowModel) result.body();
 
                     if (!addressModel.getError())
                     {
                         Alerts.show(mContext, addressModel.getMessage());
 
+                        addressArrayList.addAll(addressModel.getAddress());
+
                     }else {
                         Alerts.show(mContext, addressModel.getMessage());
                     }
+
+                    addressShowAdapter.notifyDataSetChanged();
                 }
 
                 @Override

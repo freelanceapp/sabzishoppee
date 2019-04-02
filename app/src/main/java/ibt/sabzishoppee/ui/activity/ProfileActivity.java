@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
@@ -35,6 +36,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
     private RadioGroup rb_gender;
     private CircleImageView ci_profile;
     private Button btn_edit_profile;
+    private ImageView btn_profile_btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +59,14 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
         tv_dob = findViewById(R.id.tv_dob);
         ci_profile = findViewById(R.id.ci_profile);
         btn_edit_profile = findViewById(R.id.btn_edit_profile);
+        btn_profile_btn = findViewById(R.id.btn_profile_btn);
         btn_edit_profile.setOnClickListener(this);
+        btn_profile_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         signUpApi();
     }
 
@@ -74,7 +83,6 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
                         if (!responseBody.getError())
                         {
                             Alerts.show(mContext , responseBody.getMessage());
-
                             tv_fullname.setText(responseBody.getUser().getUserName());
                             tv_email.setText(responseBody.getUser().getUserEmail());
                             tv_mobile.setText(responseBody.getUser().getUserContact());
@@ -84,15 +92,12 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
                             if (!responseBody.getUser().getUserProfilePicture().isEmpty()) {
                                 String base64String = responseBody.getUser().getUserProfilePicture();
                                 String base64Image = base64String.split(",")[1];
-
                                 byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
                                 Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                                 ci_profile.setImageBitmap(decodedByte);
-
                             }else {
                                 ci_profile.setImageResource(R.drawable.profile_img);
                             }
-
                             //Glide.with(mContext).load(decodedByte).error(R.drawable.profile_img).fitCenter().into(ci_profile);
                         }else {
                             Alerts.show(mContext , responseBody.getMessage());
@@ -115,5 +120,6 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
     public void onClick(View view) {
         Intent intent = new Intent(ProfileActivity.this, EditProfileActivity.class);
         startActivity(intent);
+        finish();
     }
 }

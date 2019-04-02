@@ -203,7 +203,8 @@
                     android:layout_marginRight="6sp"
                     android:layout_marginTop="2dp"
                     android:layout_marginBottom="2dp"
-                    android:id="@+id/llProductDetailStockQuantity">
+                    android:id="@+id/llProductDetailStockQuantity"
+                    android:visibility="gone">
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -234,7 +235,8 @@
                     android:layout_marginRight="6sp"
                     android:layout_marginTop="2dp"
                     android:layout_marginBottom="2dp"
-                    android:id="@+id/llProductDetailAvailability">
+                    android:id="@+id/llProductDetailAvailability"
+                    android:visibility="gone">
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

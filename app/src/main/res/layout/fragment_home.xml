@@ -19,8 +19,7 @@
             <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4sp"
-                android:layout_marginBottom="6sp">
+                android:layout_marginBottom="2sp">
 
                 <android.support.v4.view.ViewPager
                     android:id="@+id/pager"
@@ -179,7 +178,8 @@
                         android:paddingTop="6sp"
                         android:paddingRight="20sp"
                         android:paddingBottom="6sp"
-                        android:text="New Arrivals" />
+                        android:text="A - Z"
+                        android:id="@+id/tv_a_to_z"/>
                 </LinearLayout>
             </HorizontalScrollView>
 
@@ -187,7 +187,8 @@
                 android:id="@+id/rvproductList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="2sp" />
+                android:layout_margin="2sp"
+                />
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 </RelativeLayout>
