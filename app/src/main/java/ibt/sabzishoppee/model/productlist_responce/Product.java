@@ -335,7 +335,7 @@ public class Product implements Parcelable, Comparable<Product> {
     public static Comparator<Product> nameComparator = new Comparator<Product>() {
         @Override
         public int compare(Product jc1, Product jc2) {
-            return (int) (jc1.getType().compareTo(jc2.getType()));
+            return (int) (jc1.getTitle().compareToIgnoreCase(jc2.getTitle()));
         }
     };
 

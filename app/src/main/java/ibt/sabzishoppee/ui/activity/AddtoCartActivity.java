@@ -195,11 +195,13 @@ public class AddtoCartActivity extends BaseActivity implements View.OnClickListe
         if (qty == minQty) {
             databaseCart.deleteContact(productDetail);
             //cartProductList.remove(pos);
-            cartProductList.clear();
+            /*cartProductList.clear();
             if (databaseCart.getContactsCount()) {
                 cartProductList.addAll(databaseCart.getAllUrlList());
             }
-            adapterCart.notifyDataSetChanged();
+            adapterCart.notifyDataSetChanged();*/
+            startActivity(new Intent(mContext, AddtoCartActivity.class));
+            finish();
         } else {
             qty--;
             productDetail.setQuantity(qty);

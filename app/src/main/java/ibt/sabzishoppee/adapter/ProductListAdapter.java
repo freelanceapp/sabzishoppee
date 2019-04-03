@@ -148,6 +148,9 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
      if (product.isInCart()){
          viewHolder.btnAdd.setVisibility(View.GONE);
          viewHolder.ll_product_action.setVisibility(View.VISIBLE);
+     }else{
+         viewHolder.btnAdd.setVisibility(View.VISIBLE);
+         viewHolder.ll_product_action.setVisibility(View.GONE);
      }
 
         if (product.getProductQuantity().equals("0")) {
