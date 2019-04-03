@@ -3,6 +3,9 @@ package ibt.sabzishoppee.retrofit_provider;
 import android.app.Dialog;
 
 
+import java.util.concurrent.TimeUnit;
+
+import ibt.sabzishoppee.BuildConfig;
 import ibt.sabzishoppee.constant.Constant;
 import ibt.sabzishoppee.model.address_add_responce.AddAddressModel;
 import ibt.sabzishoppee.model.address_show_responce.AddressShowModel;
@@ -19,7 +22,9 @@ import ibt.sabzishoppee.model.productdetail_responce.ProductDetailModel;
 import ibt.sabzishoppee.model.productlist_responce.ProductListModel;
 import ibt.sabzishoppee.model.signup_responce.SignUpModel;
 import ibt.sabzishoppee.utils.AppProgressDialog;
+import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -32,8 +37,20 @@ public class RetrofitService {
     public static RetrofitApiClient client;
 
     public RetrofitService() {
+
+        HttpLoggingInterceptor mHttpLoginInterceptor = new HttpLoggingInterceptor();
+
+        mHttpLoginInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient.Builder mOkClient = new OkHttpClient.Builder().readTimeout(300,
+                TimeUnit.SECONDS).writeTimeout(300, TimeUnit.SECONDS).connectTimeout(300, TimeUnit.SECONDS);
+
+        if (BuildConfig.DEBUG) {
+            mOkClient.addInterceptor(mHttpLoginInterceptor);
+        }
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Constant.BASE_URL)
+                .client(mOkClient.build())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         client = retrofit.create(RetrofitApiClient.class);

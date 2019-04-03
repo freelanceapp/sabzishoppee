@@ -145,6 +145,11 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
            }
        });*/
 
+     if (product.isInCart()){
+         viewHolder.btnAdd.setVisibility(View.GONE);
+         viewHolder.ll_product_action.setVisibility(View.VISIBLE);
+     }
+
         if (product.getProductQuantity().equals("0")) {
             viewHolder.tv_product_qty.setText(product.getMinQuantity());
         } else {
@@ -190,7 +195,6 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             iv_product_minus = itemView.findViewById(R.id.iv_product_minus);
             ll_product_action = itemView.findViewById(R.id.ll_product_action);
             llItem = itemView.findViewById(R.id.llItem);
-
         }
 
     }

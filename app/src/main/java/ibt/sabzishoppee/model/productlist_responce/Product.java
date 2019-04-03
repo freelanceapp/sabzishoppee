@@ -18,6 +18,9 @@ public class Product implements Parcelable, Comparable<Product> {
     @SerializedName("id")
     @Expose
     private String id;
+    @SerializedName("inCart")
+    @Expose
+    private boolean inCart;
     @SerializedName("title")
     @Expose
     private String title;
@@ -80,6 +83,7 @@ public class Product implements Parcelable, Comparable<Product> {
     protected Product(Parcel in) {
         this.id = ((String) in.readValue((String.class.getClassLoader())));
         this.title = ((String) in.readValue((String.class.getClassLoader())));
+        this.inCart = ((boolean) in.readValue((String.class.getClassLoader())));
         this.description = ((String) in.readValue((String.class.getClassLoader())));
         this.quantity = ((String) in.readValue((String.class.getClassLoader())));
         this.type = ((String) in.readValue((String.class.getClassLoader())));
@@ -108,6 +112,14 @@ public class Product implements Parcelable, Comparable<Product> {
     public Product withId(String id) {
         this.id = id;
         return this;
+    }
+
+    public boolean isInCart() {
+        return inCart;
+    }
+
+    public void setInCart(boolean inCart) {
+        this.inCart = inCart;
     }
 
     public String getTitle() {
@@ -277,6 +289,7 @@ public class Product implements Parcelable, Comparable<Product> {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(id);
         dest.writeValue(title);
+        dest.writeValue(inCart);
         dest.writeValue(description);
         dest.writeValue(quantity);
         dest.writeValue(type);
