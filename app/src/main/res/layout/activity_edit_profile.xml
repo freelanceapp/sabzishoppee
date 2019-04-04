@@ -182,6 +182,7 @@
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="16dp"
                         android:text="Address"
+                        android:visibility="gone"
                         android:textColor="@color/black"
                         android:textSize="14sp"
                         android:textStyle="bold"/>
@@ -193,7 +194,7 @@
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="16dp"
                         android:layout_marginRight="10dp"
-                        android:inputType="phone"
+                        android:visibility="gone"
                         android:padding="10dp"
                         android:textColor="@color/black"
                         android:textSize="14sp"
@@ -250,14 +251,6 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <Button
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Update"
-                    android:textColor="@color/white"
-                    android:background="@color/red_a"
-                    android:textAllCaps="false"
-                    android:id="@+id/btnUpdate"/>
             </LinearLayout>
 
             <RelativeLayout
@@ -283,4 +276,14 @@
 
         </RelativeLayout>
     </ScrollView>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Update"
+        android:layout_alignParentBottom="true"
+        android:textColor="@color/white"
+        android:background="@color/red_a"
+        android:textAllCaps="false"
+        android:id="@+id/btnUpdate"/>
 </RelativeLayout>

@@ -94,8 +94,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         mContext = getActivity();
 
-        showToast("On Create View");
-
         cd = new ConnectionDirector(mContext);
         retrofitApiClient = RetrofitService.getRetrofit();
         databaseCart = new DatabaseHandler(mContext, DATABASE_CART);
@@ -113,7 +111,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
             cartProductList = databaseCart.getAllUrlList();
         }
         init(rView);
-        showToast("On Resume");
     }
 
     private void init(View view)
@@ -604,7 +601,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         setTotal();
         //AppPreference.setIntegerPreference(mContext, Constant.CART_ITEM_COUNT, list.size());
     }
-
 
     private void productDetailApi() {
         if (cd.isNetWorkAvailable()) {

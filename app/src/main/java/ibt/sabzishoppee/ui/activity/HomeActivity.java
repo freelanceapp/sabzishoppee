@@ -22,6 +22,7 @@ import ibt.sabzishoppee.model.User;
 import ibt.sabzishoppee.retrofit_provider.RetrofitService;
 import ibt.sabzishoppee.ui.fragment.AboutFragment;
 import ibt.sabzishoppee.ui.fragment.ContactUsFragment;
+import ibt.sabzishoppee.ui.fragment.ForgotPasswordFragment1;
 import ibt.sabzishoppee.ui.fragment.HelpFragment;
 import ibt.sabzishoppee.ui.fragment.HomeFragment;
 import ibt.sabzishoppee.utils.AppPreference;
@@ -141,6 +142,13 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
             HelpFragment fragment = new HelpFragment();
             Utility.setFragment(fragment , mContext , Constant.ContactUsFragment);
         } else if (id == R.id.nav_setting) {
+
+        }else if (id == R.id.nav_password) {
+            ForgotPasswordFragment1 fragment = new ForgotPasswordFragment1();
+            Utility.setFragment(fragment , mContext , Constant.ForgotPasswordFragment1);
+        }else if (id == R.id.nav_history) {
+
+            startActivity(new Intent(mContext, OrderHistoryActivity.class));
 
         } else if (id == R.id.nav_logout) {
 

@@ -158,10 +158,11 @@ public class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.Vi
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private ImageView ivProductImg;
-        private LinearLayout ll_product1, ll_product_action;
-        private TextView btnAdd,tvProductPrice,tvProductQuality,tvProductName,tvMinOrder, tvProductType, tv_product_qty;
+        private LinearLayout ll_product1;
+        private RelativeLayout llItem, ll_product_action;
+        private TextView tvProductPrice,tvProductQuality,tvProductName,tvMinOrder, tvProductType, tv_product_qty;
         private ImageView iv_product_plus, iv_product_minus;
-        CardView llItem;
+        CardView btnAdd;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             ivProductImg = itemView.findViewById(R.id.ivProductImg);

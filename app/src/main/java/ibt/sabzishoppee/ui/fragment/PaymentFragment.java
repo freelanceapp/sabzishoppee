@@ -92,7 +92,7 @@ public class PaymentFragment extends android.support.v4.app.Fragment implements 
         next_ll.setOnClickListener(this);
         cob_rb.setOnClickListener(this);
         couponCodeBtn.setOnClickListener(this);
-        total_tv.setText("Rs "+ Utility.getCartTotal(databaseCart));
+        total_tv.setText(Utility.getCartTotal(databaseCart));
     }
 
     @Override

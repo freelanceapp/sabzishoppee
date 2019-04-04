@@ -39,6 +39,7 @@ import ibt.sabzishoppee.model.order_responce.Order;
 import ibt.sabzishoppee.model.order_responce.OrderModel;
 import ibt.sabzishoppee.retrofit_provider.RetrofitService;
 import ibt.sabzishoppee.retrofit_provider.WebResponse;
+import ibt.sabzishoppee.ui.activity.HomeActivity;
 import ibt.sabzishoppee.utils.Alerts;
 import ibt.sabzishoppee.utils.AppPreference;
 import ibt.sabzishoppee.utils.BaseFragment;
@@ -207,6 +208,16 @@ public class ConfirmationFragment extends BaseFragment implements View.OnClickLi
                     if (!orderModel.getError())
                     {
                         Alerts.show(mContext, orderModel.getMessage());
+
+                        if (databaseCart.getContactsCount()) {
+                            databaseCart.deleteallCart();
+                            Intent intent = new Intent(mContext, HomeActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            getActivity().startActivity(intent);
+                            getActivity().finish();
+
+
+                        }
 
 
                     }else {
