@@ -201,6 +201,9 @@ public class ProductDetailsActivity extends BaseActivity implements View.OnClick
                                     btnAdd.setVisibility(View.GONE);
                                     ll_product_action.setVisibility(View.VISIBLE);
                                     tv_product_qty.setText(productDetail.getQuantity()+"");
+                                    if (productDetail.getQuantity()==Integer.parseInt(productDetail.getMin_quantity())){
+                                        iv_product_minus.setImageResource(R.drawable.ic_delete);
+                                    }
                                 }
                             }
                         }
@@ -234,11 +237,9 @@ public class ProductDetailsActivity extends BaseActivity implements View.OnClick
                 addToCart();
                 break;
             case R.id.iv_product_plus :
-                Toast.makeText(mContext, "Plus", Toast.LENGTH_SHORT).show();
                 plusItem();
                 break;
             case R.id.iv_product_minus :
-                Toast.makeText(mContext, "Minus", Toast.LENGTH_SHORT).show();
                 minusItem();
                 break;
         }
@@ -376,6 +377,7 @@ public class ProductDetailsActivity extends BaseActivity implements View.OnClick
                     iv_product_minus.setImageResource(R.drawable.icf_round_minus);
                 } else {
                     iv_product_minus.setImageResource(R.drawable.ic_delete);
+                    Toast.makeText(mContext, "Item removed from cart", Toast.LENGTH_SHORT).show();
                 }
             } else {
                 cart_count = cart_count + 1;
