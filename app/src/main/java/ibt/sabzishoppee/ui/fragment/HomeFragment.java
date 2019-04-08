@@ -66,7 +66,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     private static ViewPager mPager;
     private static int currentPage = 0;
     private static int NUM_PAGES = 0;
-   // private static final Integer[] IMAGES = {R.drawable.banner1, R.drawable.img2, R.drawable.img1, R.drawable.img2};
+    // private static final Integer[] IMAGES = {R.drawable.banner1, R.drawable.img2, R.drawable.img1, R.drawable.img2};
     private ArrayList<String> ImagesArray = new ArrayList<String>();
     private String DATABASE_CART = "cart.db";
     private String searchProductDetail;
@@ -94,8 +94,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         mContext = getActivity();
 
-        showToast("On Create View");
-
         cd = new ConnectionDirector(mContext);
         retrofitApiClient = RetrofitService.getRetrofit();
         databaseCart = new DatabaseHandler(mContext, DATABASE_CART);
@@ -113,7 +111,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
             cartProductList = databaseCart.getAllUrlList();
         }
         init(rView);
-        showToast("On Resume");
     }
 
     private void init(View view)
@@ -440,6 +437,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                     cart_number.setText("" + cart_count);
                     AppPreference.setIntegerPreference(mContext, Constant.CART_ITEM_COUNT, cart_count);
                     Toast.makeText(mContext, "Added to Cart", Toast.LENGTH_SHORT).show();
+                    productArrayListAll.get(pos).setInCart(true);
+                    adapter.notifyDataSetChanged();
                     v.findViewById(R.id.btnAdd).setVisibility(View.GONE);
                     v.findViewById(R.id.ll_product_action).setVisibility(View.VISIBLE);
                     databaseCart.addItemCart(productDetail);
@@ -449,6 +448,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                 cart_number.setText("" + cart_count);
                 AppPreference.setIntegerPreference(mContext, Constant.CART_ITEM_COUNT, cart_count);
                 Toast.makeText(mContext, "Added to Cart", Toast.LENGTH_SHORT).show();
+                productArrayListAll.get(pos).setInCart(true);
+                adapter.notifyDataSetChanged();
                 v.findViewById(R.id.btnAdd).setVisibility(View.GONE);
                 v.findViewById(R.id.ll_product_action).setVisibility(View.VISIBLE);
                 databaseCart.addItemCart(productDetail);
@@ -475,52 +476,52 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         if (databaseCart.getContactsCount()) {
             cartProductList = databaseCart.getAllUrlList();
         }
-            if (cartProductList.size() > 0) {
-                        if (databaseCart.verification(productDetail.getId())) {
-                            int q = 0;
-                            for(int p = 0; p<cartProductList.size(); p++){
-                                ProductDetail pd = cartProductList.get(p);
-                                if (pd.getId().equals(productDetail.getId())){
-                                    q=p;
-                                }
-                            }
-                            //Toast.makeText(mContext, "position : "+exctPos, Toast.LENGTH_SHORT).show();
-                            ProductDetail productDetail = cartProductList.get(q);//why cart product list
-                            View v = rvproductList.getChildAt(pos);
-                            TextView tvQty = (TextView) v.findViewById(R.id.tv_product_qty);
-                            ImageView minus_iv = (ImageView) v.findViewById(R.id.iv_product_minus);
+        if (cartProductList.size() > 0) {
+            if (databaseCart.verification(productDetail.getId())) {
+                int q = 0;
+                for(int p = 0; p<cartProductList.size(); p++){
+                    ProductDetail pd = cartProductList.get(p);
+                    if (pd.getId().equals(productDetail.getId())){
+                        q=p;
+                    }
+                }
+                //Toast.makeText(mContext, "position : "+exctPos, Toast.LENGTH_SHORT).show();
+                ProductDetail productDetail = cartProductList.get(q);//why cart product list
+                View v = rvproductList.getChildAt(pos);
+                TextView tvQty = (TextView) v.findViewById(R.id.tv_product_qty);
+                ImageView minus_iv = (ImageView) v.findViewById(R.id.iv_product_minus);
 
-                            int qty = Integer.parseInt(tvQty.getText().toString());
-                            if (qty < Integer.parseInt(productArrayListAll.get(pos).getQuantity()))
-                            {
-                                qty++;
-                                productDetail.setQuantity(qty);
-                                productArrayListAll.get(pos).setProductQuantity(""+qty);
-                                databaseCart.updateUrl(productDetail);
-                                adapter.notifyDataSetChanged();
-                            }else {
+                int qty = Integer.parseInt(tvQty.getText().toString());
+                if (qty < Integer.parseInt(productArrayListAll.get(pos).getQuantity()))
+                {
+                    qty++;
+                    productDetail.setQuantity(qty);
+                    productArrayListAll.get(pos).setProductQuantity(""+qty);
+                    databaseCart.updateUrl(productDetail);
+                    adapter.notifyDataSetChanged();
+                }else {
 
-                            }
-                            //tvQty.setText(qty + "");
-                             setTotal();
-                            if (qty > 1) {
-                                minus_iv.setImageResource(R.drawable.icf_round_minus);
-                            } else {
-                               // minus_iv.setImageResource(R.drawable.ic_delete);
-                            }
-                        } else {
-                            cart_count = cart_count + 1;
-                            cart_number.setText("" + cart_count);
-                            AppPreference.setIntegerPreference(mContext, Constant.CART_ITEM_COUNT, cart_count);
-                            databaseCart.addItemCart(productDetail);
-                        }
+                }
+                //tvQty.setText(qty + "");
+                setTotal();
+                if (qty > 1) {
+                    minus_iv.setImageResource(R.drawable.icf_round_minus);
+                } else {
+                    // minus_iv.setImageResource(R.drawable.ic_delete);
+                }
             } else {
                 cart_count = cart_count + 1;
                 cart_number.setText("" + cart_count);
                 AppPreference.setIntegerPreference(mContext, Constant.CART_ITEM_COUNT, cart_count);
                 databaseCart.addItemCart(productDetail);
             }
-            adapter.notifyDataSetChanged();
+        } else {
+            cart_count = cart_count + 1;
+            cart_number.setText("" + cart_count);
+            AppPreference.setIntegerPreference(mContext, Constant.CART_ITEM_COUNT, cart_count);
+            databaseCart.addItemCart(productDetail);
+        }
+        adapter.notifyDataSetChanged();
         //AppPreference.setIntegerPreference(ctx, Constant.CART_ITEM_COUNT, cartProductList.size());
     }
 
@@ -544,48 +545,41 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         if (databaseCart.getContactsCount()) {
             cartProductList = databaseCart.getAllUrlList();
         }
-            if (cartProductList.size() > 0) {
-                if (databaseCart.verification(productDetail.getId())) {
-                    int minQty = 0;
-                    int q = 0;
-                    for(int p = 0; p<cartProductList.size(); p++){
-                        ProductDetail pd = cartProductList.get(p);
-                        if (pd.getId().equals(productDetail.getId())){
-                            q=p;
-                        }
+        if (cartProductList.size() > 0) {
+            if (databaseCart.verification(productDetail.getId())) {
+                int minQty = 0;
+                int q = 0;
+                for(int p = 0; p<cartProductList.size(); p++){
+                    ProductDetail pd = cartProductList.get(p);
+                    if (pd.getId().equals(productDetail.getId())){
+                        q=p;
                     }
-                    ProductDetail productDetail = cartProductList.get(q);
-                    View v = rvproductList.getChildAt(pos);
-                    TextView tvQty = (TextView) v.findViewById(R.id.tv_product_qty);
-                    ImageView minus_iv = (ImageView) v.findViewById(R.id.iv_product_minus);
-                    int qty = Integer.parseInt(tvQty.getText().toString());
-                    try {
-                        minQty = Integer.parseInt(productDetail.getMin_quantity());
-                    } catch (NumberFormatException e) {
-                        e.printStackTrace();
-                    }
-                    if (qty == minQty) {
+                }
+                ProductDetail productDetail = cartProductList.get(q);
+                View v = rvproductList.getChildAt(pos);
+                TextView tvQty = (TextView) v.findViewById(R.id.tv_product_qty);
+                ImageView minus_iv = (ImageView) v.findViewById(R.id.iv_product_minus);
+                int qty = Integer.parseInt(tvQty.getText().toString());
+                try {
+                    minQty = Integer.parseInt(productDetail.getMin_quantity());
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
+                if (qty == minQty) {
                        /* databaseCart.deleteContact(productDetail);
                         cartProductList.remove(pos);
                         adapter.notifyDataSetChanged();*/
-                    } else {
-                        qty--;
-                        productDetail.setQuantity(qty);
-                        productArrayListAll.get(pos).setProductQuantity(""+qty);
-                        databaseCart.updateUrl(productDetail);
-                        //tvQty.setText(qty + "");
-                    }
-                    if (qty > 1) {
-                        minus_iv.setImageResource(R.drawable.icf_round_minus);
-                    } else {
-                       // minus_iv.setImageResource(R.drawable.ic_delete);
-                    }
                 } else {
-                    cart_count = cart_count + 1;
-                    cart_number.setText("" + cart_count);
-                    AppPreference.setIntegerPreference(mContext, Constant.CART_ITEM_COUNT, cart_count);
-                    Toast.makeText(mContext, "Added to Cart", Toast.LENGTH_SHORT).show();
-                    databaseCart.addItemCart(productDetail);
+                    qty--;
+                    productDetail.setQuantity(qty);
+                    productArrayListAll.get(pos).setProductQuantity(""+qty);
+                    databaseCart.updateUrl(productDetail);
+                    //tvQty.setText(qty + "");
+                }
+                if (qty > 1) {
+                    minus_iv.setImageResource(R.drawable.icf_round_minus);
+                } else {
+                    // minus_iv.setImageResource(R.drawable.ic_delete);
                 }
             } else {
                 cart_count = cart_count + 1;
@@ -594,6 +588,13 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                 Toast.makeText(mContext, "Added to Cart", Toast.LENGTH_SHORT).show();
                 databaseCart.addItemCart(productDetail);
             }
+        } else {
+            cart_count = cart_count + 1;
+            cart_number.setText("" + cart_count);
+            AppPreference.setIntegerPreference(mContext, Constant.CART_ITEM_COUNT, cart_count);
+            Toast.makeText(mContext, "Added to Cart", Toast.LENGTH_SHORT).show();
+            databaseCart.addItemCart(productDetail);
+        }
 
 
         adapter.notifyDataSetChanged();
@@ -601,73 +602,72 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         //AppPreference.setIntegerPreference(mContext, Constant.CART_ITEM_COUNT, list.size());
     }
 
-
     private void productDetailApi() {
         if (cd.isNetWorkAvailable()) {
-                RetrofitService.getProductData(new Dialog(mContext), retrofitApiClient.productData(), new WebResponse() {
-                    @Override
-                    public void onResponseSuccess(Response<?> result) {
-                        ProductListModel productListModel = (ProductListModel) result.body();
-                        productArrayList.clear();
+            RetrofitService.getProductData(new Dialog(mContext), retrofitApiClient.productData(), new WebResponse() {
+                @Override
+                public void onResponseSuccess(Response<?> result) {
+                    ProductListModel productListModel = (ProductListModel) result.body();
+                    productArrayList.clear();
 
-                        if (!productListModel.getError())
+                    if (!productListModel.getError())
+                    {
+                        //Alerts.show(mContext, productListModel.getMessage());
+
+                        productArrayList = (ArrayList<Product>) productListModel.getProduct();
+
+                        if (databaseCart.getContactsCount()) {
+                            cartProductList = databaseCart.getAllUrlList();
+                        }
+
+
+
+
+                        //productArrayListAtoZ.addAll(productListModel.getProduct());
+                        productArrayListFruits.clear();
+                        productArrayListVagitable.clear();
+                        productArrayListAll.clear();
+                        if (productArrayList.size() > 0)
                         {
-                            //Alerts.show(mContext, productListModel.getMessage());
-
-                            productArrayList = (ArrayList<Product>) productListModel.getProduct();
-
-                            if (databaseCart.getContactsCount()) {
-                                cartProductList = databaseCart.getAllUrlList();
-                            }
-
-
-
-
-                            //productArrayListAtoZ.addAll(productListModel.getProduct());
-                            productArrayListFruits.clear();
-                            productArrayListVagitable.clear();
-                            productArrayListAll.clear();
-                            if (productArrayList.size() > 0)
+                            for (int i = 0 ; i < productArrayList.size(); i++)
                             {
-                                for (int i = 0 ; i < productArrayList.size(); i++)
+                                if (productArrayList.get(i).getType().equals("0"))
                                 {
-                                    if (productArrayList.get(i).getType().equals("0"))
-                                    {
-                                        productArrayListFruits.add(productArrayList.get(i));
-                                    }else {
-                                        productArrayListVagitable.add(productArrayList.get(i));
-                                    }
+                                    productArrayListFruits.add(productArrayList.get(i));
+                                }else {
+                                    productArrayListVagitable.add(productArrayList.get(i));
                                 }
-                                productArrayListAll.addAll(productArrayList);
-                                if (cartProductList.size()>0){
-                                    int x,y;
-                                    for(x=0; x<productArrayListAll.size(); x++){
-                                        Product prdct = productArrayListAll.get(x);
-                                        for(y=0; y<cartProductList.size(); y++){
-                                            ProductDetail crtPrdct = cartProductList.get(y);
-                                            if (prdct.getId().equals(crtPrdct.getId())){
-                                                productArrayListAll.get(x).setInCart(true);
-                                                productArrayListAll.get(x).setProductQuantity(String.valueOf(crtPrdct.getQuantity()));
-                                            }
+                            }
+                            productArrayListAll.addAll(productArrayList);
+                            if (cartProductList.size()>0){
+                                int x,y;
+                                for(x=0; x<productArrayListAll.size(); x++){
+                                    Product prdct = productArrayListAll.get(x);
+                                    for(y=0; y<cartProductList.size(); y++){
+                                        ProductDetail crtPrdct = cartProductList.get(y);
+                                        if (prdct.getId().equals(crtPrdct.getId())){
+                                            productArrayListAll.get(x).setInCart(true);
+                                            productArrayListAll.get(x).setProductQuantity(String.valueOf(crtPrdct.getQuantity()));
                                         }
                                     }
                                 }
-                               // productTreeSet.addAll(productListModel.getProduct());
                             }
-
-                        }else {
-                            Alerts.show(mContext, productListModel.getMessage());
+                            // productTreeSet.addAll(productListModel.getProduct());
                         }
-                        adapter.notifyDataSetChanged();
 
-
+                    }else {
+                        Alerts.show(mContext, productListModel.getMessage());
                     }
+                    adapter.notifyDataSetChanged();
 
-                    @Override
-                    public void onResponseFailed(String error) {
-                        Alerts.show(mContext, error);
-                    }
-                });
+
+                }
+
+                @Override
+                public void onResponseFailed(String error) {
+                    Alerts.show(mContext, error);
+                }
+            });
         }else {
             cd.show(mContext);
         }
@@ -691,7 +691,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         }
         // place_bt.setText("Place this Order :   Rs " + total);
 
-       // tvTotalItem.setText("Total Items :"+total_list.size());
+        // tvTotalItem.setText("Total Items :"+total_list.size());
         cart_price.setText(""+total);
 
     }

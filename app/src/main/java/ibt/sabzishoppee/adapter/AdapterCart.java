@@ -29,6 +29,7 @@ import ibt.sabzishoppee.model.ProductDetail;
 public class AdapterCart extends RecyclerView.Adapter<AdapterCart.MyViewHolder> {
 
     ArrayList<ProductDetail> list;
+    ArrayList<ProductDetail> dList;
     Context context;
     HelperManager helperManager;
     int proposition = 0;
@@ -37,13 +38,14 @@ public class AdapterCart extends RecyclerView.Adapter<AdapterCart.MyViewHolder> 
     private View.OnClickListener onClickListener;
     public DatabaseHandler databaseCart;
 
-    public AdapterCart(ArrayList<ProductDetail> list, Context context, View.OnClickListener onClickListener,
+    public AdapterCart(ArrayList<ProductDetail> listt, Context context, View.OnClickListener onClickListener,
                        DatabaseHandler databaseCart) {
-        this.list = list;
+        this.list = listt;
         this.onClickListener = onClickListener;
         this.context = context;
         this.databaseCart = databaseCart;
         helperManager = new HelperManager(context);
+        this.dList = listt;
     }
 
     @Override
@@ -65,7 +67,7 @@ public class AdapterCart extends RecyclerView.Adapter<AdapterCart.MyViewHolder> 
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
         int minQty = 1;
-        ProductDetail productDetail = list.get(position);
+        ProductDetail productDetail = dList.get(position);
         holder.name_tv.setText(productDetail.getTitle());
         float price = Float.parseFloat(productDetail.getPrice());
         float percent = Float.parseFloat(productDetail.getDiscount());
@@ -74,7 +76,7 @@ public class AdapterCart extends RecyclerView.Adapter<AdapterCart.MyViewHolder> 
         holder.price_tv.setText("" + round_pr+"Rs");
         holder.type_tv.setText(" " + productDetail.getQuantity_type());
         holder.quantity_tv.setText(productDetail.getOrder_quantity()+"Kg");
-        holder.qty_tv.setText(list.get(position).getQuantity() + "");
+        holder.qty_tv.setText(dList.get(position).getQuantity() + "");
 
         if (productDetail.getImage() != null) {
 
@@ -121,7 +123,7 @@ public class AdapterCart extends RecyclerView.Adapter<AdapterCart.MyViewHolder> 
 
     @Override
     public int getItemCount() {
-        return list.size();
+        return dList.size();
     }
 
 

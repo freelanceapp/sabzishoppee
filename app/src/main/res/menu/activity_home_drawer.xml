@@ -17,8 +17,11 @@
             android:id="@+id/nav_help"
             android:title="Help" />
         <item
-            android:id="@+id/nav_setting"
-            android:title="Settings" />
+            android:id="@+id/nav_history"
+            android:title="Order History" />
+        <item
+            android:id="@+id/nav_password"
+            android:title="Forgot Password" />
     </group>
 
     <item android:title="">

@@ -8,7 +8,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:layout_above="@+id/btnUpdate">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -147,7 +148,8 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center">
+                        android:gravity="center"
+                        android:layout_gravity="center">
                         <TextView
                             android:id="@+id/et_dob"
                             android:layout_width="match_parent"
@@ -162,13 +164,14 @@
                             android:textStyle="normal"
                             android:layout_toLeftOf="@id/btn_calender"
                             android:background="@color/white"/>
-                        <ImageButton
+                        <ImageView
                             android:layout_width="40sp"
                             android:layout_height="40sp"
                             android:layout_alignParentRight="true"
                             android:id="@+id/btn_calender"
                             android:src="@drawable/ic_calendar"
-                            android:layout_marginRight="6dp"/>
+                            android:layout_marginRight="6dp"
+                            android:layout_centerVertical="true"/>
 
                     </RelativeLayout>
 
@@ -182,6 +185,7 @@
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="16dp"
                         android:text="Address"
+                        android:visibility="gone"
                         android:textColor="@color/black"
                         android:textSize="14sp"
                         android:textStyle="bold"/>
@@ -193,7 +197,7 @@
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="16dp"
                         android:layout_marginRight="10dp"
-                        android:inputType="phone"
+                        android:visibility="gone"
                         android:padding="10dp"
                         android:textColor="@color/black"
                         android:textSize="14sp"
@@ -250,14 +254,6 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <Button
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Update"
-                    android:textColor="@color/white"
-                    android:background="@color/red_a"
-                    android:textAllCaps="false"
-                    android:id="@+id/btnUpdate"/>
             </LinearLayout>
 
             <RelativeLayout
@@ -283,4 +279,14 @@
 
         </RelativeLayout>
     </ScrollView>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Update"
+        android:layout_alignParentBottom="true"
+        android:textColor="@color/white"
+        android:background="@color/red_a"
+        android:textAllCaps="false"
+        android:id="@+id/btnUpdate"/>
 </RelativeLayout>

@@ -131,6 +131,8 @@ public class ForgotPasswordFragment extends BaseFragment implements View.OnClick
                             User.setUser(loginModel);
                             Intent intent = new Intent(mContext , HomeActivity.class);
                             mContext.startActivity(intent);
+                        }else {
+                            Alerts.show(mContext, loginModel.getMessage());
                         }
                     }
 

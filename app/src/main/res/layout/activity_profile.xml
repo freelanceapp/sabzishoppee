@@ -8,7 +8,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:layout_above="@+id/btn_edit_profile">
 
 
         <RelativeLayout
@@ -164,6 +165,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:visibility="gone"
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="16dp"
                         android:text="Address"
@@ -178,6 +180,7 @@
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="16dp"
                         android:layout_marginRight="10dp"
+                        android:visibility="gone"
                         android:inputType="phone"
                         android:padding="10dp"
                         android:textColor="@color/black"
@@ -217,14 +220,6 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <Button
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Edit Profile"
-                    android:textColor="@color/white"
-                    android:background="@color/red_a"
-                    android:textAllCaps="false"
-                    android:id="@+id/btn_edit_profile"/>
             </LinearLayout>
 
             <de.hdodenhof.circleimageview.CircleImageView
@@ -238,4 +233,14 @@
 
         </RelativeLayout>
     </ScrollView>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Edit Profile"
+        android:layout_alignParentBottom="true"
+        android:textColor="@color/white"
+        android:background="@color/red_a"
+        android:textAllCaps="false"
+        android:id="@+id/btn_edit_profile"/>
 </RelativeLayout>

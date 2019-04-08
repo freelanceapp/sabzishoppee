@@ -99,7 +99,12 @@ public class ForgotPasswordFragment1 extends BaseFragment implements View.OnClic
                         if (!loginModel.getError())
                         {
                             Alerts.show(mContext, loginModel.getMessage());
-                            startFragment(Constant.LoginFragment,new LoginFragment());
+
+                            ForgotPasswordFragment forgotPasswordFragment = new ForgotPasswordFragment();
+                            Bundle bundle = new Bundle();
+                            bundle.putString("Mobile_Number", strMobile);
+                            forgotPasswordFragment.setArguments(bundle);
+                            startFragment(Constant.ForgotPasswordFragment,forgotPasswordFragment);
                         }else {
                             Alerts.show(mContext, loginModel.getMessage());
                         }

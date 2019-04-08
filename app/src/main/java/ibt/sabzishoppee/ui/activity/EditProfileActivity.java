@@ -70,7 +70,7 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
     private RadioGroup rb_gender;
     private CircleImageView ci_profile;
     private ImageView btn_camera, btn_editprofile_back;
-    private ImageButton btn_calender;
+    private ImageView btn_calender;
     private Button btnUpdate;
     private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
     private String userChoosenTask;

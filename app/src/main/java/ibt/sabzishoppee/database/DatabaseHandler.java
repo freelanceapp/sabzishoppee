@@ -163,8 +163,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void deleteallCart(DatabaseHandler databaseCart) {
-        SQLiteDatabase db = databaseCart.getWritableDatabase();
+    public void deleteallCart() {
+        SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("delete from " + TABLE_URL);
         db.close();
     }

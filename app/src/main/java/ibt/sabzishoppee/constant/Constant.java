@@ -33,6 +33,7 @@ public class Constant {
     public static final String SignUpFragment = "SignUp";
     public static final String ForgotPasswordFragment = "ForgotPassword";
     public static final String ForgotPasswordFragment1 = "ForgotPassword1";
+    public static final String ChangePasswordFragment = "ChangePasswordFragment";
     public static final String HomeFragment = "Home";
     public static final String InfoFragment = "InfoFragment";
 

@@ -21,7 +21,9 @@ import ibt.sabzishoppee.constant.Constant;
 import ibt.sabzishoppee.model.User;
 import ibt.sabzishoppee.retrofit_provider.RetrofitService;
 import ibt.sabzishoppee.ui.fragment.AboutFragment;
+import ibt.sabzishoppee.ui.fragment.ChangePasswordFragment;
 import ibt.sabzishoppee.ui.fragment.ContactUsFragment;
+import ibt.sabzishoppee.ui.fragment.ForgotPasswordFragment1;
 import ibt.sabzishoppee.ui.fragment.HelpFragment;
 import ibt.sabzishoppee.ui.fragment.HomeFragment;
 import ibt.sabzishoppee.utils.AppPreference;
@@ -93,9 +95,9 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         }
 
         if (User.getUser().getUser().getUserProfilePicture() == null) {
-            iv_ShowUserImage.setImageResource(R.drawable.profile_img);
+            iv_ShowUserImage.setImageResource(R.drawable.ic_user);
         } else {
-            Glide.with(mContext).load(User.getUser().getUser().getUserProfilePicture()).into(iv_ShowUserImage);
+            Glide.with(mContext).load(User.getUser().getUser().getUserProfilePicture()).error(R.drawable.ic_user).into(iv_ShowUserImage);
         }
 
         btnSearch.setOnClickListener(new View.OnClickListener() {
@@ -140,7 +142,12 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         } else if (id == R.id.nav_help) {
             HelpFragment fragment = new HelpFragment();
             Utility.setFragment(fragment , mContext , Constant.ContactUsFragment);
-        } else if (id == R.id.nav_setting) {
+        } else if (id == R.id.nav_password) {
+            ChangePasswordFragment fragment = new ChangePasswordFragment();
+            Utility.setFragment(fragment , mContext , Constant.ChangePasswordFragment);
+        }else if (id == R.id.nav_history) {
+
+            startActivity(new Intent(mContext, OrderHistoryActivity.class));
 
         } else if (id == R.id.nav_logout) {
 

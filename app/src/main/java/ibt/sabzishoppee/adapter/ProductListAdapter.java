@@ -12,6 +12,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -28,21 +30,24 @@ import ibt.sabzishoppee.constant.Constant;
 import ibt.sabzishoppee.database.DatabaseHandler;
 import ibt.sabzishoppee.model.ProductDetail;
 import ibt.sabzishoppee.model.productlist_responce.Product;
+import ibt.sabzishoppee.ui.listener.RecyclerViewClickListener;
 import ibt.sabzishoppee.utils.AppPreference;
 
 import static ibt.sabzishoppee.ui.activity.HomeActivity.cart_count;
 import static ibt.sabzishoppee.ui.activity.HomeActivity.cart_number;
 
 
-public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.ViewHolder>  {
+public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.ViewHolder> implements Filterable {
     private View rootview;
     private int position;
     private Context mContext;
     private ArrayList<Product> productArrayList;
+    private ArrayList<Product> productFilteredList;
     private View.OnClickListener onClickListener;
     private String strSubCategoryName;
     private Boolean cheked = false;
     private int pos1;
+    private boolean isSearch = false;
 
     private String DATABASE_CART = "cart.db";
     private String searchProductDetail;
@@ -57,6 +62,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     public ProductListAdapter(Context mContext, ArrayList<Product> productArrayList, View.OnClickListener onClickListener, int pos1) {
         this.mContext = mContext;
         this.productArrayList = productArrayList;
+        this.productFilteredList = productArrayList;
         this.onClickListener = onClickListener;
         this.pos1 = pos1;
     }
@@ -64,6 +70,15 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     public ProductListAdapter(Context mContext, ArrayList<Product> productArrayList, View.OnClickListener onClickListener) {
         this.mContext = mContext;
         this.productArrayList = productArrayList;
+        this.productFilteredList = productArrayList;
+        this.onClickListener = onClickListener;
+    }
+
+    public ProductListAdapter(Context mContext, ArrayList<Product> productArrayList, View.OnClickListener onClickListener, boolean fromSearch) {
+        this.mContext = mContext;
+        this.productArrayList = productArrayList;
+        this.productFilteredList = productArrayList;
+        this.isSearch = fromSearch;
         this.onClickListener = onClickListener;
     }
 
@@ -86,7 +101,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             cartProductList = databaseCart.getAllUrlList();
         }
 
-        Product product = productArrayList.get(i);
+        Product product = productFilteredList.get(i);
 
         viewHolder.tvProductName.setText(product.getTitle());
 
@@ -127,15 +142,27 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             cheked = true;
             ((LinearLayout) rootview.findViewById(R.id.ll_bgchange)).setBackground((mContext.getResources().getDrawable(R.drawable.bg_yellow)));
         }*/
-        viewHolder.btnAdd.setTag(i);
-        viewHolder.btnAdd.setOnClickListener(onClickListener);
-        viewHolder.llItem.setTag(i);
-        viewHolder.llItem.setOnClickListener(onClickListener);
+        if (isSearch) {
+            viewHolder.btnAdd.setTag(product.getId());
+            viewHolder.btnAdd.setOnClickListener(onClickListener);
+            viewHolder.llItem.setTag(product.getId());
+            viewHolder.llItem.setOnClickListener(onClickListener);
 
-        viewHolder.iv_product_plus.setTag(i);
-        viewHolder.iv_product_plus.setOnClickListener(onClickListener);
-        viewHolder.iv_product_minus.setTag(i);
-        viewHolder.iv_product_minus.setOnClickListener(onClickListener);
+            viewHolder.iv_product_plus.setTag(product.getId());
+            viewHolder.iv_product_plus.setOnClickListener(onClickListener);
+            viewHolder.iv_product_minus.setTag(product.getId());
+            viewHolder.iv_product_minus.setOnClickListener(onClickListener);
+        } else {
+            viewHolder.btnAdd.setTag(i);
+            viewHolder.btnAdd.setOnClickListener(onClickListener);
+            viewHolder.llItem.setTag(i);
+            viewHolder.llItem.setOnClickListener(onClickListener);
+
+            viewHolder.iv_product_plus.setTag(i);
+            viewHolder.iv_product_plus.setOnClickListener(onClickListener);
+            viewHolder.iv_product_minus.setTag(i);
+            viewHolder.iv_product_minus.setOnClickListener(onClickListener);
+        }
 
 
      /*  viewHolder.iv_product_plus.setOnClickListener(new View.OnClickListener() {
@@ -148,6 +175,9 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
      if (product.isInCart()){
          viewHolder.btnAdd.setVisibility(View.GONE);
          viewHolder.ll_product_action.setVisibility(View.VISIBLE);
+     }else{
+         viewHolder.btnAdd.setVisibility(View.VISIBLE);
+         viewHolder.ll_product_action.setVisibility(View.GONE);
      }
 
         if (product.getProductQuantity().equals("0")) {
@@ -169,8 +199,86 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
     @Override
     public int getItemCount() {
-        return productArrayList.size();
+        return productFilteredList.size();
     }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                String charString = constraint.toString();
+                if (productArrayList!=null && productArrayList.size()>0) {
+                    if (charString.isEmpty()) {
+                        productFilteredList = productArrayList;
+                    } else {
+                        ArrayList<Product> filteredList = null;
+                        filteredList = new ArrayList<>();
+                        for (Product row : productArrayList) {
+
+                            // name match condition. this might differ depending on your requirement
+                            // here we are looking for name or phone number match
+                            if (row.getTitle().toLowerCase().contains(charString.toLowerCase()) || row.getType().contains(constraint)) {
+                                filteredList.add(row);
+                            }
+                        }
+
+
+                        productFilteredList = filteredList;
+                    }
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = productFilteredList;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                productFilteredList = (ArrayList<Product>) results.values;
+                notifyDataSetChanged();
+            }
+        };
+    }
+
+    /*@Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                String charString = constraint.toString();
+                if (studentList!=null && studentList.size()>0) {
+                    if (charString.isEmpty()) {
+                        studentFilteredList = studentList;
+                    } else {
+                        ArrayList<AllStudent> filteredList = null;
+                            filteredList = new ArrayList<>();
+                            for (AllStudent row : studentList) {
+
+                                // name match condition. this might differ depending on your requirement
+                                // here we are looking for name or phone number match
+                                if (row.getName().toLowerCase().contains(charString.toLowerCase()) || row.getScholarNo().contains(constraint)) {
+                                    filteredList.add(row);
+                                }
+                            }
+
+
+                        studentFilteredList = filteredList;
+                    }
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = studentFilteredList;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                studentFilteredList = (ArrayList<AllStudent>) results.values;
+                notifyDataSetChanged();
+            }
+        };
+    }*/
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private ImageView ivProductImg;
