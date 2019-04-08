@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="ibt.sabzishoppee">
+    package="ibt.sabziwala">
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
@@ -37,7 +37,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ui.activity.AddressLocationActivity"></activity>
+        <activity android:name="ibt.sabziwala.ui.activity.AddressLocationActivity"></activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -51,38 +51,38 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".ui.activity.MapsActivity"
+            android:name="ibt.sabziwala.ui.activity.MapsActivity"
             android:label="@string/title_activity_maps" />
         <activity
-            android:name=".ui.activity.OrderProductHistoryActivity"
+            android:name="ibt.sabziwala.ui.activity.OrderProductHistoryActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".ui.activity.ManualLocationActivity"
+            android:name="ibt.sabziwala.ui.activity.ManualLocationActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".ui.activity.SearchActivity"
+            android:name="ibt.sabziwala.ui.activity.SearchActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".ui.activity.OrderHistoryActivity"
+            android:name="ibt.sabziwala.ui.activity.OrderHistoryActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".ui.activity.EditProfileActivity"
+            android:name="ibt.sabziwala.ui.activity.EditProfileActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".ui.activity.ProductDetailsActivity"
+            android:name="ibt.sabziwala.ui.activity.ProductDetailsActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".ui.activity.ProfileActivity"
+            android:name="ibt.sabziwala.ui.activity.ProfileActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".ui.activity.HomeActivity"
+            android:name="ibt.sabziwala.ui.activity.HomeActivity"
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activity.LoginActivity"
+            android:name="ibt.sabziwala.ui.activity.LoginActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".ui.activity.SplashActivity"
+            android:name="ibt.sabziwala.ui.activity.SplashActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -91,22 +91,28 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.activity.MainActivity"
+            android:name="ibt.sabziwala.ui.activity.MainActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".ui.activity.AddtoCartActivity"
+            android:name="ibt.sabziwala.ui.activity.AddtoCartActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".ui.activity.CheckOutActivity"
+            android:name="ibt.sabziwala.ui.activity.CheckOutActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <service android:name=".firebaseUtils.MyFirebaseInstanceIDService">
+        <service android:name="ibt.sabziwala.firebaseUtils.MyFirebaseInstanceIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+
+        <service android:name="ibt.sabziwala.notification.MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
 

@@ -1,39 +1,41 @@
 {
   "project_info": {
-    "project_number": "864880235929",
-    "firebase_url": "https://sabzishoppee-95f94.firebaseio.com",
-    "project_id": "sabzishoppee-95f94",
-    "storage_bucket": "sabzishoppee-95f94.appspot.com"
+    "project_number": "509361972677",
+    "firebase_url": "https://sabziwala-uki.firebaseio.com",
+    "project_id": "sabziwala-uki",
+    "storage_bucket": "sabziwala-uki.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:864880235929:android:d48ea6f7cc174900",
+        "mobilesdk_app_id": "1:509361972677:android:c0a4f9243721997e",
         "android_client_info": {
-          "package_name": "ibt.sabzishoppee"
+          "package_name": "ibt.sabziwala"
         }
       },
       "oauth_client": [
         {
-          "client_id": "864880235929-aji0fcsntufpv02gss5tsn2u1mmq18ms.apps.googleusercontent.com",
-          "client_type": 3
+          "client_id": "509361972677-6mfk91gp8hecpgtsnivvqs9on29bn9n8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ibt.sabziwala",
+            "certificate_hash": "af6e7a438225bb46c5ab7585a31fb59ee4c135dd"
+          }
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCt76Nj6GUvmLcb0QqxrT7iwIYjY3LU_9g"
+          "current_key": "AIzaSyDj95vP8jouxzcx6wWp4SO9S2sVAQ7Lxyw"
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
+          "other_platform_oauth_client": [
+            {
+              "client_id": "509361972677-4je33o1pki64o6pifveklr1mm2i2eqmk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
