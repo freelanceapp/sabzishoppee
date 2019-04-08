@@ -18,6 +18,7 @@ import com.bumptech.glide.Glide;
 
 import ibt.sabzishoppee.R;
 import ibt.sabzishoppee.constant.Constant;
+import ibt.sabzishoppee.database.DatabaseHandler;
 import ibt.sabzishoppee.model.User;
 import ibt.sabzishoppee.retrofit_provider.RetrofitService;
 import ibt.sabzishoppee.ui.fragment.AboutFragment;
@@ -41,7 +42,8 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
     public static TextView tv_ShowUserName;
     public static TextView cart_price;
     private ImageView btnSearch;
-
+    public DatabaseHandler databaseCart;
+    private String DATABASE_CART = "cart.db";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,13 +58,13 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         cart_count = AppPreference.getIntegerPreference(mContext, Constant.CART_ITEM_COUNT);
         cart_number.setText("" + cart_count);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         mContext = this;
         cd = new ConnectionDirector(mContext);
         retrofitApiClient = RetrofitService.getRetrofit();
+        databaseCart = new DatabaseHandler(mContext, DATABASE_CART);
 
         HomeFragment fragment = new HomeFragment();
         Utility.setFragment(fragment , mContext , Constant.Home);
@@ -87,19 +89,16 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         rv_history.setOnClickListener(this);
         rv_profile.setOnClickListener(this);
 
-
         if (User.getUser().getUser().getUserName() == null) {
             tv_ShowUserName.setText("User Name");
         } else {
             tv_ShowUserName.setText(User.getUser().getUser().getUserName());
         }
-
         if (User.getUser().getUser().getUserProfilePicture() == null) {
             iv_ShowUserImage.setImageResource(R.drawable.ic_user);
         } else {
             Glide.with(mContext).load(User.getUser().getUser().getUserProfilePicture()).error(R.drawable.ic_user).into(iv_ShowUserImage);
         }
-
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -120,13 +119,11 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         }
     }
 
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
         if (id == R.id.nav_home) {
             // Handle the camera action
             HomeFragment fragment = new HomeFragment();
@@ -146,14 +143,13 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
             ChangePasswordFragment fragment = new ChangePasswordFragment();
             Utility.setFragment(fragment , mContext , Constant.ChangePasswordFragment);
         }else if (id == R.id.nav_history) {
-
             startActivity(new Intent(mContext, OrderHistoryActivity.class));
-
         } else if (id == R.id.nav_logout) {
-
             AppPreference.setBooleanPreference(mContext, Constant.Is_Login, false);
             AppPreference.setStringPreference(mContext, Constant.User_Id, "0");
-
+            if (databaseCart.getContactsCount()) {
+                databaseCart.deleteallCart();
+            }
             Intent intent = new Intent(HomeActivity.this , LoginActivity.class);
             startActivity(intent);
             finish();
@@ -175,7 +171,9 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                 break;
 
             case R.id.rv_home :
-
+                Intent intent3 = new Intent(HomeActivity.this , AddtoCartActivity.class);
+                startActivity(intent3);
+                finish();
                 break;
 
             case R.id.rl_history :
@@ -184,10 +182,8 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                 break;
 
             case R.id.rl_profile :
-
                 Intent intent1 = new Intent(HomeActivity.this , ProfileActivity.class);
                 startActivity(intent1);
-
                 break;
 
         }

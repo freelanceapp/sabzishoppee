@@ -1,25 +1,17 @@
 package ibt.sabzishoppee.ui.fragment;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 import ibt.sabzishoppee.R;
 import ibt.sabzishoppee.constant.Constant;
-import ibt.sabzishoppee.model.User;
 import ibt.sabzishoppee.model.change_password_responce.ChangePasswordModel;
-import ibt.sabzishoppee.model.login_responce.LoginModel;
 import ibt.sabzishoppee.retrofit_provider.RetrofitService;
 import ibt.sabzishoppee.retrofit_provider.WebResponse;
 import ibt.sabzishoppee.ui.activity.HomeActivity;
@@ -30,12 +22,12 @@ import ibt.sabzishoppee.utils.ConnectionDirector;
 import retrofit2.Response;
 
 
-public class ChangePasswordFragment extends BaseFragment {
+public class NewPasswordFragment extends BaseFragment {
    private View view;
    private EditText et_new_password, et_renter_password;
    private Button btn_change_password;
    private String strUserId, strNewPassword, strRepassword;
-    public ChangePasswordFragment() {
+    public NewPasswordFragment() {
         // Required empty public constructor
     }
 
@@ -49,6 +41,7 @@ public class ChangePasswordFragment extends BaseFragment {
         cd = new ConnectionDirector(mContext);
         retrofitApiClient = RetrofitService.getRetrofit();
 
+        strUserId = getArguments().getString("user_id");
         et_new_password = view.findViewById(R.id.et_change_password);
         et_renter_password = view.findViewById(R.id.et_renter_password);
         btn_change_password = view.findViewById(R.id.btn_change_password);
@@ -64,7 +57,6 @@ public class ChangePasswordFragment extends BaseFragment {
 
     private void changePasswordApi() {
         if (cd.isNetWorkAvailable()) {
-            strUserId = AppPreference.getStringPreference(mContext, Constant.User_Id);
             strNewPassword = et_new_password.getText().toString();
             strRepassword = et_renter_password.getText().toString();
             if (strNewPassword.length() < 6) {
@@ -84,6 +76,8 @@ public class ChangePasswordFragment extends BaseFragment {
                         {
                             Alerts.show(mContext, loginModel.getMessage());
                             clear();
+                            Intent intent = new Intent(mContext , HomeActivity.class);
+                            mContext.startActivity(intent);
                         }else {
                             Alerts.show(mContext, loginModel.getMessage());
                         }

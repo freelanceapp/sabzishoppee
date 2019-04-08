@@ -343,9 +343,9 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
                         User.setUser(loginModal);
 
                         if (User.getUser().getUser().getUserProfilePicture() == null) {
-                            iv_ShowUserImage.setImageResource(R.drawable.profile_img);
+                            iv_ShowUserImage.setImageResource(R.drawable.ic_user);
                         } else {
-                            Glide.with(mContext).load(loginModal.getUser().getUserProfilePicture()).into(iv_ShowUserImage);
+                            Glide.with(mContext).load(loginModal.getUser().getUserProfilePicture()).error(R.drawable.ic_user).into(iv_ShowUserImage);
                         }
 
                         Intent intent = new Intent(EditProfileActivity.this, ProfileActivity.class);

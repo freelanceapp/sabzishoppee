@@ -96,7 +96,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
                                 Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                                 ci_profile.setImageBitmap(decodedByte);
                             }else {
-                                ci_profile.setImageResource(R.drawable.profile_img);
+                                ci_profile.setImageResource(R.drawable.ic_user);
                             }
                             //Glide.with(mContext).load(decodedByte).error(R.drawable.profile_img).fitCenter().into(ci_profile);
                         }else {

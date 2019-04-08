@@ -64,7 +64,7 @@ public class ShoppingFragment extends BaseFragment implements View.OnClickListen
     LinearLayout continue_pay_ll;
     private FloatingActionButton fbCheck;
 
-    EditText name_et, mobile_et, address_et, country_et, state_et, city_et, zipcode_et, hourse_no_et, address_type_et;
+    EditText name_et, mobile_et, address_et, country_et, state_et, city_et, zipcode_et, hourse_no_et, address_type_et, et_newaddress_landmark;
     EditText name_et1, mobile_et1, address_et1, country_et1, state_et1, city_et1, zipcode_et1;
     Spinner sp_newaddress_type;
     String address = "";
@@ -78,7 +78,7 @@ public class ShoppingFragment extends BaseFragment implements View.OnClickListen
     double latitude; // latitude
     double longitude; // longitude
     private Dialog dialog;
-    private String strName, strAddress, strHouseNo, strType, strCity, strState, strCountry, strZipCode, strAddressType, strLat,strLong;
+    private String strName, strAddress, strHouseNo, strLandMark, strType, strCity, strState, strCountry, strZipCode, strAddressType, strLat,strLong;
     String[] AddressType={"Home","Office"};
     @SuppressLint("ValidFragment")
     public ShoppingFragment(Context ctx) {
@@ -117,6 +117,7 @@ public class ShoppingFragment extends BaseFragment implements View.OnClickListen
         name_et = view.findViewById(R.id.et_newaddress_name);
         mobile_et = view.findViewById(R.id.et_newaddress_number);
         hourse_no_et = view.findViewById(R.id.et_newaddress_hounse_no);
+        et_newaddress_landmark = view.findViewById(R.id.et_newaddress_landmark);
         sp_newaddress_type = view.findViewById(R.id.sp_newaddress_type);
         address_et1 = view.findViewById(R.id.et_newaddress_adress1);
         country_et1 = view.findViewById(R.id.et_newaddress_country1);
@@ -258,6 +259,7 @@ public class ShoppingFragment extends BaseFragment implements View.OnClickListen
          strCity = city_et.getText().toString();
          strZipCode = zipcode_et.getText().toString();
          strHouseNo = hourse_no_et.getText().toString();
+         strLandMark = et_newaddress_landmark.getText().toString();
          //strType = address_type_et.getText().toString();
 
         String name1 = name_et1.getText().toString();
@@ -269,7 +271,7 @@ public class ShoppingFragment extends BaseFragment implements View.OnClickListen
         String zipcode1 = zipcode_et1.getText().toString();
 
         if (strName.equals("") || strAddress.equals("") || strCountry.equals("") || strState.equals("") ||
-                strCity.equals("") || strZipCode.equals("") || strHouseNo.equals("")) {
+                strCity.equals("") || strZipCode.equals("") || strHouseNo.equals("") || strLandMark.equals("")) {
 
             Utility.toastView(ctx, "Enter all details");
         } /*else if (mobile.length()>10 || mobile.length()<10){
@@ -284,6 +286,9 @@ public class ShoppingFragment extends BaseFragment implements View.OnClickListen
             AppPreference.setStringPreference(ctx, Constant.State, strState);
             AppPreference.setStringPreference(ctx, Constant.House_no, strHouseNo);
             AppPreference.setStringPreference(ctx, Constant.Address_Type, strAddressType);
+            AppPreference.setStringPreference(ctx, Constant.ADDRESS_LAT, strLat);
+            AppPreference.setStringPreference(ctx, Constant.ADDRESS_LONG, strLong);
+            AppPreference.setStringPreference(ctx, Constant.ADDRESS_LANDMARK, strLandMark);
 
             sessionManager.setData(SessionManager.KEY_ORDER_NAME, strName);
             sessionManager.setData(SessionManager.KEY_ORDER_MOBILE, strMobile);

@@ -245,8 +245,8 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                     Toast.makeText(mContext, "Added to Cart", Toast.LENGTH_SHORT).show();
                     allUserLists.get(pos).setInCart(true);
                     searchListAdapter.notifyDataSetChanged();
-                    v.findViewById(R.id.btnAdd).setVisibility(View.GONE);
-                    v.findViewById(R.id.ll_product_action).setVisibility(View.VISIBLE);
+                    findViewById(R.id.btnAdd).setVisibility(View.GONE);
+                    findViewById(R.id.ll_product_action).setVisibility(View.VISIBLE);
                     databaseCart.addItemCart(productDetail);
                 }
             } else {
@@ -256,8 +256,8 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                 Toast.makeText(mContext, "Added to Cart", Toast.LENGTH_SHORT).show();
                 allUserLists.get(pos).setInCart(true);
                 searchListAdapter.notifyDataSetChanged();
-                v.findViewById(R.id.btnAdd).setVisibility(View.GONE);
-                v.findViewById(R.id.ll_product_action).setVisibility(View.VISIBLE);
+                findViewById(R.id.btnAdd).setVisibility(View.GONE);
+                findViewById(R.id.ll_product_action).setVisibility(View.VISIBLE);
                 databaseCart.addItemCart(productDetail);
             }
         }

@@ -25,6 +25,7 @@ public class Constant {
     public static final String GET_ADDRESS = "api/user-address.php";
     public static final String GET_ORDER_HISTORY = "api/select-order.php";
     public static final String ORDER = "api/order.php";
+    public static final String CHANGE_PASSWORD = "api/user-set-password.php";
 
 
 
@@ -32,6 +33,7 @@ public class Constant {
     public static final String LoginFragment = "Login";
     public static final String SignUpFragment = "SignUp";
     public static final String ForgotPasswordFragment = "ForgotPassword";
+    public static final String ForgotPasswordOtpFragment = "ForgotPasswordOtpFragment";
     public static final String ForgotPasswordFragment1 = "ForgotPassword1";
     public static final String ChangePasswordFragment = "ChangePasswordFragment";
     public static final String HomeFragment = "Home";
@@ -66,6 +68,9 @@ public class Constant {
     public static final String Address_Type = "Address_Type";
     public static final String MobileNumber = "mobile_number";
     public static final String CART_ITEM_COUNT = "cart_item_count";
+    public static final String ADDRESS_LAT = "ADDRESS_LAT";
+    public static final String ADDRESS_LONG = "ADDRESS_LONG";
+    public static final String ADDRESS_LANDMARK = "ADDRESS_LANDMARK";
     public static final String Password = "Password";
     public static final String SubcategoryName = "SubcategoryName";
     public static final String ProductName = "ProductName";

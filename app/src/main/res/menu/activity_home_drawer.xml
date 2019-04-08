@@ -21,7 +21,7 @@
             android:title="Order History" />
         <item
             android:id="@+id/nav_password"
-            android:title="Forgot Password" />
+            android:title="Change Password" />
     </group>
 
     <item android:title="">

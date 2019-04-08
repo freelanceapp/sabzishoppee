@@ -72,24 +72,6 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
         btn_signUp.setOnClickListener(this);
         ((LinearLayout) rootview.findViewById(R.id.tv_Login)).setOnClickListener(this);
 
-        emailAddress.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                if (!strEmailAddress.matches(emailPattern)) {
-                    emailAddress.setError("Please enter email address !!!");
-                }
-            }
-        });
 
         password.addTextChangedListener(new TextWatcher() {
             @Override
@@ -174,9 +156,9 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
                 emailAddress.setError("Please enter email address !!!");
             } else if (!EmailChecker.isValid(strEmailAddress)) {
                 emailAddress.setError("Please enter valid email address !!!");
-            } else if (strPassword.length() > 6) {
+            } else if (strPassword.length() < 6) {
                 password.setError("Please enter password !!!");
-            } else if (strConfirmPassword.length() > 6) {
+            } else if (strConfirmPassword.length() < 6) {
                 password.setError("please reter password!!!");
             } else if (!strPassword.matches(strConfirmPassword)) {
                 password.setError("Password not match !!!");
@@ -189,7 +171,6 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
                         if (!responseBody.getError())
                         {
                             Alerts.show(mContext , responseBody.getMessage());
-
 
                             ForgotPasswordFragment forgotPasswordFragment = new ForgotPasswordFragment();
                             Bundle bundle = new Bundle();
