@@ -421,7 +421,7 @@
         android:layout_height="?actionBarSize"
         android:layout_alignParentBottom="true"
         android:background="@drawable/cart_button_bar"
-        android:text="Add to Cart"
+        android:text="View Cart"
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="18sp"

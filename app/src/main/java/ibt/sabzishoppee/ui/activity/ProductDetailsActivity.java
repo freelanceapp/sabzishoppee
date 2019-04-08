@@ -4,10 +4,12 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +33,7 @@ import retrofit2.Response;
 
 import static ibt.sabzishoppee.ui.activity.HomeActivity.cart_count;
 import static ibt.sabzishoppee.ui.activity.HomeActivity.cart_number;
+import static ibt.sabzishoppee.ui.activity.HomeActivity.cart_price;
 
 public class ProductDetailsActivity extends BaseActivity implements View.OnClickListener {
 
@@ -40,8 +43,11 @@ public class ProductDetailsActivity extends BaseActivity implements View.OnClick
     private LinearLayout llProductDetaildiscount,llProductDetailAvailability, llProductDetailStockQuantity, llProductDetailMinOrder, llProductDetailCostPrice,
             llProductDetailType;
 
-    private ImageView ivProductDetailImg;
+    private ImageView ivProductDetailImg, iv_product_plus, iv_product_minus;
+    private TextView tv_product_qty;
     private Button btnAddtoCart;
+    private CardView btnAdd;
+    private RelativeLayout ll_product_action;
 
     private String ProductID;
     private ProductDetail productDetail;
@@ -60,6 +66,12 @@ public class ProductDetailsActivity extends BaseActivity implements View.OnClick
 
         ProductID = getIntent().getStringExtra("ProductID");
 
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         databaseCart = new DatabaseHandler(mContext, DATABASE_CART);
         databaseWishlist = new DatabaseHandler(mContext, DATABASE_WISHLIST);
         cartProductList.clear();
@@ -82,14 +94,24 @@ public class ProductDetailsActivity extends BaseActivity implements View.OnClick
         tvProductDetailStockQuantity = findViewById(R.id.tvProductDetailStockQuantity);
         tvProductDetailType = findViewById(R.id.tvProductDetailType);
         ivProductDetailImg = findViewById(R.id.ivProductDetailImg);
+
+        iv_product_plus = findViewById(R.id.iv_product_plus);
+        iv_product_minus = findViewById(R.id.iv_product_minus);
+        tv_product_qty = findViewById(R.id.tv_product_qty);
+
         llProductDetailAvailability = findViewById(R.id.llProductDetailAvailability);
         llProductDetailCostPrice = findViewById(R.id.llProductDetailCostPrice);
         llProductDetaildiscount = findViewById(R.id.llProductDetaildiscount);
         llProductDetailMinOrder = findViewById(R.id.llProductDetailMinOrder);
         llProductDetailStockQuantity = findViewById(R.id.llProductDetailStockQuantity);
         llProductDetailType = findViewById(R.id.llProductDetailType);
+        ll_product_action = findViewById(R.id.ll_product_action);
+        btnAdd = findViewById(R.id.btnAdd);
         btnAddtoCart = findViewById(R.id.btnAddtoCart);
         btnAddtoCart.setOnClickListener(this);
+        btnAdd.setOnClickListener(this);
+        iv_product_plus.setOnClickListener(this);
+        iv_product_minus.setOnClickListener(this);
 
         productDetailApi();
     }
@@ -100,6 +122,12 @@ public class ProductDetailsActivity extends BaseActivity implements View.OnClick
                 @Override
                 public void onResponseSuccess(Response<?> result) {
                     ProductDetailModel productDetailModel = (ProductDetailModel) result.body();
+
+                    if (databaseCart.getContactsCount()) {
+                        cartProductList = databaseCart.getAllUrlList();
+                    }
+
+
                     if (!productDetailModel.getError())
                     {
                         Alerts.show(mContext, productDetailModel.getMessage());
@@ -160,7 +188,22 @@ public class ProductDetailsActivity extends BaseActivity implements View.OnClick
                         productDetail.setId(productDetailModel.getProduct().getId());
                         productDetail.setPrice(productDetailModel.getProduct().getSellingPrice());
                         productDetail.setType(productDetailModel.getProduct().getType());
-                        productDetail.setQuantity(1);
+                        productDetail.setQuantity(Integer.parseInt(productDetailModel.getProduct().getMinQuantity()));
+                        productDetail.setQuantity(Integer.parseInt(productDetailModel.getProduct().getMinQuantity()));
+
+                    if (cartProductList.size()>0){
+                        int x,y;
+                            for(y=0; y<cartProductList.size(); y++){
+                                ProductDetail crtPrdct = cartProductList.get(y);
+                                if (productDetail.getId().equals(crtPrdct.getId())){
+                                    productDetail.setInCart(true);
+                                    productDetail.setQuantity(crtPrdct.getQuantity());
+                                    btnAdd.setVisibility(View.GONE);
+                                    ll_product_action.setVisibility(View.VISIBLE);
+                                    tv_product_qty.setText(productDetail.getQuantity()+"");
+                                }
+                            }
+                        }
 
                     }else {
                         Alerts.show(mContext, productDetailModel.getMessage());
@@ -178,55 +221,220 @@ public class ProductDetailsActivity extends BaseActivity implements View.OnClick
     }
 
 
-    private void addtoCart() {
-        /*********************************************************************************************************/
-        if (databaseCart.getContactsCount()) {
-            cartProductList = databaseCart.getAllUrlList();
-        }
-
-        if (cartProductList.size() > 2) {
-            //Alerts.show(this, "Cart full");
-            Toast.makeText(mContext, "Cart full", Toast.LENGTH_SHORT).show();
-        } else {
-            if (cartProductList.size() > 0) {
-                if (databaseCart.verification(productDetail.getId())) {
-                    //Alerts.show(ctx, "Already added to Cart");
-                    Toast.makeText(mContext, "Already added to Cart", Toast.LENGTH_SHORT).show();
-                } else {
-                    // productDetail.setSelected_size(selected_size);
-                    // productDetail.setSelected_color(selected_color);
-                    cart_count = cart_count + 1;
-                    cart_number.setText("" + cart_count);
-                    AppPreference.setIntegerPreference(mContext, Constant.CART_ITEM_COUNT, cart_count);
-                    Toast.makeText(mContext, "Added to Cart", Toast.LENGTH_SHORT).show();
-                    //Alerts.show(mContext, "Added to Cart");
-                    databaseCart.addItemCart(productDetail);
-                    Intent intent = new Intent(ProductDetailsActivity.this , AddtoCartActivity.class);
-                    startActivity(intent);
-                }
-            } else {
-                // productDetail.setSelected_size(selected_size);
-                // productDetail.setSelected_color(selected_color);
-                cart_count = cart_count + 1;
-                cart_number.setText("" + cart_count);
-                AppPreference.setIntegerPreference(mContext, Constant.CART_ITEM_COUNT, cart_count);
-                Toast.makeText(mContext, "Added to Cart", Toast.LENGTH_SHORT).show();
-                //Alerts.show(mContext, "Added to Cart");
-                databaseCart.addItemCart(productDetail);
-                Intent intent = new Intent(ProductDetailsActivity.this , AddtoCartActivity.class);
-                startActivity(intent);
-            }
-        }
-
-    }
 
     @Override
     public void onClick(View view) {
         switch (view.getId())
         {
             case R.id.btnAddtoCart :
-                addtoCart();
+               startActivity(new Intent(mContext, AddtoCartActivity.class));
+                break;
+            case R.id.btnAdd :
+                productDetail.setQuantity(Integer.parseInt(productDetail.getMin_quantity()));
+                addToCart();
+                break;
+            case R.id.iv_product_plus :
+                Toast.makeText(mContext, "Plus", Toast.LENGTH_SHORT).show();
+                plusItem();
+                break;
+            case R.id.iv_product_minus :
+                Toast.makeText(mContext, "Minus", Toast.LENGTH_SHORT).show();
+                minusItem();
                 break;
         }
+    }
+
+    private void addToCart() {
+        if (databaseCart.getContactsCount()) {
+            cartProductList = databaseCart.getAllUrlList();
+        }
+        if (cartProductList.size() > 5) {
+            Toast.makeText(mContext, "Cart full", Toast.LENGTH_SHORT).show();
+        } else {
+            if (cartProductList.size() > 0) {
+                if (databaseCart.verification(productDetail.getId())) {
+                    Toast.makeText(mContext, "Already added to Cart", Toast.LENGTH_SHORT).show();
+                } else {
+                    cart_count = cart_count + 1;
+                    cart_number.setText("" + cart_count);
+                    AppPreference.setIntegerPreference(mContext, Constant.CART_ITEM_COUNT, cart_count);
+                    Toast.makeText(mContext, "Added to Cart", Toast.LENGTH_SHORT).show();
+                    productDetail.setInCart(true);
+                    btnAdd.setVisibility(View.GONE);
+                    ll_product_action.setVisibility(View.VISIBLE);
+                    tv_product_qty.setText(productDetail.getMin_quantity());
+                    databaseCart.addItemCart(productDetail);
+                }
+            } else {
+                cart_count = cart_count + 1;
+                cart_number.setText("" + cart_count);
+                AppPreference.setIntegerPreference(mContext, Constant.CART_ITEM_COUNT, cart_count);
+                Toast.makeText(mContext, "Added to Cart", Toast.LENGTH_SHORT).show();
+                productDetail.setInCart(true);
+                btnAdd.setVisibility(View.GONE);
+                ll_product_action.setVisibility(View.VISIBLE);
+                tv_product_qty.setText(productDetail.getMin_quantity());
+                databaseCart.addItemCart(productDetail);
+            }
+        }
+    }
+
+    private void plusItem() {
+        productDetail.setQuantity(Integer.parseInt(productDetail.getMin_quantity()));
+
+        if (databaseCart.getContactsCount()) {
+            cartProductList = databaseCart.getAllUrlList();
+        }
+        if (cartProductList.size() > 0) {
+            if (databaseCart.verification(productDetail.getId())) {
+                int q = 0;
+                for(int p = 0; p<cartProductList.size(); p++){
+                    ProductDetail pd = cartProductList.get(p);
+                    if (pd.getId().equals(productDetail.getId())){
+                        q=p;
+                    }
+                }
+                //Toast.makeText(mContext, "position : "+exctPos, Toast.LENGTH_SHORT).show();
+                ProductDetail productDetail = cartProductList.get(q);//why cart product list
+                /*View v = rvproductList.getChildAt(pos);
+                TextView tvQty = (TextView) v.findViewById(R.id.tv_product_qty);
+                ImageView minus_iv = (ImageView) v.findViewById(R.id.iv_product_minus);*/
+
+                int qty = Integer.parseInt(tv_product_qty.getText().toString());
+                if (qty < Integer.parseInt(String.valueOf(productDetail.getOrder_quantity())))
+                {
+                    qty++;
+                    productDetail.setQuantity(qty);
+                    productDetail.setQuantity(qty);
+                    databaseCart.updateUrl(productDetail);
+                    tv_product_qty.setText(qty+"");
+                    //adapter.notifyDataSetChanged();
+                }else {
+
+                }
+                //tvQty.setText(qty + "");
+                setTotal();
+                if (qty > 1) {
+                    iv_product_minus.setImageResource(R.drawable.icf_round_minus);
+                } else {
+                    // minus_iv.setImageResource(R.drawable.ic_delete);
+                }
+            } else {
+                cart_count = cart_count + 1;
+                cart_number.setText("" + cart_count);
+                AppPreference.setIntegerPreference(mContext, Constant.CART_ITEM_COUNT, cart_count);
+                databaseCart.addItemCart(productDetail);
+            }
+        } else {
+            cart_count = cart_count + 1;
+            cart_number.setText("" + cart_count);
+            AppPreference.setIntegerPreference(mContext, Constant.CART_ITEM_COUNT, cart_count);
+            databaseCart.addItemCart(productDetail);
+        }
+        //adapter.notifyDataSetChanged();
+        //AppPreference.setIntegerPreference(ctx, Constant.CART_ITEM_COUNT, cartProductList.size());
+    }
+
+    private void minusItem() {
+        productDetail.setQuantity(Integer.parseInt(productDetail.getMin_quantity()));
+
+        if (databaseCart.getContactsCount()) {
+            cartProductList = databaseCart.getAllUrlList();
+        }
+        if (cartProductList.size() > 0) {
+            if (databaseCart.verification(productDetail.getId())) {
+                int minQty = 0;
+                int q = 0;
+                for(int p = 0; p<cartProductList.size(); p++){
+                    ProductDetail pd = cartProductList.get(p);
+                    if (pd.getId().equals(productDetail.getId())){
+                        q=p;
+                    }
+                }
+                ProductDetail prDetails = cartProductList.get(q);
+                /*View v = rvproductList.getChildAt(pos);
+                TextView tvQty = (TextView) v.findViewById(R.id.tv_product_qty);
+                ImageView minus_iv = (ImageView) v.findViewById(R.id.iv_product_minus);*/
+                int qty = Integer.parseInt(tv_product_qty.getText().toString());
+                try {
+                    minQty = Integer.parseInt(prDetails.getMin_quantity());
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
+                if (qty == minQty) {
+                        databaseCart.deleteContact(prDetails);
+                        cartProductList.remove(q);
+                        ll_product_action.setVisibility(View.GONE);
+                        btnAdd.setVisibility(View.VISIBLE);
+                } else {
+                    qty--;
+                    prDetails.setQuantity(qty);
+                    databaseCart.updateUrl(prDetails);
+                    tv_product_qty.setText(qty + "");
+                }
+                if (qty > Integer.parseInt(productDetail.getMin_quantity())) {
+                    iv_product_minus.setImageResource(R.drawable.icf_round_minus);
+                } else {
+                    iv_product_minus.setImageResource(R.drawable.ic_delete);
+                }
+            } else {
+                cart_count = cart_count + 1;
+                cart_number.setText("" + cart_count);
+                AppPreference.setIntegerPreference(mContext, Constant.CART_ITEM_COUNT, cart_count);
+                Toast.makeText(mContext, "Added to Cart", Toast.LENGTH_SHORT).show();
+                databaseCart.addItemCart(productDetail);
+            }
+        } else {
+            cart_count = cart_count + 1;
+            cart_number.setText("" + cart_count);
+            AppPreference.setIntegerPreference(mContext, Constant.CART_ITEM_COUNT, cart_count);
+            Toast.makeText(mContext, "Added to Cart", Toast.LENGTH_SHORT).show();
+            databaseCart.addItemCart(productDetail);
+        }
+
+
+        //adapter.notifyDataSetChanged();
+        setTotal();
+        //AppPreference.setIntegerPreference(mContext, Constant.CART_ITEM_COUNT, list.size());
+    }
+
+    public void setTotal() {
+        float total = 0;
+        ArrayList<ProductDetail> total_list = databaseCart.getAllUrlList();
+        cart_number.setText("" + total_list.size());
+        AppPreference.setIntegerPreference(mContext, Constant.CART_ITEM_COUNT, total_list.size());
+        for (int i = 0; i < total_list.size(); i++) {
+
+            float percent = Float.parseFloat(total_list.get(i).getDiscount());
+            float pr = Float.parseFloat(total_list.get(i).getPrice());
+            float dis1 =  pr * ((100-percent)/100);
+            int qty = total_list.get(i).getQuantity();
+
+            float tot = dis1 * qty;
+            total += tot;
+            total = Math.round(total);
+        }
+        // place_bt.setText("Place this Order :   Rs " + total);
+
+        // tvTotalItem.setText("Total Items :"+total_list.size());
+        cart_price.setText(""+total);
+
+    }
+
+    public String getTotal() {
+        float total = 0;
+        float round_total = 0;
+        ArrayList<ProductDetail> total_list = databaseCart.getAllUrlList();
+        cart_number.setText(total_list.size());
+        AppPreference.setIntegerPreference(mContext, Constant.CART_ITEM_COUNT, total_list.size());
+        for (int i = 0; i < total_list.size(); i++) {
+            float pr = Float.parseFloat(total_list.get(i).getPrice());
+            int qty = total_list.get(i).getQuantity();
+
+            float tot = pr * qty;
+            total += tot;
+            round_total = Math.round(total);
+        }
+        return String.valueOf(round_total);
     }
 }

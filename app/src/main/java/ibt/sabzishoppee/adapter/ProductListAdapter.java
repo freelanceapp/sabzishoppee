@@ -1,6 +1,7 @@
 package ibt.sabzishoppee.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Build;
@@ -30,12 +31,13 @@ import ibt.sabzishoppee.constant.Constant;
 import ibt.sabzishoppee.database.DatabaseHandler;
 import ibt.sabzishoppee.model.ProductDetail;
 import ibt.sabzishoppee.model.productlist_responce.Product;
+import ibt.sabzishoppee.ui.activity.ProductDetailsActivity;
 import ibt.sabzishoppee.ui.listener.RecyclerViewClickListener;
 import ibt.sabzishoppee.utils.AppPreference;
 
 import static ibt.sabzishoppee.ui.activity.HomeActivity.cart_count;
 import static ibt.sabzishoppee.ui.activity.HomeActivity.cart_number;
-
+import static ibt.sabzishoppee.ui.activity.HomeActivity.cart_price;
 
 public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.ViewHolder> implements Filterable {
     private View rootview;
@@ -47,6 +49,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     private String strSubCategoryName;
     private Boolean cheked = false;
     private int pos1;
+
     private boolean isSearch = false;
 
     private String DATABASE_CART = "cart.db";
@@ -135,23 +138,21 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         //viewHolder.tvProductPrice.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
         viewHolder.tvProductPrice.setPaintFlags(viewHolder.tvProductPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG );
 
-        /*if (position == i) {
-            cheked = false;
-            ((LinearLayout) rootview.findViewById(R.id.ll_bgchange)).setBackgroundColor(Color.TRANSPARENT);
-        } else {
-            cheked = true;
-            ((LinearLayout) rootview.findViewById(R.id.ll_bgchange)).setBackground((mContext.getResources().getDrawable(R.drawable.bg_yellow)));
-        }*/
         if (isSearch) {
             viewHolder.btnAdd.setTag(product.getId());
-            viewHolder.btnAdd.setOnClickListener(onClickListener);
-            viewHolder.llItem.setTag(product.getId());
-            viewHolder.llItem.setOnClickListener(onClickListener);
+            viewHolder.btnAdd.setOnClickListener(v -> addToCart(i, viewHolder));
 
             viewHolder.iv_product_plus.setTag(product.getId());
-            viewHolder.iv_product_plus.setOnClickListener(onClickListener);
+            viewHolder.iv_product_plus.setOnClickListener(v -> plusItem(i, viewHolder));
+
             viewHolder.iv_product_minus.setTag(product.getId());
-            viewHolder.iv_product_minus.setOnClickListener(onClickListener);
+            viewHolder.iv_product_minus.setOnClickListener(v -> minusItem(i, viewHolder));
+
+            viewHolder.iv_product_minus.setTag(product.getId());
+            viewHolder.iv_product_minus.setOnClickListener(v -> minusItem(i, viewHolder));
+
+            viewHolder.llItem.setTag(product.getId());
+            viewHolder.llItem.setOnClickListener(v -> openProduct(i));
         } else {
             viewHolder.btnAdd.setTag(i);
             viewHolder.btnAdd.setOnClickListener(onClickListener);
@@ -164,13 +165,6 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             viewHolder.iv_product_minus.setOnClickListener(onClickListener);
         }
 
-
-     /*  viewHolder.iv_product_plus.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View view) {
-               plusItem(i);
-           }
-       });*/
 
      if (product.isInCart()){
          viewHolder.btnAdd.setVisibility(View.GONE);
@@ -241,45 +235,6 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         };
     }
 
-    /*@Override
-    public Filter getFilter() {
-        return new Filter() {
-            @Override
-            protected FilterResults performFiltering(CharSequence constraint) {
-                String charString = constraint.toString();
-                if (studentList!=null && studentList.size()>0) {
-                    if (charString.isEmpty()) {
-                        studentFilteredList = studentList;
-                    } else {
-                        ArrayList<AllStudent> filteredList = null;
-                            filteredList = new ArrayList<>();
-                            for (AllStudent row : studentList) {
-
-                                // name match condition. this might differ depending on your requirement
-                                // here we are looking for name or phone number match
-                                if (row.getName().toLowerCase().contains(charString.toLowerCase()) || row.getScholarNo().contains(constraint)) {
-                                    filteredList.add(row);
-                                }
-                            }
-
-
-                        studentFilteredList = filteredList;
-                    }
-                }
-
-                FilterResults filterResults = new FilterResults();
-                filterResults.values = studentFilteredList;
-                return filterResults;
-            }
-
-            @Override
-            protected void publishResults(CharSequence constraint, FilterResults results) {
-                studentFilteredList = (ArrayList<AllStudent>) results.values;
-                notifyDataSetChanged();
-            }
-        };
-    }*/
-
     public class ViewHolder extends RecyclerView.ViewHolder {
         private ImageView ivProductImg;
         private LinearLayout llSubcategory;
@@ -307,21 +262,71 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
     }
 
+    private void addToCart(int pos, ProductListAdapter.ViewHolder holder) {
 
-    private void plusItem(int pos) {
         productDetail = new ProductDetail();
-        productDetail.setTitle(productArrayList.get(pos).getTitle());
-        productDetail.setRating(productArrayList.get(pos).getRating());
-        productDetail.setImage(productArrayList.get(pos).getImage());
-        productDetail.setDiscount(productArrayList.get(pos).getDiscount());
-        productDetail.setAvailability(productArrayList.get(pos).getAvailability());
-        productDetail.setMin_quantity(productArrayList.get(pos).getMinQuantity());
-        productDetail.setQuantity_type(productArrayList.get(pos).getQuantityType());
-        productDetail.setOrder_quantity(productArrayList.get(pos).getQuantity());
-        productDetail.setDescription(productArrayList.get(pos).getDescription());
-        productDetail.setId(productArrayList.get(pos).getId());
-        productDetail.setPrice(productArrayList.get(pos).getSellingPrice());
-        productDetail.setType(productArrayList.get(pos).getType());
+        productDetail.setTitle(productFilteredList.get(pos).getTitle());
+        productDetail.setRating(productFilteredList.get(pos).getRating());
+        productDetail.setImage(productFilteredList.get(pos).getImage());
+        productDetail.setDiscount(productFilteredList.get(pos).getDiscount());
+        productDetail.setAvailability(productFilteredList.get(pos).getAvailability());
+        productDetail.setMin_quantity(productFilteredList.get(pos).getMinQuantity());
+        productDetail.setQuantity_type(productFilteredList.get(pos).getQuantityType());
+        productDetail.setOrder_quantity(productFilteredList.get(pos).getQuantity());
+        productDetail.setDescription(productFilteredList.get(pos).getDescription());
+        productDetail.setId(productFilteredList.get(pos).getId());
+        productDetail.setPrice(productFilteredList.get(pos).getSellingPrice());
+        productDetail.setType(productFilteredList.get(pos).getType());
+        productDetail.setQuantity(Integer.parseInt(productFilteredList.get(pos).getMinQuantity()));
+
+        if (databaseCart.getContactsCount()) {
+            cartProductList = databaseCart.getAllUrlList();
+        }
+        if (cartProductList.size() > 5) {
+            Toast.makeText(mContext, "Cart full", Toast.LENGTH_SHORT).show();
+        } else {
+            if (cartProductList.size() > 0) {
+                if (databaseCart.verification(productDetail.getId())) {
+                    Toast.makeText(mContext, "Already added to Cart", Toast.LENGTH_SHORT).show();
+                } else {
+                    cart_count = cart_count + 1;
+                    cart_number.setText("" + cart_count);
+                    AppPreference.setIntegerPreference(mContext, Constant.CART_ITEM_COUNT, cart_count);
+                    Toast.makeText(mContext, "Added to Cart", Toast.LENGTH_SHORT).show();
+                    productFilteredList.get(pos).setInCart(true);
+                    //searchListAdapter.notifyDataSetChanged();
+                    holder.btnAdd.setVisibility(View.GONE);
+                    holder.ll_product_action.setVisibility(View.VISIBLE);
+                    databaseCart.addItemCart(productDetail);
+                }
+            } else {
+                cart_count = cart_count + 1;
+                cart_number.setText("" + cart_count);
+                AppPreference.setIntegerPreference(mContext, Constant.CART_ITEM_COUNT, cart_count);
+                Toast.makeText(mContext, "Added to Cart", Toast.LENGTH_SHORT).show();
+                productFilteredList.get(pos).setInCart(true);
+                //searchListAdapter.notifyDataSetChanged();
+                holder.btnAdd.setVisibility(View.GONE);
+                holder.ll_product_action.setVisibility(View.VISIBLE);
+                databaseCart.addItemCart(productDetail);
+            }
+        }
+    }
+
+    private void plusItem(int pos, ProductListAdapter.ViewHolder holder) {
+        productDetail = new ProductDetail();
+        productDetail.setTitle(productFilteredList.get(pos).getTitle());
+        productDetail.setRating(productFilteredList.get(pos).getRating());
+        productDetail.setImage(productFilteredList.get(pos).getImage());
+        productDetail.setDiscount(productFilteredList.get(pos).getDiscount());
+        productDetail.setAvailability(productFilteredList.get(pos).getAvailability());
+        productDetail.setMin_quantity(productFilteredList.get(pos).getMinQuantity());
+        productDetail.setQuantity_type(productFilteredList.get(pos).getQuantityType());
+        productDetail.setOrder_quantity(productFilteredList.get(pos).getQuantity());
+        productDetail.setDescription(productFilteredList.get(pos).getDescription());
+        productDetail.setId(productFilteredList.get(pos).getId());
+        productDetail.setPrice(productFilteredList.get(pos).getSellingPrice());
+        productDetail.setType(productFilteredList.get(pos).getType());
         productDetail.setQuantity(1);
 
         if (databaseCart.getContactsCount()) {
@@ -329,27 +334,103 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         }
         if (cartProductList.size() > 0) {
             if (databaseCart.verification(productDetail.getId())) {
-                Toast.makeText(mContext, "Already added to Cart", Toast.LENGTH_SHORT).show();
-                ProductDetail productDetail = cartProductList.get(pos);
+                int q = 0;
+                for(int p = 0; p<cartProductList.size(); p++){
+                    ProductDetail pd = cartProductList.get(p);
+                    if (pd.getId().equals(productDetail.getId())){
+                        q=p;
+                    }
+                }
+                //Toast.makeText(mContext, "position : "+exctPos, Toast.LENGTH_SHORT).show();
+                ProductDetail productDetail = cartProductList.get(q);//why cart product list
 
-
-                int qty = Integer.parseInt(productArrayList.get(pos).getProductQuantity());
-
-                if (qty < Integer.parseInt(productArrayList.get(pos).getQuantity())) {
+                int qty = Integer.parseInt(holder.tv_product_qty.getText().toString());
+                if (qty < Integer.parseInt(productFilteredList.get(pos).getQuantity()))
+                {
                     qty++;
                     productDetail.setQuantity(qty);
-                    productArrayList.get(pos).setProductQuantity("" + qty);
+                    productFilteredList.get(pos).setProductQuantity(""+qty);
                     databaseCart.updateUrl(productDetail);
+                }else {
+
                 }
                 //tvQty.setText(qty + "");
-                // setTotal();
+                setTotal();
                 if (qty > 1) {
-                    //minus_iv.setImageResource(R.drawable.ic_minus);
+                    holder.iv_product_minus.setImageResource(R.drawable.icf_round_minus);
+                    holder.tv_product_qty.setText(qty+"");
                 } else {
                     // minus_iv.setImageResource(R.drawable.ic_delete);
                 }
             } else {
+                cart_count = cart_count + 1;
+                cart_number.setText("" + cart_count);
+                AppPreference.setIntegerPreference(mContext, Constant.CART_ITEM_COUNT, cart_count);
+                databaseCart.addItemCart(productDetail);
+            }
+        } else {
+            cart_count = cart_count + 1;
+            cart_number.setText("" + cart_count);
+            AppPreference.setIntegerPreference(mContext, Constant.CART_ITEM_COUNT, cart_count);
+            databaseCart.addItemCart(productDetail);
+        }
+    }
 
+    private void minusItem(int pos, ProductListAdapter.ViewHolder holder) {
+        productDetail = new ProductDetail();
+        productDetail.setTitle(productFilteredList.get(pos).getTitle());
+        productDetail.setRating(productFilteredList.get(pos).getRating());
+        productDetail.setImage(productFilteredList.get(pos).getImage());
+        productDetail.setDiscount(productFilteredList.get(pos).getDiscount());
+        productDetail.setAvailability(productFilteredList.get(pos).getAvailability());
+        productDetail.setMin_quantity(productFilteredList.get(pos).getMinQuantity());
+        productDetail.setQuantity_type(productFilteredList.get(pos).getQuantityType());
+        productDetail.setOrder_quantity(productFilteredList.get(pos).getQuantity());
+        productDetail.setDescription(productFilteredList.get(pos).getDescription());
+        productDetail.setId(productFilteredList.get(pos).getId());
+        productDetail.setPrice(productFilteredList.get(pos).getSellingPrice());
+        productDetail.setType(productFilteredList.get(pos).getType());
+        productDetail.setQuantity(1);
+
+        if (databaseCart.getContactsCount()) {
+            cartProductList = databaseCart.getAllUrlList();
+        }
+        if (cartProductList.size() > 0) {
+            if (databaseCart.verification(productDetail.getId())) {
+                int minQty = 0;
+                int q = 0;
+                for(int p = 0; p<cartProductList.size(); p++){
+                    ProductDetail pd = cartProductList.get(p);
+                    if (pd.getId().equals(productDetail.getId())){
+                        q=p;
+                    }
+                }
+                ProductDetail productDetail = cartProductList.get(q);
+
+                int qty = Integer.parseInt(holder.tv_product_qty.getText().toString());
+                try {
+                    minQty = Integer.parseInt(productDetail.getMin_quantity());
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
+                if (qty == minQty) {
+                       /* databaseCart.deleteContact(productDetail);
+                        cartProductList.remove(pos);
+                        adapter.notifyDataSetChanged();*/
+                } else {
+                    qty--;
+                    productDetail.setQuantity(qty);
+                    productFilteredList.get(pos).setProductQuantity(""+qty);
+                    databaseCart.updateUrl(productDetail);
+                    //tvQty.setText(qty + "");
+                }
+                if (qty > 1) {
+                    holder.iv_product_minus.setImageResource(R.drawable.icf_round_minus);
+                    holder.tv_product_qty.setText(qty+"");
+                } else {
+                    // minus_iv.setImageResource(R.drawable.ic_delete);
+                }
+            } else {
                 cart_count = cart_count + 1;
                 cart_number.setText("" + cart_count);
                 AppPreference.setIntegerPreference(mContext, Constant.CART_ITEM_COUNT, cart_count);
@@ -363,74 +444,36 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             Toast.makeText(mContext, "Added to Cart", Toast.LENGTH_SHORT).show();
             databaseCart.addItemCart(productDetail);
         }
-        notifyDataSetChanged();
-        //AppPreference.setIntegerPreference(ctx, Constant.CART_ITEM_COUNT, cartProductList.size());
+        setTotal();
     }
 
-    private void minusItem(int pos) {
-        productDetail = new ProductDetail();
-        productDetail.setTitle(productArrayList.get(pos).getTitle());
-        productDetail.setRating(productArrayList.get(pos).getRating());
-        productDetail.setImage(productArrayList.get(pos).getImage());
-        productDetail.setDiscount(productArrayList.get(pos).getDiscount());
-        productDetail.setAvailability(productArrayList.get(pos).getAvailability());
-        productDetail.setMin_quantity(productArrayList.get(pos).getMinQuantity());
-        productDetail.setQuantity_type(productArrayList.get(pos).getQuantityType());
-        productDetail.setOrder_quantity(productArrayList.get(pos).getQuantity());
-        productDetail.setDescription(productArrayList.get(pos).getDescription());
-        productDetail.setId(productArrayList.get(pos).getId());
-        productDetail.setPrice(productArrayList.get(pos).getSellingPrice());
-        productDetail.setType(productArrayList.get(pos).getType());
-        productDetail.setQuantity(1);
+    public void setTotal() {
+        float total = 0;
+        ArrayList<ProductDetail> total_list = databaseCart.getAllUrlList();
+        cart_number.setText("" + total_list.size());
+        AppPreference.setIntegerPreference(mContext, Constant.CART_ITEM_COUNT, total_list.size());
+        for (int i = 0; i < total_list.size(); i++) {
 
-        if (databaseCart.getContactsCount()) {
-            cartProductList = databaseCart.getAllUrlList();
+            float percent = Float.parseFloat(total_list.get(i).getDiscount());
+            float pr = Float.parseFloat(total_list.get(i).getPrice());
+            float dis1 =  pr * ((100-percent)/100);
+            int qty = total_list.get(i).getQuantity();
+
+            float tot = dis1 * qty;
+            total += tot;
+            total = Math.round(total);
         }
-        if (cartProductList.size() > 5) {
-            Toast.makeText(mContext, "Cart full", Toast.LENGTH_SHORT).show();
-        } else {
-            if (cartProductList.size() > 0) {
-                if (databaseCart.verification(productDetail.getId())) {
-                    Toast.makeText(mContext, "Already added to Cart", Toast.LENGTH_SHORT).show();
+        // place_bt.setText("Place this Order :   Rs " + total);
 
-                    ProductDetail productDetail = cartProductList.get(pos);
+        // tvTotalItem.setText("Total Items :"+total_list.size());
+        cart_price.setText(""+total);
 
-                    int qty = Integer.parseInt(productArrayList.get(pos).getProductQuantity());
-                    if (qty == 1) {
-                       /* databaseCart.deleteContact(productDetail);
-                        cartProductList.remove(pos);
-                        adapter.notifyDataSetChanged();*/
-                    } else {
-                        qty--;
-                        productDetail.setQuantity(qty);
-                        productArrayList.get(pos).setProductQuantity(""+qty);
-                        databaseCart.updateUrl(productDetail);
-                        // tvQty.setText(qty + "");
-                    }
-                    if (qty > 1) {
-                        //minus_iv.setImageResource(R.drawable.ic_minus);
-                    } else {
-                        // minus_iv.setImageResource(R.drawable.ic_delete);
-                    }
-                } else {
-                    cart_count = cart_count + 1;
-                    cart_number.setText("" + cart_count);
-                    AppPreference.setIntegerPreference(mContext, Constant.CART_ITEM_COUNT, cart_count);
-                    Toast.makeText(mContext, "Added to Cart", Toast.LENGTH_SHORT).show();
-                    databaseCart.addItemCart(productDetail);
-                }
-            } else {
-                cart_count = cart_count + 1;
-                cart_number.setText("" + cart_count);
-                AppPreference.setIntegerPreference(mContext, Constant.CART_ITEM_COUNT, cart_count);
-                Toast.makeText(mContext, "Added to Cart", Toast.LENGTH_SHORT).show();
-                databaseCart.addItemCart(productDetail);
-            }
-        }
+    }
 
-        notifyDataSetChanged();
-        //setTotal();
-        //AppPreference.setIntegerPreference(mContext, Constant.CART_ITEM_COUNT, list.size());
+    private void openProduct(int pos) {
+        Intent intent = new Intent(mContext , ProductDetailsActivity.class);
+        intent.putExtra("ProductID", productFilteredList.get(pos).getId());
+        mContext.startActivity(intent);
     }
 
 }
