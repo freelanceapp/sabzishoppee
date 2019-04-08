@@ -7,6 +7,7 @@ public class ProductDetail implements Parcelable {
 
     private int keyId;
     private String id;
+    private boolean inCart = false;
     private String title;
     private String price;
     private String order_quantity;
@@ -62,6 +63,7 @@ public class ProductDetail implements Parcelable {
         keyId = in.readInt();
         id = in.readString();
         title = in.readString();
+        inCart = Boolean.parseBoolean(in.readString());
         description = in.readString();
         image = in.readString();
         price = in.readString();
@@ -82,6 +84,14 @@ public class ProductDetail implements Parcelable {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public boolean isInCart() {
+        return inCart;
+    }
+
+    public void setInCart(boolean inCart) {
+        this.inCart = inCart;
     }
 
     public String getTitle() {
@@ -212,6 +222,7 @@ public class ProductDetail implements Parcelable {
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(id);
         parcel.writeString(title);
+        parcel.writeValue(inCart);
         parcel.writeString(description);
         parcel.writeString(price);
         parcel.writeString(getOrder_quantity());
