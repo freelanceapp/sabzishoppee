@@ -199,6 +199,7 @@ public class AddtoCartActivity extends BaseActivity implements View.OnClickListe
             if (databaseCart.getContactsCount()) {
                 cartProductList.addAll(databaseCart.getAllUrlList());
             }
+
             adapterCart.notifyDataSetChanged();*/
             startActivity(new Intent(mContext, AddtoCartActivity.class));
             finish();
@@ -212,6 +213,7 @@ public class AddtoCartActivity extends BaseActivity implements View.OnClickListe
             minus_iv.setImageResource(R.drawable.icf_round_minus);
         } else {
             minus_iv.setImageResource(R.drawable.ic_delete);
+
         }
         setTotal();
         cart_number.setText("" + qty);

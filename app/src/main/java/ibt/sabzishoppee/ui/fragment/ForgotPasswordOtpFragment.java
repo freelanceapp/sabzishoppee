@@ -15,14 +15,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
 
 import ibt.sabzishoppee.R;
 import ibt.sabzishoppee.constant.Constant;
@@ -35,15 +29,13 @@ import ibt.sabzishoppee.utils.Alerts;
 import ibt.sabzishoppee.utils.AppPreference;
 import ibt.sabzishoppee.utils.BaseFragment;
 import ibt.sabzishoppee.utils.ConnectionDirector;
-import ibt.sabzishoppee.utils.EmailChecker;
 import ibt.sabzishoppee.utils.pinview.Pinview;
-import okhttp3.ResponseBody;
 import retrofit2.Response;
 
 import static ibt.sabzishoppee.ui.activity.LoginActivity.loginfragmentManager;
 
 
-public class ForgotPasswordFragment extends BaseFragment implements View.OnClickListener{
+public class ForgotPasswordOtpFragment extends BaseFragment implements View.OnClickListener{
     private View rootview;
     private Button btn_fplogin;
     private TextView otpTime;
@@ -129,8 +121,15 @@ public class ForgotPasswordFragment extends BaseFragment implements View.OnClick
                             String data = gson.toJson(loginModel);
                             AppPreference.setStringPreference(mContext, Constant.User_Data, data);
                             User.setUser(loginModel);
-                            Intent intent = new Intent(mContext , HomeActivity.class);
-                            mContext.startActivity(intent);
+
+                            NewPasswordFragment forgotPasswordFragment = new NewPasswordFragment();
+                            Bundle bundle = new Bundle();
+                            bundle.putString("user_id", loginModel.getUser().getId());
+                            forgotPasswordFragment.setArguments(bundle);
+                            startFragment(Constant.ForgotPasswordOtpFragment,forgotPasswordFragment);
+
+
+
                         }else {
                             Alerts.show(mContext, loginModel.getMessage());
                         }

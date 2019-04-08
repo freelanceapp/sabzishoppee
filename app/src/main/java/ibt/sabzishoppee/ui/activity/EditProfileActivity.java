@@ -70,7 +70,7 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
     private RadioGroup rb_gender;
     private CircleImageView ci_profile;
     private ImageView btn_camera, btn_editprofile_back;
-    private ImageButton btn_calender;
+    private ImageView btn_calender;
     private Button btnUpdate;
     private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
     private String userChoosenTask;
@@ -343,9 +343,9 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
                         User.setUser(loginModal);
 
                         if (User.getUser().getUser().getUserProfilePicture() == null) {
-                            iv_ShowUserImage.setImageResource(R.drawable.profile_img);
+                            iv_ShowUserImage.setImageResource(R.drawable.ic_user);
                         } else {
-                            Glide.with(mContext).load(loginModal.getUser().getUserProfilePicture()).into(iv_ShowUserImage);
+                            Glide.with(mContext).load(loginModal.getUser().getUserProfilePicture()).error(R.drawable.ic_user).into(iv_ShowUserImage);
                         }
 
                         Intent intent = new Intent(EditProfileActivity.this, ProfileActivity.class);

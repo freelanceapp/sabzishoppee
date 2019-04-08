@@ -172,6 +172,9 @@ public class ConfirmationFragment extends BaseFragment implements View.OnClickLi
             String strHourseNo = AppPreference.getStringPreference(ctx, Constant.House_no);
             String strAddressType = AppPreference.getStringPreference(ctx, Constant.Address_Type);
             String strPaymentType = AppPreference.getStringPreference(ctx, Constant.PaymentMethord);
+            String strLandMark = AppPreference.getStringPreference(ctx, Constant.ADDRESS_LANDMARK);
+            String strLat = AppPreference.getStringPreference(ctx, Constant.ADDRESS_LAT);
+            String strLong = AppPreference.getStringPreference(ctx, Constant.ADDRESS_LONG);
 
             String mobile = AppPreference.getStringPreference(ctx, Constant.MobileNumber);
             String address = AppPreference.getStringPreference(ctx, Constant.Address);
@@ -199,7 +202,7 @@ public class ConfirmationFragment extends BaseFragment implements View.OnClickLi
             Gson gson = new GsonBuilder().setLenient().create();
             String data = gson.toJson(productDataModelArrayList);
 
-            RetrofitService.setOrder(new Dialog(mContext), retrofitApiClient.setOrder(user_id, strPaymentType, "0", address,strHourseNo,"",city,strAddressType,totalAmount1,address,"72.123123","123.123123",state,code,
+            RetrofitService.setOrder(new Dialog(mContext), retrofitApiClient.setOrder(user_id, strPaymentType, "0", address,strHourseNo,strLandMark,city,strAddressType,totalAmount1,address,strLat, strLong,state,code,
                     strNote,data), new WebResponse() {
                 @Override
                 public void onResponseSuccess(Response<?> result) {

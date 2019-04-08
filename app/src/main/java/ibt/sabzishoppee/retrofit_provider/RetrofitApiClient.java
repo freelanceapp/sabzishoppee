@@ -6,6 +6,7 @@ import ibt.sabzishoppee.constant.Constant;
 import ibt.sabzishoppee.model.address_add_responce.AddAddressModel;
 import ibt.sabzishoppee.model.address_show_responce.AddressShowModel;
 import ibt.sabzishoppee.model.banner_responce.BannerModel;
+import ibt.sabzishoppee.model.change_password_responce.ChangePasswordModel;
 import ibt.sabzishoppee.model.contact_responce.ContcatModel;
 import ibt.sabzishoppee.model.contact_us_responce.ContactUsModel;
 import ibt.sabzishoppee.model.edit_profile_responce.EditProfileModel;
@@ -66,6 +67,11 @@ public interface RetrofitApiClient {
     @POST(Constant.OTP_API)
     Call<LoginModel> otpApi(@Field("contact") String contact ,
                             @Field("otp_number") String otp_number);
+
+    @FormUrlEncoded
+    @POST(Constant.CHANGE_PASSWORD)
+    Call<ChangePasswordModel> changePassword(@Field("user_id") String user_id ,
+                                             @Field("new_password") String new_password);
 
     @FormUrlEncoded
     @POST(Constant.LOGIN_API)

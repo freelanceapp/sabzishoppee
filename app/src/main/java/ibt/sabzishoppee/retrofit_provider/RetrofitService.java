@@ -10,6 +10,7 @@ import ibt.sabzishoppee.constant.Constant;
 import ibt.sabzishoppee.model.address_add_responce.AddAddressModel;
 import ibt.sabzishoppee.model.address_show_responce.AddressShowModel;
 import ibt.sabzishoppee.model.banner_responce.BannerModel;
+import ibt.sabzishoppee.model.change_password_responce.ChangePasswordModel;
 import ibt.sabzishoppee.model.contact_responce.ContcatModel;
 import ibt.sabzishoppee.model.contact_us_responce.ContactUsModel;
 import ibt.sabzishoppee.model.edit_profile_responce.EditProfileModel;
@@ -95,6 +96,29 @@ public class RetrofitService {
             }
         });
     }
+
+
+    public static void getChangePassword(final Dialog dialog, final Call<ChangePasswordModel> method, final WebResponse webResponse) {
+        if (dialog != null)
+            AppProgressDialog.show(dialog);
+
+        method.enqueue(new Callback<ChangePasswordModel>() {
+            @Override
+            public void onResponse(Call<ChangePasswordModel> call, Response<ChangePasswordModel> response) {
+                if (dialog != null)
+                    AppProgressDialog.hide(dialog);
+                WebServiceResponse.handleResponse(response, webResponse);
+            }
+
+            @Override
+            public void onFailure(Call<ChangePasswordModel> call, Throwable throwable) {
+                if (dialog != null)
+                    AppProgressDialog.hide(dialog);
+                webResponse.onResponseFailed(throwable.getMessage());
+            }
+        });
+    }
+
 
     public static void getSignData(final Dialog dialog, final Call<SignUpModel> method, final WebResponse webResponse) {
         if (dialog != null)

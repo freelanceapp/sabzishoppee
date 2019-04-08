@@ -2,10 +2,13 @@ package ibt.sabzishoppee.ui.fragment;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,7 +44,7 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
     private String strEmail, strPassword;
     private EditText et_login_email, et_login_password;
     private String strEmailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
-    private TextView tv_signUp, tv_forgot_password;
+    private TextView tv_signUp, tv_forgot_password, tvPasswordStrength;
 
     @Nullable
     @Override
@@ -61,9 +64,29 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
         et_login_password = rootview.findViewById(R.id.et_login_password);
         tv_signUp = rootview.findViewById(R.id.tv_signUp);
         tv_forgot_password = rootview.findViewById(R.id.tv_forgot_password);
+        tvPasswordStrength = rootview.findViewById(R.id.tvPasswordStrength);
         loginbutton.setOnClickListener(this);
         tv_signUp.setOnClickListener(this);
         tv_forgot_password.setOnClickListener(this);
+
+        et_login_password.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                // Calculate password strength
+                calculateStrength(editable.toString());
+            }
+        });
+
     }
 
     private void startFragment(String tag, Fragment fragment) {
@@ -99,7 +122,9 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
                 et_login_email.setError("Please enter valid email address !!!");
             } else if (strPassword.isEmpty()) {
                 ((EditText) rootview.findViewById(R.id.et_login_password)).setError("Please enter password");
-            } else {
+            } else if (strPassword.length() < 6) {
+                ((EditText) rootview.findViewById(R.id.et_login_password)).setError("Please enter 6 digit");
+            }else {
                 RetrofitService.getLoginData(new Dialog(mContext), retrofitApiClient.loginData(strEmail, strPassword), new WebResponse() {
                     @Override
                     public void onResponseSuccess(Response<?> result) {
@@ -132,6 +157,84 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
             }
         } else {
             cd.show(mContext);
+        }
+    }
+
+
+    private void calculateStrength(String passwordText) {
+        int upperChars = 0, lowerChars = 0, numbers = 0,
+                specialChars = 0, otherChars = 0, strengthPoints = 0;
+        char c;
+
+        int passwordLength = passwordText.length();
+
+        if (passwordLength ==0)
+        {
+            tvPasswordStrength.setText("Invalid Password");
+            tvPasswordStrength.setTextColor(getResources().getColor(R.color.red_600));
+
+            return;
+        }
+
+        //If password length is <= 5 set strengthPoints=1
+        if (passwordLength <= 5) {
+            strengthPoints =1;
+        }
+        //If password length is >5 and <= 10 set strengthPoints=2
+        else if (passwordLength <= 10) {
+            strengthPoints = 2;
+        }
+        //If password length is >10 set strengthPoints=3
+        else
+            strengthPoints = 3;
+        // Loop through the characters of the password
+        for (int i = 0; i < passwordLength; i++) {
+            c = passwordText.charAt(i);
+            // If password contains lowercase letters
+            // then increase strengthPoints by 1
+            if (c >= 'a' && c <= 'z') {
+                if (lowerChars == 0) strengthPoints++;
+                lowerChars = 1;
+            }
+            // If password contains uppercase letters
+            // then increase strengthPoints by 1
+            else if (c >= 'A' && c <= 'Z') {
+                if (upperChars == 0) strengthPoints++;
+                upperChars = 1;
+            }
+            // If password contains numbers
+            // then increase strengthPoints by 1
+            else if (c >= '0' && c <= '9') {
+                if (numbers == 0) strengthPoints++;
+                numbers = 1;
+            }
+            // If password contains _ or @
+            // then increase strengthPoints by 1
+            else if (c == '_' || c == '@') {
+                if (specialChars == 0) strengthPoints += 1;
+                specialChars = 1;
+            }
+            // If password contains any other special chars
+            // then increase strengthPoints by 1
+            else {
+                if (otherChars == 0) strengthPoints += 2;
+                otherChars = 1;
+            }
+        }
+
+        if (strengthPoints <= 3)
+        {
+            tvPasswordStrength.setText("Password Strength : LOW");
+            tvPasswordStrength.setTextColor(getResources().getColor(R.color.red_d));
+
+        }
+        else if (strengthPoints <= 6) {
+            tvPasswordStrength.setText("Password Strength : MEDIUM");
+            tvPasswordStrength.setTextColor(getResources().getColor(R.color.orange_900));
+        }
+        else if (strengthPoints <= 9){
+            tvPasswordStrength.setText("Password Strength : HIGH");
+            tvPasswordStrength.setTextColor(getResources().getColor(R.color.green_dark));
         }
     }
 }
