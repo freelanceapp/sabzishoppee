@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 
@@ -323,7 +324,7 @@ public class ShoppingFragment extends BaseFragment implements View.OnClickListen
                     if (!addressModel.getError())
                     {
                         Alerts.show(mContext, addressModel.getMessage());
-                        PaymentFragment fragment = new PaymentFragment(ctx);
+                        ConfirmationFragment fragment = new ConfirmationFragment(ctx);
                         Utility.setFragment1(fragment, ctx, Constant.ShoppingFragment);
 
                     }else {
@@ -345,24 +346,24 @@ public class ShoppingFragment extends BaseFragment implements View.OnClickListen
     private void getAddressApi() {
         String strUser_id = AppPreference.getStringPreference(mContext, Constant.User_Id);
         if (cd.isNetWorkAvailable()) {
+            addressArrayList.clear();
             RetrofitService.getAddress(new Dialog(mContext), retrofitApiClient.getAddress(strUser_id), new WebResponse() {
                 @Override
                 public void onResponseSuccess(Response<?> result) {
                     AddressShowModel addressModel = (AddressShowModel) result.body();
-
                     if (!addressModel.getError())
                     {
                         Alerts.show(mContext, addressModel.getMessage());
-
                         addressArrayList.addAll(addressModel.getAddress());
-
+                        HashSet<ibt.sabzishoppee.model.address_show_responce.Address> hashSet = new HashSet<>();
+                        hashSet.addAll(addressArrayList);
+                        addressArrayList.clear();
+                        addressArrayList.addAll(hashSet);
                     }else {
                         Alerts.show(mContext, addressModel.getMessage());
                     }
-
                     addressShowAdapter.notifyDataSetChanged();
                 }
-
                 @Override
                 public void onResponseFailed(String error) {
                     Alerts.show(mContext, error);

@@ -44,6 +44,7 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
     private String strEmail, strPassword;
     private EditText et_login_email, et_login_password;
     private String strEmailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+    String MobilePattern = "[0-9]{10}";
     private TextView tv_signUp, tv_forgot_password, tvPasswordStrength;
 
     @Nullable
@@ -69,23 +70,6 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
         tv_signUp.setOnClickListener(this);
         tv_forgot_password.setOnClickListener(this);
 
-        et_login_password.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                // Calculate password strength
-                calculateStrength(editable.toString());
-            }
-        });
 
     }
 
@@ -109,8 +93,6 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
             case R.id.tv_forgot_password:
                 startFragment(Constant.SignUpFragment, new ForgotPasswordFragment1());
                 break;
-
-
         }
     }
 
@@ -118,8 +100,8 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
         if (cd.isNetWorkAvailable()) {
             strEmail = ((EditText) rootview.findViewById(R.id.et_login_email)).getText().toString();
             strPassword = ((EditText) rootview.findViewById(R.id.et_login_password)).getText().toString();
-            if (!EmailChecker.isValid(strEmail)) {
-                et_login_email.setError("Please enter valid email address !!!");
+            if (strEmail.isEmpty()) {
+                et_login_email.setError("Please enter valid email address or mobile number !!!");
             } else if (strPassword.isEmpty()) {
                 ((EditText) rootview.findViewById(R.id.et_login_password)).setError("Please enter password");
             } else if (strPassword.length() < 6) {

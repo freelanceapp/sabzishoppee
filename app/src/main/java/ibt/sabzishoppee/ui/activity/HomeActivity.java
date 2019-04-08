@@ -171,7 +171,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                 break;
 
             case R.id.rv_home :
-                Intent intent3 = new Intent(HomeActivity.this , AddtoCartActivity.class);
+                Intent intent3 = new Intent(HomeActivity.this , HomeActivity.class);
                 startActivity(intent3);
                 finish();
                 break;

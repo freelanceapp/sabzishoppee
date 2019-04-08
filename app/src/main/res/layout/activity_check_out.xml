@@ -73,7 +73,8 @@
             android:text="Payment"
             android:textAllCaps="true"
             android:textColor="@android:color/white"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:visibility="gone"/>
 
         <TextView
             android:textStyle="bold"

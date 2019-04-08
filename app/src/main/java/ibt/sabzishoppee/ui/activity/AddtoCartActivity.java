@@ -64,7 +64,6 @@ public class AddtoCartActivity extends BaseActivity implements View.OnClickListe
         tvTotalItem = findViewById(R.id.tvTotalItem);
         tvTotalPrice = findViewById(R.id.tvTotalPrice);
         findViewById(R.id.btnBack).setOnClickListener(this);
-
         initDatabase();
         setTotal();
     }
@@ -75,7 +74,6 @@ public class AddtoCartActivity extends BaseActivity implements View.OnClickListe
         if (databaseCart.getContactsCount()) {
             cartProductList.addAll(databaseCart.getAllUrlList());
         }
-
         adapterCart = new AdapterCart(cartProductList, ctx, this, databaseCart);
         LinearLayoutManager layoutManager = new LinearLayoutManager(ctx);
         recyclerView.setLayoutManager(layoutManager);
@@ -90,22 +88,18 @@ public class AddtoCartActivity extends BaseActivity implements View.OnClickListe
         cart_number.setText("" + total_list.size());
         AppPreference.setIntegerPreference(ctx, Constant.CART_ITEM_COUNT, total_list.size());
         for (int i = 0; i < total_list.size(); i++) {
-
             float percent = Float.parseFloat(total_list.get(i).getDiscount());
             float pr = Float.parseFloat(total_list.get(i).getPrice());
             float dis1 = pr * ((100 - percent) / 100);
             int qty = total_list.get(i).getQuantity();
-
             float tot = dis1 * qty;
             total += tot;
             total = Math.round(total);
         }
         // place_bt.setText("Place this Order :   Rs " + total);
-
         tvTotalItem.setText("Total Items :" + total_list.size());
         tvTotalPrice.setText("Rs. " + total);
         cart_price.setText("" + total);
-
     }
 
     public String getTotal() {
@@ -117,14 +111,12 @@ public class AddtoCartActivity extends BaseActivity implements View.OnClickListe
         for (int i = 0; i < total_list.size(); i++) {
             float pr = Float.parseFloat(total_list.get(i).getPrice());
             int qty = total_list.get(i).getQuantity();
-
             float tot = pr * qty;
             total += tot;
             round_total = Math.round(total);
         }
         return String.valueOf(round_total);
     }
-
 
     @Override
     public void onClick(View view) {
@@ -153,21 +145,18 @@ public class AddtoCartActivity extends BaseActivity implements View.OnClickListe
         View v = recyclerView.getChildAt(pos);
         TextView tvQty = (TextView) v.findViewById(R.id.tv_adpcart_qty);
         ImageView minus_iv = (ImageView) v.findViewById(R.id.iv_adpcart_minus);
-
         int qty = Integer.parseInt(tvQty.getText().toString());
         qty++;
         productDetail.setQuantity(qty);
         databaseCart.updateUrl(productDetail);
-        tvQty.setText(qty + "");
+        tvQty.setText(qty +"");
         setTotal();
-        cart_number.setText("" + qty);
-
+        cart_number.setText(""+ qty);
         try {
             minQty = Integer.parseInt(productDetail.getMin_quantity());
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
-
         if (qty > minQty) {
             minus_iv.setImageResource(R.drawable.icf_round_minus);
         } else {
@@ -183,24 +172,15 @@ public class AddtoCartActivity extends BaseActivity implements View.OnClickListe
         View v = recyclerView.getChildAt(pos);
         TextView tvQty = (TextView) v.findViewById(R.id.tv_adpcart_qty);
         ImageView minus_iv = (ImageView) v.findViewById(R.id.iv_adpcart_minus);
-
         int qty = Integer.parseInt(tvQty.getText().toString());
-
         try {
+            productDetail.setImage(cartProductList.get(pos).getImage());
             minQty = Integer.parseInt(productDetail.getMin_quantity());
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
-
         if (qty == minQty) {
             databaseCart.deleteContact(productDetail);
-            //cartProductList.remove(pos);
-            /*cartProductList.clear();
-            if (databaseCart.getContactsCount()) {
-                cartProductList.addAll(databaseCart.getAllUrlList());
-            }
-
-            adapterCart.notifyDataSetChanged();*/
             startActivity(new Intent(mContext, AddtoCartActivity.class));
             finish();
         } else {
@@ -213,7 +193,6 @@ public class AddtoCartActivity extends BaseActivity implements View.OnClickListe
             minus_iv.setImageResource(R.drawable.icf_round_minus);
         } else {
             minus_iv.setImageResource(R.drawable.ic_delete);
-
         }
         setTotal();
         cart_number.setText("" + qty);

@@ -80,9 +80,9 @@ public class AdapterCart extends RecyclerView.Adapter<AdapterCart.MyViewHolder> 
 
         if (productDetail.getImage() != null) {
 
-            Glide.with(context).load(productDetail.getImage()).error(R.drawable.logo2).into(holder.pro_image_iv);
+            Glide.with(context).load(productDetail.getImage()).error(R.drawable.splash_logo).into(holder.pro_image_iv);
         } else {
-            holder.pro_image_iv.setImageResource(R.drawable.logo2);
+            holder.pro_image_iv.setImageResource(R.drawable.splash_logo);
         }
 
         try {
