@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import java.util.ArrayList;
@@ -34,7 +36,7 @@ import static ibt.sabziwala.ui.activity.HomeActivity.cart_number;
 import static ibt.sabziwala.ui.activity.HomeActivity.cart_price;
 
 
-public class AddtoCartActivity extends BaseActivity implements View.OnClickListener {
+public class AddToCartActivity extends BaseActivity implements View.OnClickListener {
     Context ctx;
     RecyclerView recyclerView;
     Button place_bt;
@@ -65,6 +67,7 @@ public class AddtoCartActivity extends BaseActivity implements View.OnClickListe
         tvTotalItem = findViewById(R.id.tvTotalItem);
         tvTotalPrice = findViewById(R.id.tvTotalPrice);
         findViewById(R.id.btnBack).setOnClickListener(this);
+        findViewById(R.id.tvClearCart).setOnClickListener(this);
         initDatabase();
         setTotal();
     }
@@ -136,7 +139,24 @@ public class AddtoCartActivity extends BaseActivity implements View.OnClickListe
                 // onBackClick();
                 finish();
                 break;
+            case R.id.tvClearCart:
+                clearCart();
+                break;
         }
+    }
+
+    private void clearCart() {
+        new AlertDialog.Builder(mContext)
+                .setTitle("Clear Cart")
+                .setMessage("Are you sure want to delete all items from cart ?")
+                .setPositiveButton("YES", (dialog, which) -> {
+                    databaseCart.deleteallCart();
+                    Toast.makeText(ctx, "Cart has empty.", Toast.LENGTH_SHORT).show();
+                    finish();
+                })
+                .setNegativeButton("NO", null)
+                .create()
+                .show();
     }
 
     private void plusItem(View view) {
@@ -182,7 +202,7 @@ public class AddtoCartActivity extends BaseActivity implements View.OnClickListe
         }
         if (qty == minQty) {
             databaseCart.deleteContact(productDetail);
-            startActivity(new Intent(mContext, AddtoCartActivity.class));
+            startActivity(new Intent(mContext, AddToCartActivity.class));
             finish();
         } else {
             qty--;

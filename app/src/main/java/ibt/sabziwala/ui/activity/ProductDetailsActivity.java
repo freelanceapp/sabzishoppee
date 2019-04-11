@@ -230,7 +230,7 @@ public class ProductDetailsActivity extends BaseActivity implements View.OnClick
         switch (view.getId())
         {
             case R.id.btnAddtoCart :
-               startActivity(new Intent(mContext, AddtoCartActivity.class));
+               startActivity(new Intent(mContext, AddToCartActivity.class));
                 break;
             case R.id.btnAdd :
                 productDetail.setQuantity(Integer.parseInt(productDetail.getMin_quantity()));

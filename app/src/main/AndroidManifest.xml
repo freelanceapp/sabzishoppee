@@ -94,7 +94,7 @@
             android:name="ibt.sabziwala.ui.activity.MainActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name="ibt.sabziwala.ui.activity.AddtoCartActivity"
+            android:name="ibt.sabziwala.ui.activity.AddToCartActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name="ibt.sabziwala.ui.activity.CheckOutActivity"

@@ -1,7 +1,9 @@
 package ibt.sabziwala.ui.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -144,14 +146,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         }else if (id == R.id.nav_history) {
             startActivity(new Intent(mContext, OrderHistoryActivity.class));
         } else if (id == R.id.nav_logout) {
-            AppPreference.setBooleanPreference(mContext, Constant.Is_Login, false);
-            AppPreference.setStringPreference(mContext, Constant.User_Id, "0");
-            if (databaseCart.getContactsCount()) {
-                databaseCart.deleteallCart();
-            }
-            Intent intent = new Intent(HomeActivity.this , LoginActivity.class);
-            startActivity(intent);
-            finish();
+            doLogout();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -165,7 +160,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         switch (view.getId())
         {
             case R.id.rv_cart :
-                Intent intent = new Intent(HomeActivity.this , AddtoCartActivity.class);
+                Intent intent = new Intent(HomeActivity.this , AddToCartActivity.class);
                 startActivity(intent);
                 break;
 
@@ -187,4 +182,27 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
 
         }
     }
+
+    private void doLogout() {
+        new AlertDialog.Builder(mContext)
+                .setTitle("Logout")
+                .setMessage("Are you sure want to doLogout ?")
+                .setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        AppPreference.setBooleanPreference(mContext, Constant.Is_Login, false);
+                        AppPreference.setStringPreference(mContext, Constant.User_Id, "0");
+                        if (databaseCart.getContactsCount()) {
+                            databaseCart.deleteallCart();
+                        }
+                        Intent intent = new Intent(HomeActivity.this , LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                })
+                .setNegativeButton("NO", null)
+                .create()
+                .show();
+    }
+
 }

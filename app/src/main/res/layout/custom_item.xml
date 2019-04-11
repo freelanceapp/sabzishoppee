@@ -325,7 +325,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginRight="8dp"
                     android:layout_marginLeft="8dp"
-                    android:src="@drawable/icf_round_minus" />
+                    android:src="@drawable/ic_delete" />
 
             </RelativeLayout>
 
