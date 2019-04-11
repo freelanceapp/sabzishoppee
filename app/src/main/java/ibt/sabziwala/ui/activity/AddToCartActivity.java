@@ -2,6 +2,7 @@ package ibt.sabziwala.ui.activity;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -36,7 +37,7 @@ import static ibt.sabziwala.ui.activity.HomeActivity.cart_number;
 import static ibt.sabziwala.ui.activity.HomeActivity.cart_price;
 
 
-public class AddToCartActivity extends BaseActivity implements View.OnClickListener {
+public class AddToCartActivity extends BaseActivity implements View.OnClickListener, View.OnLongClickListener {
     Context ctx;
     RecyclerView recyclerView;
     Button place_bt;
@@ -78,7 +79,7 @@ public class AddToCartActivity extends BaseActivity implements View.OnClickListe
         if (databaseCart.getContactsCount()) {
             cartProductList.addAll(databaseCart.getAllUrlList());
         }
-        adapterCart = new AdapterCart(cartProductList, ctx, this, databaseCart);
+        adapterCart = new AdapterCart(cartProductList, ctx, this, databaseCart, this);
         LinearLayoutManager layoutManager = new LinearLayoutManager(ctx);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
@@ -257,5 +258,32 @@ public class AddToCartActivity extends BaseActivity implements View.OnClickListe
                 finish();
             }
         }
+    }
+
+    @Override
+    public boolean onLongClick(View v) {
+        if (v.getId()==R.id.cartLayout){
+            int tag = (int) v.getTag();
+            deleteItem(tag);
+        }
+        return true;
+    }
+
+    private void deleteItem(int tag) {
+        new AlertDialog.Builder(mContext)
+                .setTitle("Delete")
+                .setMessage("Are you sure want to delete ?")
+                .setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ProductDetail pDetail = cartProductList.get(tag);
+                        databaseCart.deleteContact(pDetail);
+                        startActivity(new Intent(mContext, AddToCartActivity.class));
+                        finish();
+                    }
+                })
+                .setNegativeButton("NO", null)
+                .create()
+                .show();
     }
 }
