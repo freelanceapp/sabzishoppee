@@ -23,7 +23,7 @@
             android:layout_height="100sp"
             android:contentDescription="@string/nav_header_desc"
             android:src="@drawable/ic_user"
-            app:civ_border_width=".5sp"
+            app:civ_border_width="1dp"
             app:civ_border_color="@color/gray_c"/>
 
         <TextView

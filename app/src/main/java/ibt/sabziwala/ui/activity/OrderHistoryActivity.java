@@ -31,7 +31,8 @@ public class OrderHistoryActivity extends BaseActivity implements View.OnClickLi
     private OrderHistoryAdapter adapter;
     private ArrayList<Order> orderArrayList = new ArrayList<>();
     ArrayList<Product> products = new ArrayList<>();
-    ImageView btn_history_back;
+    ImageView btn_history_back, img_no_order;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +40,7 @@ public class OrderHistoryActivity extends BaseActivity implements View.OnClickLi
         setContentView(R.layout.activity_order_history);
 
         rvOrderHistory = findViewById(R.id.rvOrderHistory);
+        img_no_order = findViewById(R.id.img_no_order);
         mContext = this;
         cd = new ConnectionDirector(mContext);
         retrofitApiClient = RetrofitService.getRetrofit();
@@ -85,8 +87,14 @@ public class OrderHistoryActivity extends BaseActivity implements View.OnClickLi
 
                     if (!orderHistoryModel.getError())
                     {
-                        orderArrayList.addAll(orderHistoryModel.getOrder());
-
+                        if (orderArrayList.size()>0) {
+                            img_no_order.setVisibility(View.VISIBLE);
+                            rvOrderHistory.setVisibility(View.GONE);
+                        }else {
+                            orderArrayList.addAll(orderHistoryModel.getOrder());
+                            img_no_order.setVisibility(View.GONE);
+                            rvOrderHistory.setVisibility(View.VISIBLE);
+                        }
                     }else {
                         Alerts.show(mContext, orderHistoryModel.getMessage());
                     }

@@ -2,11 +2,14 @@ package ibt.sabziwala.ui.fragment;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,6 +33,7 @@ import ibt.sabziwala.database.DatabaseHandler;
 import ibt.sabziwala.model.PriceProductSorter;
 import ibt.sabziwala.model.ProductDetail;
 import ibt.sabziwala.model.banner_responce.BannerModel;
+import ibt.sabziwala.model.login_responce.LoginModel;
 import ibt.sabziwala.model.productlist_responce.Product;
 import ibt.sabziwala.model.productlist_responce.ProductListModel;
 import ibt.sabziwala.retrofit_provider.RetrofitService;
@@ -45,6 +49,8 @@ import retrofit2.Response;
 import static ibt.sabziwala.ui.activity.HomeActivity.cart_count;
 import static ibt.sabziwala.ui.activity.HomeActivity.cart_number;
 import static ibt.sabziwala.ui.activity.HomeActivity.cart_price;
+import static ibt.sabziwala.ui.activity.HomeActivity.iv_ShowUserImage;
+import static ibt.sabziwala.ui.activity.HomeActivity.tv_ShowUserName;
 
 
 public class HomeFragment extends BaseFragment implements View.OnClickListener {
@@ -148,6 +154,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         tv_LowtoHigh.setOnClickListener(this);
         tv_a_to_z.setOnClickListener(this);
 
+        profileApi();
         productDetailApi();
         bannerApi();
         setTotal();
@@ -767,4 +774,39 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();
     }
 
+
+    private void profileApi() {
+        String userId = AppPreference.getStringPreference(mContext , Constant.User_Id);
+        if (cd.isNetWorkAvailable()) {
+            RetrofitService.getProfile(new Dialog(mContext), retrofitApiClient.getprofile(userId), new WebResponse() {
+                @Override
+                public void onResponseSuccess(Response<?> result) {
+                    LoginModel responseBody = (LoginModel) result.body();
+                    if (!responseBody.getError())
+                    {
+                        tv_ShowUserName.setText(responseBody.getUser().getUserName());
+                        if (!responseBody.getUser().getUserProfilePicture().isEmpty()) {
+                            String base64String = responseBody.getUser().getUserProfilePicture();
+                            String base64Image = base64String.split(",")[1];
+                            byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
+                            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                            iv_ShowUserImage.setImageBitmap(decodedByte);
+                        }else {
+                            iv_ShowUserImage.setImageResource(R.drawable.ic_user);
+                        }
+                        //Glide.with(mContext).load(decodedByte).error(R.drawable.profile_img).fitCenter().into(ci_profile);
+                    }else {
+                        Alerts.show(mContext , responseBody.getMessage());
+                    }
+                }
+                @Override
+                public void onResponseFailed(String error) {
+                    Alerts.show(mContext, error);
+                }
+            });
+        }else {
+            cd.show(mContext);
+        }
+
+    }
 }

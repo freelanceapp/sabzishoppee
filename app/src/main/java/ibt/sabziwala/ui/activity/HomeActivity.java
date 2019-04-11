@@ -1,9 +1,13 @@
 package ibt.sabziwala.ui.activity;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -23,16 +27,20 @@ import ibt.sabziwala.R;
 import ibt.sabziwala.constant.Constant;
 import ibt.sabziwala.database.DatabaseHandler;
 import ibt.sabziwala.model.User;
+import ibt.sabziwala.model.login_responce.LoginModel;
 import ibt.sabziwala.retrofit_provider.RetrofitService;
+import ibt.sabziwala.retrofit_provider.WebResponse;
 import ibt.sabziwala.ui.fragment.AboutFragment;
 import ibt.sabziwala.ui.fragment.ChangePasswordFragment;
 import ibt.sabziwala.ui.fragment.ContactUsFragment;
 import ibt.sabziwala.ui.fragment.HelpFragment;
 import ibt.sabziwala.ui.fragment.HomeFragment;
+import ibt.sabziwala.utils.Alerts;
 import ibt.sabziwala.utils.AppPreference;
 import ibt.sabziwala.utils.BaseActivity;
 import ibt.sabziwala.utils.ConnectionDirector;
 import ibt.sabziwala.utils.Utility;
+import retrofit2.Response;
 
 public class HomeActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
@@ -84,22 +92,13 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         rv_cart = findViewById(R.id.rv_cart);
         iv_ShowUserImage = view.findViewById(R.id.iv_ShowUserImage);
         tv_ShowUserName = view.findViewById(R.id.tv_ShowUserName);
-
+        profileApi();
         rv_cart.setOnClickListener(this);
         rv_home.setOnClickListener(this);
         rv_history.setOnClickListener(this);
         rv_profile.setOnClickListener(this);
 
-        if (User.getUser().getUser().getUserName() == null) {
-            tv_ShowUserName.setText("User Name");
-        } else {
-            tv_ShowUserName.setText(User.getUser().getUser().getUserName());
-        }
-        if (User.getUser().getUser().getUserProfilePicture() == null) {
-            iv_ShowUserImage.setImageResource(R.drawable.ic_user);
-        } else {
-            Glide.with(mContext).load(User.getUser().getUser().getUserProfilePicture()).error(R.drawable.ic_user).into(iv_ShowUserImage);
-        }
+
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -203,6 +202,41 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                 .setNegativeButton("NO", null)
                 .create()
                 .show();
+    }
+
+    private void profileApi() {
+        String userId = AppPreference.getStringPreference(mContext , Constant.User_Id);
+        if (cd.isNetWorkAvailable()) {
+            RetrofitService.getProfile(new Dialog(mContext), retrofitApiClient.getprofile(userId), new WebResponse() {
+                @Override
+                public void onResponseSuccess(Response<?> result) {
+                    LoginModel responseBody = (LoginModel) result.body();
+                    if (!responseBody.getError())
+                    {
+                        tv_ShowUserName.setText(responseBody.getUser().getUserName());
+                        if (!responseBody.getUser().getUserProfilePicture().isEmpty()) {
+                            String base64String = responseBody.getUser().getUserProfilePicture();
+                            String base64Image = base64String.split(",")[1];
+                            byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
+                            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                            iv_ShowUserImage.setImageBitmap(decodedByte);
+                        }else {
+                            iv_ShowUserImage.setImageResource(R.drawable.ic_user);
+                        }
+                        //Glide.with(mContext).load(decodedByte).error(R.drawable.profile_img).fitCenter().into(ci_profile);
+                    }else {
+                        Alerts.show(mContext , responseBody.getMessage());
+                    }
+                }
+                @Override
+                public void onResponseFailed(String error) {
+                    Alerts.show(mContext, error);
+                }
+            });
+        }else {
+            cd.show(mContext);
+        }
+
     }
 
 }

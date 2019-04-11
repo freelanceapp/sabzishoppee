@@ -48,7 +48,8 @@
                 android:textColor="@color/black"
                 android:background="@drawable/bg_layout"
                 android:textSize="14sp"
-                android:textStyle="normal" />
+                android:textStyle="normal"
+                android:digits="AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz" />
 
             <EditText
                 android:id="@+id/et_email_address"
@@ -94,7 +95,9 @@
                 android:background="@drawable/bg_layout"
                 android:textColor="@color/black"
                 android:textSize="14sp"
-                android:textStyle="normal" />
+                android:textStyle="normal"
+                android:digits="0123456789AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz@#$%*+_-':;"
+                />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -117,7 +120,8 @@
                 android:background="@drawable/bg_layout"
                 android:textColor="@color/black"
                 android:textSize="14sp"
-                android:textStyle="normal" />
+                android:textStyle="normal"
+                android:digits="0123456789AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz@#$%*+_-':;"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

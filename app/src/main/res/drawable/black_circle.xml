@@ -6,6 +6,5 @@
         android:centerColor="@color/red_a"
         android:startColor="@color/red_400"
         android:endColor="@color/red_900"/>
-    <stroke android:width="0.5sp"
-        android:color="@color/green_dark"/>
+
 </shape>
