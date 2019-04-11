@@ -87,7 +87,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         btn_float_cart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(SearchActivity.this, AddtoCartActivity.class);
+                Intent intent = new Intent(SearchActivity.this, AddToCartActivity.class);
                 startActivity(intent);
                 finish();
             }

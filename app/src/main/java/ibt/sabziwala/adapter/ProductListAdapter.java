@@ -163,18 +163,27 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         }
 
 
-     if (product.isInCart()){
-         viewHolder.btnAdd.setVisibility(View.GONE);
-         viewHolder.ll_product_action.setVisibility(View.VISIBLE);
-     }else{
-         viewHolder.btnAdd.setVisibility(View.VISIBLE);
-         viewHolder.ll_product_action.setVisibility(View.GONE);
-     }
+        if (product.isInCart()){
+            viewHolder.btnAdd.setVisibility(View.GONE);
+            viewHolder.ll_product_action.setVisibility(View.VISIBLE);
+        }else{
+            viewHolder.btnAdd.setVisibility(View.VISIBLE);
+            viewHolder.ll_product_action.setVisibility(View.GONE);
+        }
+
+        int minQty = Integer.parseInt(product.getMinQuantity());
 
         if (product.getProductQuantity().equals("0")) {
             viewHolder.tv_product_qty.setText(product.getMinQuantity());
         } else {
             viewHolder.tv_product_qty.setText(product.getProductQuantity());
+        }
+
+        int qty = Integer.parseInt(viewHolder.tv_product_qty.getText().toString());
+        if (qty > minQty) {
+            viewHolder.iv_product_minus.setImageResource(R.drawable.icf_round_minus);
+        } else {
+            viewHolder.iv_product_minus.setImageResource(R.drawable.ic_delete);
         }
     }
 
@@ -411,6 +420,11 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
                     e.printStackTrace();
                 }
                 if (qty == minQty) {
+                    databaseCart.deleteContact(productDetail);
+                    //cartProductList.remove(pos);
+                    productFilteredList.get(pos).setInCart(false);
+                    holder.btnAdd.setVisibility(View.VISIBLE);
+                    holder.ll_product_action.setVisibility(View.GONE);
                        /* databaseCart.deleteContact(productDetail);
                         cartProductList.remove(pos);
                         adapter.notifyDataSetChanged();*/
@@ -421,11 +435,12 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
                     databaseCart.updateUrl(productDetail);
                     //tvQty.setText(qty + "");
                 }
-                if (qty > 1) {
+                if (qty > minQty) {
                     holder.iv_product_minus.setImageResource(R.drawable.icf_round_minus);
                     holder.tv_product_qty.setText(qty+"");
                 } else {
-                    // minus_iv.setImageResource(R.drawable.ic_delete);
+                    holder.iv_product_minus.setImageResource(R.drawable.ic_delete);
+                    holder.tv_product_qty.setText(qty+"");
                 }
             } else {
                 cart_count = cart_count + 1;

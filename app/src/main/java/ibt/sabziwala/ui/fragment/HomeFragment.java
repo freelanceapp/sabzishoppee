@@ -481,8 +481,10 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                     Toast.makeText(mContext, "Added to Cart", Toast.LENGTH_SHORT).show();
                     productArrayListAll.get(pos).setInCart(true);
                     adapter.notifyDataSetChanged();
+                    ImageView minus_iv = (ImageView) v.findViewById(R.id.iv_product_minus);
                     v.findViewById(R.id.btnAdd).setVisibility(View.GONE);
                     v.findViewById(R.id.ll_product_action).setVisibility(View.VISIBLE);
+                    //minus_iv.setImageResource(R.drawable.ic_delete);
                     databaseCart.addItemCart(productDetail);
                 }
             } else {
@@ -492,8 +494,10 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                 Toast.makeText(mContext, "Added to Cart", Toast.LENGTH_SHORT).show();
                 productArrayListAll.get(pos).setInCart(true);
                 adapter.notifyDataSetChanged();
+                ImageView minus_iv = (ImageView) v.findViewById(R.id.iv_product_minus);
                 v.findViewById(R.id.btnAdd).setVisibility(View.GONE);
                 v.findViewById(R.id.ll_product_action).setVisibility(View.VISIBLE);
+                //minus_iv.setImageResource(R.drawable.ic_delete);
                 databaseCart.addItemCart(productDetail);
             }
         }
@@ -546,10 +550,10 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                 }
                 //tvQty.setText(qty + "");
                 setTotal();
-                if (qty > 1) {
+                if (qty > Integer.parseInt(productArrayListAll.get(pos).getMinQuantity())) {
                     minus_iv.setImageResource(R.drawable.icf_round_minus);
                 } else {
-                    // minus_iv.setImageResource(R.drawable.ic_delete);
+                    minus_iv.setImageResource(R.drawable.ic_delete);
                 }
             } else {
                 cart_count = cart_count + 1;
@@ -608,9 +612,12 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                     e.printStackTrace();
                 }
                 if (qty == minQty) {
-                       /* databaseCart.deleteContact(productDetail);
-                        cartProductList.remove(pos);
-                        adapter.notifyDataSetChanged();*/
+                        databaseCart.deleteContact(productDetail);
+                        //cartProductList.remove(pos);
+                        productArrayListAll.get(pos).setInCart(false);
+                        adapter.notifyDataSetChanged();
+                        /*v.findViewById(R.id.btnAdd).setVisibility(View.VISIBLE);
+                        v.findViewById(R.id.ll_product_action).setVisibility(View.GONE);*/
                 } else {
                     qty--;
                     productDetail.setQuantity(qty);
@@ -618,10 +625,10 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                     databaseCart.updateUrl(productDetail);
                     //tvQty.setText(qty + "");
                 }
-                if (qty > 1) {
+                if (qty > Integer.parseInt(productArrayListAll.get(pos).getMinQuantity())) {
                     minus_iv.setImageResource(R.drawable.icf_round_minus);
                 } else {
-                    // minus_iv.setImageResource(R.drawable.ic_delete);
+                    minus_iv.setImageResource(R.drawable.ic_delete);
                 }
             } else {
                 cart_count = cart_count + 1;
