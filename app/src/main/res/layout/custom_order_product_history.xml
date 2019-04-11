@@ -69,8 +69,7 @@
                     android:layout_height="wrap_content"
                     android:padding="2dp"
                     android:textColor="@color/black"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
+                    android:textSize="10sp"
                     android:id="@+id/tv_order_product_type"/>
 
 

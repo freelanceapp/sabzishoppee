@@ -66,17 +66,16 @@ public class AdapterConfirmation extends RecyclerView.Adapter<AdapterConfirmatio
         float price = Float.parseFloat(productDetail.getPrice());
         float percent = Float.parseFloat(productDetail.getDiscount());
         float dis1 =  price * ((100-percent)/100);
-        float round_pr = Math.round(dis1);
+        //float round_pr = Math.round(dis1);
 
 
 
-        holder.price_tv.setText("" + round_pr+"Rs");
+        holder.price_tv.setText("" + dis1+"Rs");
         holder.type_tv.setText(" " + productDetail.getQuantity_type());
         holder.quantity_tv.setText(productDetail.getOrder_quantity()+"Kg");
         holder.qty_tv.setText(list.get(position).getQuantity() + "");
 
-        int total = (int) (round_pr * list.get(position).getQuantity());
-
+        int total = (int) (dis1 * list.get(position).getQuantity());
         holder.tv_adpcart_total.setText("Total "+ total);
 
         if (productDetail.getImage() != null) {

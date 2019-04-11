@@ -75,7 +75,8 @@
                         android:textColor="@color/black"
                         android:textSize="14sp"
                         android:textStyle="normal"
-                        android:background="@color/white"/>
+                        android:background="@color/white"
+                        android:digits="AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz"/>
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1sp"

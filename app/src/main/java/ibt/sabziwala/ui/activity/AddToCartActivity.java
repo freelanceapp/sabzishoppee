@@ -87,7 +87,6 @@ public class AddToCartActivity extends BaseActivity implements View.OnClickListe
     }
 
     public void setTotal() {
-
         ArrayList<ProductDetail> total_list = databaseCart.getAllUrlList();
         cart_number.setText("" + total_list.size());
         total = 0;

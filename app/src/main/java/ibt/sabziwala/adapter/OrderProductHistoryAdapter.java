@@ -63,8 +63,8 @@ public class OrderProductHistoryAdapter extends RecyclerView.Adapter<OrderProduc
         float price = Float.parseFloat(product.getProductPrice());
         float percent = Float.parseFloat(product.getProductDiscount());
         float dis1 =  price * ((100-percent)/100);
-        float round_pr = Math.round(dis1);
-        viewHolder.tv_product_price.setText("Rs. "+round_pr);
+        //float round_pr = Math.round(dis1);
+        viewHolder.tv_product_price.setText("Rs. "+dis1);
 
 
         if (product.getProductType().equals("0"))

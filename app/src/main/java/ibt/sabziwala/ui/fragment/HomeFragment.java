@@ -63,7 +63,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     private ArrayList<Product> productArrayListVagitable = new ArrayList<>();
     private ArrayList<Product> productArrayListAll = new ArrayList<>();
     private ArrayList<Product> productArrayListAtoZ = new ArrayList<>();
-
+    float total = 0;
     private ProductListAdapter adapter;
     private int position;
 
@@ -135,7 +135,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         indicator = (CirclePageIndicator) view.findViewById(R.id.indicator);
         btnFilter.setOnClickListener(this);
         llFilter.setVisibility(View.GONE);
-
 
         btn_fruits.setBackgroundResource(R.color.green_50);
         btn_vagitable.setBackgroundResource(R.color.green_50);
@@ -210,7 +209,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
             public void run() {
                 handler.post(Update);
             }
-        }, 3000, 3000);
+        }, 4000, 4000);
         indicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
@@ -729,27 +728,22 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         }
     }
 
+
     public void setTotal() {
-        float total = 0;
         ArrayList<ProductDetail> total_list = databaseCart.getAllUrlList();
         cart_number.setText("" + total_list.size());
+        total = 0;
         AppPreference.setIntegerPreference(mContext, Constant.CART_ITEM_COUNT, total_list.size());
         for (int i = 0; i < total_list.size(); i++) {
-
             float percent = Float.parseFloat(total_list.get(i).getDiscount());
             float pr = Float.parseFloat(total_list.get(i).getPrice());
-            float dis1 =  pr * ((100-percent)/100);
+            float dis1 = pr * ((100 - percent) / 100);
             int qty = total_list.get(i).getQuantity();
-
             float tot = dis1 * qty;
             total += tot;
-            total = Math.round(total);
+            //total = Math.round(total);
         }
-        // place_bt.setText("Place this Order :   Rs " + total);
-
-        // tvTotalItem.setText("Total Items :"+total_list.size());
-        cart_price.setText(""+total);
-
+        cart_price.setText("" + total);
     }
 
     public String getTotal() {
@@ -761,13 +755,13 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         for (int i = 0; i < total_list.size(); i++) {
             float pr = Float.parseFloat(total_list.get(i).getPrice());
             int qty = total_list.get(i).getQuantity();
-
             float tot = pr * qty;
             total += tot;
             round_total = Math.round(total);
         }
         return String.valueOf(round_total);
     }
+
 
 
     private void showToast(String msg){

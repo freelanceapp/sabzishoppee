@@ -34,7 +34,9 @@
             android:lines="1"
             android:layout_margin="6sp"
             android:textColor="@color/red_a"
-            android:id="@+id/et_contact_name"/>
+            android:id="@+id/et_contact_name"
+            android:digits="AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz"
+            />
 
 
         <EditText
@@ -61,7 +63,8 @@
             android:inputType="text"
             android:layout_margin="6sp"
             android:textColor="@color/red_a"
-            android:id="@+id/et_contact_subject"/>
+            android:id="@+id/et_contact_subject"
+            android:digits="AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz"/>
 
         <EditText
             android:layout_width="match_parent"
@@ -76,7 +79,8 @@
             android:inputType="text"
             android:layout_margin="6sp"
             android:textColor="@color/red_a"
-            android:id="@+id/et_contact_message"/>
+            android:id="@+id/et_contact_message"
+            android:digits="1234567890AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz"/>
 
         <Button
             android:layout_width="match_parent"
