@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -27,6 +28,7 @@ public class AdapterCart extends RecyclerView.Adapter<AdapterCart.MyViewHolder> 
     ArrayList<ProductDetail> list;
     ArrayList<ProductDetail> dList;
     Context context;
+    private View.OnLongClickListener longClickListener;
     HelperManager helperManager;
     int proposition = 0;
     TextView select_col, select_size;
@@ -35,13 +37,14 @@ public class AdapterCart extends RecyclerView.Adapter<AdapterCart.MyViewHolder> 
     public DatabaseHandler databaseCart;
 
     public AdapterCart(ArrayList<ProductDetail> listt, Context context, View.OnClickListener onClickListener,
-                       DatabaseHandler databaseCart) {
+                       DatabaseHandler databaseCart, View.OnLongClickListener longListener) {
         this.list = listt;
         this.onClickListener = onClickListener;
         this.context = context;
         this.databaseCart = databaseCart;
         helperManager = new HelperManager(context);
         this.dList = listt;
+        this.longClickListener = longListener;
     }
 
     @Override
@@ -119,6 +122,9 @@ public class AdapterCart extends RecyclerView.Adapter<AdapterCart.MyViewHolder> 
         holder.plus_iv.setOnClickListener(onClickListener);
         holder.minus_iv.setTag(position);
         holder.minus_iv.setOnClickListener(onClickListener);
+
+        holder.cartLayout.setTag(position);
+        holder.cartLayout.setOnLongClickListener(longClickListener);
     }
 
     @Override
@@ -133,7 +139,6 @@ public class AdapterCart extends RecyclerView.Adapter<AdapterCart.MyViewHolder> 
         public static TextView name_tv, quantity_tv, type_tv, price_tv, qty_tv, tv_adpcart_edit;
         ImageView pro_image_iv, plus_iv, minus_iv;
         LinearLayout cartLayout;
-        public RelativeLayout viewBackground, viewForeground;
 
         public MyViewHolder(View view) {
             super(view);
@@ -147,8 +152,6 @@ public class AdapterCart extends RecyclerView.Adapter<AdapterCart.MyViewHolder> 
             plus_iv = view.findViewById(R.id.iv_adpcart_plus);
             minus_iv = view.findViewById(R.id.iv_adpcart_minus);
             tv_adpcart_edit = view.findViewById(R.id.tv_adpcart_edit);
-            viewBackground = view.findViewById(R.id.view_background);
-            viewForeground = view.findViewById(R.id.view_foreground);
         }
     }
 }
