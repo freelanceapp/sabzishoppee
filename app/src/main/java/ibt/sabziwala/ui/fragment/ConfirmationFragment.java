@@ -108,8 +108,9 @@ public class ConfirmationFragment extends BaseFragment implements View.OnClickLi
         Log.e("total ",".."+totalAmount);*/
 
         SharedPreferences prefs = getActivity().getSharedPreferences(mypreference, MODE_PRIVATE);
-        totalAmount1 = prefs.getString("total_price", "0");//"No name defined" is the default value.
 
+       // totalAmount1 = prefs.getString("total_price", "0");//"No name defined" is the default value.
+        totalAmount1 = AppPreference.getStringPreference(ctx, Constant.TOTAL_AMOUNT);
         recyclerView = view.findViewById(R.id.rv_conforder_recycler);
         total_tv = view.findViewById(R.id.tv_confirmation_total);
         tv_payment = view.findViewById(R.id.tv_payment);
@@ -143,16 +144,21 @@ public class ConfirmationFragment extends BaseFragment implements View.OnClickLi
     public void onResume() {
         super.onResume();
 
-        SharedPreferences prefs = getActivity().getSharedPreferences(mypreference, MODE_PRIVATE);
-        totalAmount1 = prefs.getString("total_price", "0");//"No name defined" is the default value.
+       /* SharedPreferences prefs = getActivity().getSharedPreferences(mypreference, MODE_PRIVATE);
+        totalAmount1 = prefs.getString("total_price", "0");//"No name defined" is the default value// .*/
+
+        totalAmount1 = AppPreference.getStringPreference(ctx, Constant.TOTAL_AMOUNT);
     }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
-            SharedPreferences prefs = getActivity().getSharedPreferences(mypreference, MODE_PRIVATE);
-            totalAmount1 = prefs.getString("total_price", "0");//"No name defined" is the default value.        }
+
+            totalAmount1 = AppPreference.getStringPreference(ctx, Constant.TOTAL_AMOUNT);
+
+           /* SharedPreferences prefs = getActivity().getSharedPreferences(mypreference, MODE_PRIVATE);
+            totalAmount1 = prefs.getString("total_price", "0");*///"No name defined" is the default value.        }
         }
     }
 

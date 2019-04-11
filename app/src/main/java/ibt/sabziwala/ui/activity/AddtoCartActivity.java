@@ -47,7 +47,7 @@ public class AddtoCartActivity extends BaseActivity implements View.OnClickListe
     private ArrayList<ProductDetail> cartProductList = new ArrayList<>();
     private AdapterCart adapterCart;
     TextView tvTotalItem, tvTotalPrice;
-
+    float total = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,7 +84,7 @@ public class AddtoCartActivity extends BaseActivity implements View.OnClickListe
     }
 
     public void setTotal() {
-        float total = 0;
+
         ArrayList<ProductDetail> total_list = databaseCart.getAllUrlList();
         cart_number.setText("" + total_list.size());
         AppPreference.setIntegerPreference(ctx, Constant.CART_ITEM_COUNT, total_list.size());
@@ -231,6 +231,7 @@ public class AddtoCartActivity extends BaseActivity implements View.OnClickListe
             finish();
         } else {
             ArrayList<ProductDetail> cartlist = databaseCart.getAllUrlList();
+            AppPreference.setStringPreference(ctx, Constant.TOTAL_AMOUNT, String.valueOf(total));
             if (cartlist.size() > 0) {
                 startActivity(new Intent(ctx, CheckOutActivity.class));
                 finish();

@@ -32,7 +32,7 @@ public class AdapterConfirmation extends RecyclerView.Adapter<AdapterConfirmatio
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView name_tv, quantity_tv, type_tv, price_tv, qty_tv, tv_adpcart_edit;
+        TextView name_tv, quantity_tv, type_tv, price_tv, qty_tv, tv_adpcart_edit, tv_adpcart_total;
         ImageView pro_image_iv, plus_iv, minus_iv;
 
         public MyViewHolder(View view) {
@@ -47,6 +47,7 @@ public class AdapterConfirmation extends RecyclerView.Adapter<AdapterConfirmatio
             plus_iv = view.findViewById(R.id.iv_adpcart_plus);
             minus_iv = view.findViewById(R.id.iv_adpcart_minus);
             tv_adpcart_edit = view.findViewById(R.id.tv_adpcart_edit);
+            tv_adpcart_total = view.findViewById(R.id.tv_adpcart_total);
         }
     }
 
@@ -63,12 +64,20 @@ public class AdapterConfirmation extends RecyclerView.Adapter<AdapterConfirmatio
         holder.name_tv.setText(productDetail.getTitle());
 
         float price = Float.parseFloat(productDetail.getPrice());
-        float round_pr = Math.round(price);
+        float percent = Float.parseFloat(productDetail.getDiscount());
+        float dis1 =  price * ((100-percent)/100);
+        float round_pr = Math.round(dis1);
+
+
+
         holder.price_tv.setText("" + round_pr+"Rs");
         holder.type_tv.setText(" " + productDetail.getQuantity_type());
         holder.quantity_tv.setText(productDetail.getOrder_quantity()+"Kg");
         holder.qty_tv.setText(list.get(position).getQuantity() + "");
 
+        int total = (int) (round_pr * list.get(position).getQuantity());
+
+        holder.tv_adpcart_total.setText("Total "+ total);
 
         if (productDetail.getImage() != null) {
             Glide.with(context).load(productDetail.getImage()).error(R.drawable.splash_logo).into(holder.pro_image_iv);

@@ -32,7 +32,7 @@
                     android:layout_height="wrap_content"
                     android:text="Current Location"
                     android:layout_margin="6sp"
-                    android:background="@color/red_a"
+                    android:background="@drawable/bg_layout4"
                     android:textColor="@color/white"
                     android:textSize="14sp"
                     android:id="@+id/btn_current_location"/>

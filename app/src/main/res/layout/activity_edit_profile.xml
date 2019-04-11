@@ -165,8 +165,8 @@
                             android:layout_toLeftOf="@id/btn_calender"
                             android:background="@color/white"/>
                         <ImageView
-                            android:layout_width="40sp"
-                            android:layout_height="40sp"
+                            android:layout_width="35sp"
+                            android:layout_height="35sp"
                             android:layout_alignParentRight="true"
                             android:id="@+id/btn_calender"
                             android:src="@drawable/ic_calendar"

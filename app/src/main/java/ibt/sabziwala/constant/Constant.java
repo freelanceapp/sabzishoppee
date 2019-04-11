@@ -42,6 +42,7 @@ public class Constant {
     public static final String GalleryFragment = "Gallery";
     public static final String ShoppingFragment = "ShoppingFragment";
     public static final String ContactUsFragment = "ContactUsFragment";
+    public static final String TOTAL_AMOUNT = "TOTAL_AMOUNT";
 
 
     /*Preference*/

@@ -11,6 +11,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -34,7 +35,7 @@ import ibt.sabziwala.utils.Utility;
 public class HomeActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
     public static Toolbar toolbar1,toolbar;
-    private RelativeLayout rv_home,rv_cart, rv_history, rv_profile;
+    private LinearLayout rv_home,rv_cart, rv_history, rv_profile;
     public static TextView cart_number;
     public static int cart_count = 0;
     public static ImageView iv_ShowUserImage;

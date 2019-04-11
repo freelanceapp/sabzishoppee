@@ -336,7 +336,6 @@ public class ShoppingFragment extends BaseFragment implements View.OnClickListen
         }
     }
 
-
     private void getAddressApi() {
         String strUser_id = AppPreference.getStringPreference(mContext, Constant.User_Id);
         if (cd.isNetWorkAvailable()) {
