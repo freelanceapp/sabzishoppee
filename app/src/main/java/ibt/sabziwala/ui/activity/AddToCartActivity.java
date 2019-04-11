@@ -90,6 +90,7 @@ public class AddToCartActivity extends BaseActivity implements View.OnClickListe
 
         ArrayList<ProductDetail> total_list = databaseCart.getAllUrlList();
         cart_number.setText("" + total_list.size());
+        total = 0;
         AppPreference.setIntegerPreference(ctx, Constant.CART_ITEM_COUNT, total_list.size());
         for (int i = 0; i < total_list.size(); i++) {
             float percent = Float.parseFloat(total_list.get(i).getDiscount());
@@ -98,7 +99,7 @@ public class AddToCartActivity extends BaseActivity implements View.OnClickListe
             int qty = total_list.get(i).getQuantity();
             float tot = dis1 * qty;
             total += tot;
-            total = Math.round(total);
+            //total = Math.round(total);
         }
         // place_bt.setText("Place this Order :   Rs " + total);
         tvTotalItem.setText("Total Items :" + total_list.size());
