@@ -43,7 +43,7 @@ public class ProductDetailsActivity extends BaseActivity implements View.OnClick
     private LinearLayout llProductDetaildiscount,llProductDetailAvailability, llProductDetailStockQuantity, llProductDetailMinOrder, llProductDetailCostPrice,
             llProductDetailType;
 
-    private ImageView ivProductDetailImg, iv_product_plus, iv_product_minus;
+    private ImageView ivProductDetailImg, iv_product_plus, iv_product_minus, btn_product_detail_back;
     private TextView tv_product_qty;
     private Button btnAddtoCart;
     private CardView btnAdd;
@@ -94,6 +94,7 @@ public class ProductDetailsActivity extends BaseActivity implements View.OnClick
         tvProductDetailStockQuantity = findViewById(R.id.tvProductDetailStockQuantity);
         tvProductDetailType = findViewById(R.id.tvProductDetailType);
         ivProductDetailImg = findViewById(R.id.ivProductDetailImg);
+        btn_product_detail_back = findViewById(R.id.btn_product_detail_back);
 
         iv_product_plus = findViewById(R.id.iv_product_plus);
         iv_product_minus = findViewById(R.id.iv_product_minus);
@@ -112,6 +113,7 @@ public class ProductDetailsActivity extends BaseActivity implements View.OnClick
         btnAdd.setOnClickListener(this);
         iv_product_plus.setOnClickListener(this);
         iv_product_minus.setOnClickListener(this);
+        btn_product_detail_back.setOnClickListener(this);
 
         productDetailApi();
     }
@@ -223,8 +225,6 @@ public class ProductDetailsActivity extends BaseActivity implements View.OnClick
         }
     }
 
-
-
     @Override
     public void onClick(View view) {
         switch (view.getId())
@@ -241,6 +241,9 @@ public class ProductDetailsActivity extends BaseActivity implements View.OnClick
                 break;
             case R.id.iv_product_minus :
                 minusItem();
+                break;
+            case R.id.btn_product_detail_back :
+                finish();
                 break;
         }
     }

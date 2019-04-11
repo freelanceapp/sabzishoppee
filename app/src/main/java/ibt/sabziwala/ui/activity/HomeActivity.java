@@ -48,7 +48,6 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar1 = (Toolbar) findViewById(R.id.toolbar1);
         setSupportActionBar(toolbar);
 
         cart_number = (TextView)findViewById(R.id.cart_number);

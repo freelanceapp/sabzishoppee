@@ -374,8 +374,6 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
 
                     if (!responseBody.getError())
                     {
-                        Alerts.show(mContext , responseBody.getMessage());
-
                         et_fullname.setText(responseBody.getUser().getUserName());
                         et_email.setText(responseBody.getUser().getUserEmail());
                         et_mobile.setText(responseBody.getUser().getUserContact());

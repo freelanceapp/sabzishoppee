@@ -242,8 +242,6 @@ public class ShoppingFragment extends BaseFragment implements View.OnClickListen
                 country_et.setText("India");
                 hourse_no_et.setText(address.getHouseNumber());
                 zipcode_et.setText(address.getZipcode());
-
-
                 break;
         }
     }
@@ -320,7 +318,6 @@ public class ShoppingFragment extends BaseFragment implements View.OnClickListen
 
                     if (!addressModel.getError())
                     {
-                        Alerts.show(mContext, addressModel.getMessage());
                         ConfirmationFragment fragment = new ConfirmationFragment(ctx);
                         Utility.setFragment1(fragment, ctx, Constant.ShoppingFragment);
 
@@ -350,7 +347,6 @@ public class ShoppingFragment extends BaseFragment implements View.OnClickListen
                     AddressShowModel addressModel = (AddressShowModel) result.body();
                     if (!addressModel.getError())
                     {
-                        Alerts.show(mContext, addressModel.getMessage());
                         addressArrayList.addAll(addressModel.getAddress());
                         HashSet<ibt.sabziwala.model.address_show_responce.Address> hashSet = new HashSet<>();
                         hashSet.addAll(addressArrayList);

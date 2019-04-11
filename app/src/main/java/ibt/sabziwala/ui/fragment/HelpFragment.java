@@ -60,14 +60,10 @@ public class HelpFragment extends BaseFragment {
                 public void onResponseSuccess(Response<?> result) {
                     ContcatModel contcatModel = (ContcatModel) result.body();
                     if (!contcatModel.getResult()) {
-                        Alerts.show(mContext, contcatModel.getMessage());
-
                         tvAppName.setText(contcatModel.getContent().get(2).getContent());
                         tvEmailAddress.setText(contcatModel.getContent().get(1).getContent());
                         tvNumber.setText(contcatModel.getContent().get(0).getContent());
                         tvAddress.setText(contcatModel.getContent().get(3).getContent());
-
-
 
                     }else {
 

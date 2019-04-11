@@ -269,6 +269,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
             case R.id.btn_fruits :
 
+
+
                 initFruits();
 
                 break;
@@ -286,6 +288,14 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                 break;
 
             case R.id.tv_HightoLow :
+                tv_LowtoHigh.setBackground(getResources().getDrawable(R.drawable.bg_layout));
+                tv_a_to_z.setBackground(getResources().getDrawable(R.drawable.bg_layout));
+                tv_HightoLow.setBackground(getResources().getDrawable(R.drawable.bg_layout3));
+                tv_HightoLow.setTextColor(getResources().getColor(R.color.white));
+                tv_a_to_z.setTextColor(getResources().getColor(R.color.black));
+                tv_LowtoHigh.setTextColor(getResources().getColor(R.color.black));
+
+
                 System.out.println("-----Sorted JobCandidate by name: Ascending-----");
                 PriceProductSorter nameProductSorter = new PriceProductSorter(productArrayListAll);
                 ArrayList<Product> sortedJobCandidate = nameProductSorter.getSortedProductByHightoLow();
@@ -302,6 +312,14 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                 break;
 
             case R.id.tv_LowtoHigh :
+                tv_HightoLow.setBackground(getResources().getDrawable(R.drawable.bg_layout));
+                tv_a_to_z.setBackground(getResources().getDrawable(R.drawable.bg_layout));
+                tv_LowtoHigh.setBackground(getResources().getDrawable(R.drawable.bg_layout3));
+
+                tv_LowtoHigh.setTextColor(getResources().getColor(R.color.white));
+                tv_a_to_z.setTextColor(getResources().getColor(R.color.black));
+                tv_HightoLow.setTextColor(getResources().getColor(R.color.black));
+
                 PriceProductSorter priceProductSorter = new PriceProductSorter(productArrayListAll);
                 ArrayList<Product> sortedJobCandidate1 = priceProductSorter.getSortedJobCandidateByAge();
                 System.out.println("-----Sorted JobCandidate by age: Ascending-----");
@@ -323,6 +341,14 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                 break;
 
             case R.id.tv_a_to_z :
+                tv_HightoLow.setBackground(getResources().getDrawable(R.drawable.bg_layout));
+                tv_LowtoHigh.setBackground(getResources().getDrawable(R.drawable.bg_layout));
+                tv_a_to_z.setBackground(getResources().getDrawable(R.drawable.bg_layout3));
+
+                tv_a_to_z.setTextColor(getResources().getColor(R.color.white));
+                tv_LowtoHigh.setTextColor(getResources().getColor(R.color.black));
+                tv_HightoLow.setTextColor(getResources().getColor(R.color.black));
+
                 PriceProductSorter nameProductSorter2 = new PriceProductSorter(productArrayListAll);
                 ArrayList<Product> sortedJobCandidate2 = nameProductSorter2.getSortedJobCandidateByName();
                 productArrayListAtoZ.clear();
@@ -354,6 +380,12 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         btn_fruits.setBackgroundResource(R.color.green_50);
         btn_vagitable.setBackgroundResource(R.color.green_50);
         btn_all.setBackgroundResource(R.color.green_dark);
+
+        btn_all.setTextColor(getResources().getColor(R.color.white));
+        btn_fruits.setTextColor(getResources().getColor(R.color.black));
+        btn_vagitable.setTextColor(getResources().getColor(R.color.black));
+
+
         productArrayListAll.clear();
         productArrayListAll.addAll(productArrayList);
         if (cartProductList.size()>0){
@@ -377,6 +409,11 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         btn_fruits.setBackgroundResource(R.color.green_50);
         btn_vagitable.setBackgroundResource(R.color.green_dark);
         btn_all.setBackgroundResource(R.color.green_50);
+
+        btn_vagitable.setTextColor(getResources().getColor(R.color.white));
+        btn_fruits.setTextColor(getResources().getColor(R.color.black));
+        btn_all.setTextColor(getResources().getColor(R.color.black));
+
         productArrayListAll.clear();
         productArrayListAll.addAll(productArrayListVagitable);
         if (cartProductList.size()>0){
@@ -400,6 +437,11 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         btn_fruits.setBackgroundResource(R.color.green_dark);
         btn_vagitable.setBackgroundResource(R.color.green_50);
         btn_all.setBackgroundResource(R.color.green_50);
+
+        btn_vagitable.setTextColor(getResources().getColor(R.color.black));
+        btn_fruits.setTextColor(getResources().getColor(R.color.white));
+        btn_all.setTextColor(getResources().getColor(R.color.black));
+
         productArrayListAll.clear();
         productArrayListAll.addAll(productArrayListFruits);
         if (cartProductList.size()>0){

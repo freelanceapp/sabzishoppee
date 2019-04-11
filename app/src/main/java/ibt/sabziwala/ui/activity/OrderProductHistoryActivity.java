@@ -84,7 +84,6 @@ public class OrderProductHistoryActivity extends BaseActivity implements View.On
                     HistorySingleOrderModel orderHistoryModel = (HistorySingleOrderModel) result.body();
                     if (!orderHistoryModel.getError())
                     {
-                        Alerts.show(mContext, orderHistoryModel.getMessage());
                         tv_order_number.setText(orderHistoryModel.getOrder().get(0).getOrderNumber());
                         tv_order_amount.setText("Total Amount : "+orderHistoryModel.getOrder().get(0).getOrderAmount());
                         tv_order_date1.setText("Date : "+orderHistoryModel.getOrder().get(0).getOrderDate());

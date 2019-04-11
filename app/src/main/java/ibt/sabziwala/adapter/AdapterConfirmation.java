@@ -71,9 +71,11 @@ public class AdapterConfirmation extends RecyclerView.Adapter<AdapterConfirmatio
 
 
         if (productDetail.getImage() != null) {
-            Glide.with(context).load(productDetail.getImage()).error(R.drawable.logo2).into(holder.pro_image_iv);
+            Glide.with(context).load(productDetail.getImage()).error(R.drawable.splash_logo).into(holder.pro_image_iv);
+            holder.pro_image_iv.setVisibility(View.GONE);
         } else {
-            holder.pro_image_iv.setImageResource(R.drawable.logo2);
+            holder.pro_image_iv.setImageResource(R.drawable.splash_logo);
+            holder.pro_image_iv.setVisibility(View.GONE);
         }
 
         /*int qty = Integer.parseInt(holder.qty_tv.getText().toString());

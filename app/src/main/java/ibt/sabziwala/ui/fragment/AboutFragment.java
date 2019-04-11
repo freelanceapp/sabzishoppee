@@ -51,8 +51,6 @@ public class AboutFragment extends BaseFragment {
                 public void onResponseSuccess(Response<?> result) {
                     ContcatModel contcatModel = (ContcatModel) result.body();
                     if (!contcatModel.getResult()) {
-                        Alerts.show(mContext, contcatModel.getMessage());
-
                         if (contcatModel.getContent().size() == 0)
                         {
 

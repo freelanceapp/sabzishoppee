@@ -76,8 +76,10 @@ public class AdapterCart extends RecyclerView.Adapter<AdapterCart.MyViewHolder> 
         if (productDetail.getImage() != null) {
 
             Glide.with(context).load(productDetail.getImage()).error(R.drawable.splash_logo).into(holder.pro_image_iv);
+            holder.pro_image_iv.setVisibility(View.GONE);
         } else {
             holder.pro_image_iv.setImageResource(R.drawable.splash_logo);
+            holder.pro_image_iv.setVisibility(View.GONE);
         }
 
         try {

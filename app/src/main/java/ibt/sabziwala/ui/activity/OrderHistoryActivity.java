@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
@@ -84,16 +85,12 @@ public class OrderHistoryActivity extends BaseActivity implements View.OnClickLi
 
                     if (!orderHistoryModel.getError())
                     {
-                        Alerts.show(mContext, orderHistoryModel.getMessage());
-
                         orderArrayList.addAll(orderHistoryModel.getOrder());
 
                     }else {
                         Alerts.show(mContext, orderHistoryModel.getMessage());
                     }
                     adapter.notifyDataSetChanged();
-
-
                 }
 
                 @Override

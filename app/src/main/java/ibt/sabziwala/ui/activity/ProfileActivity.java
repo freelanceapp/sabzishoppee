@@ -76,7 +76,6 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
 
                         if (!responseBody.getError())
                         {
-                            Alerts.show(mContext , responseBody.getMessage());
                             tv_fullname.setText(responseBody.getUser().getUserName());
                             tv_email.setText(responseBody.getUser().getUserEmail());
                             tv_mobile.setText(responseBody.getUser().getUserContact());
