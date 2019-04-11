@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -68,11 +69,11 @@ public class AdapterCart extends RecyclerView.Adapter<AdapterCart.MyViewHolder> 
         float percent = Float.parseFloat(productDetail.getDiscount());
         float dis1 =  price * ((100-percent)/100);
         float round_pr = Math.round(dis1);
-        holder.price_tv.setText("" + round_pr+"Rs");
+        holder.price_tv.setText("" + dis1+"Rs");
         holder.quantity_tv.setText(productDetail.getOrder_quantity()+"Kg");
         holder.qty_tv.setText(dList.get(position).getQuantity() + "");
 
-        int total = (int) (round_pr * list.get(position).getQuantity());
+        float total = (float) (dis1 * list.get(position).getQuantity());
         holder.type_tv.setText(" " + total);
 
         if (productDetail.getImage() != null) {
@@ -132,6 +133,7 @@ public class AdapterCart extends RecyclerView.Adapter<AdapterCart.MyViewHolder> 
         public static TextView name_tv, quantity_tv, type_tv, price_tv, qty_tv, tv_adpcart_edit;
         ImageView pro_image_iv, plus_iv, minus_iv;
         LinearLayout cartLayout;
+        public RelativeLayout viewBackground, viewForeground;
 
         public MyViewHolder(View view) {
             super(view);
@@ -145,6 +147,8 @@ public class AdapterCart extends RecyclerView.Adapter<AdapterCart.MyViewHolder> 
             plus_iv = view.findViewById(R.id.iv_adpcart_plus);
             minus_iv = view.findViewById(R.id.iv_adpcart_minus);
             tv_adpcart_edit = view.findViewById(R.id.tv_adpcart_edit);
+            viewBackground = view.findViewById(R.id.view_background);
+            viewForeground = view.findViewById(R.id.view_foreground);
         }
     }
 }
