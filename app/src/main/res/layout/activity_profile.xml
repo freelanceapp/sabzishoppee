@@ -227,9 +227,10 @@
                 android:layout_height="120sp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="50dp"
-                android:src="@drawable/icon_profile1"
+                android:src="@drawable/ic_user"
                 android:id="@+id/ci_profile"
-                />
+                app:civ_border_width="1sp"
+                app:civ_border_color="@color/green_dark"/>
 
         </RelativeLayout>
     </ScrollView>

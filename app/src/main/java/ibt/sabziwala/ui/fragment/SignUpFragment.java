@@ -35,6 +35,7 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
     private EditText fullname, emailAddress, password, cPassword, cPhone;
     private String strName, strMobile, strEmailAddress, strPassword, strConfirmPassword;
     private String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+
     private TextView tvConfirmPasswordStrength, tvPasswordStrength;
 
     @Nullable

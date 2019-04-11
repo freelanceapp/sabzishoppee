@@ -267,7 +267,7 @@ public class ShoppingFragment extends BaseFragment implements View.OnClickListen
         String zipcode1 = zipcode_et1.getText().toString();
 
         if (strName.equals("") || strAddress.equals("") || strCountry.equals("") || strState.equals("") ||
-                strCity.equals("") || strZipCode.equals("") || strHouseNo.equals("") || strLandMark.equals("")) {
+                strCity.equals("") || strZipCode.equals("") || strHouseNo.equals("") ) {
 
             Utility.toastView(ctx, "Enter all details");
         } /*else if (mobile.length()>10 || mobile.length()<10){

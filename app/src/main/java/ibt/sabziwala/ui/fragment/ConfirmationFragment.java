@@ -190,7 +190,7 @@ public class ConfirmationFragment extends BaseFragment implements View.OnClickLi
                 productDataModel.setProductId(list.get(i).getId());
                 productDataModel.setProductDiscount(list.get(i).getDiscount());
                 productDataModel.setProductPrice(String.valueOf(tot));
-                productDataModel.setProductQuantity(list.get(i).getOrder_quantity());
+                productDataModel.setProductQuantity(String.valueOf(list.get(i).getQuantity()));
                 productDataModel.setProductType(list.get(i).getType());
 
 

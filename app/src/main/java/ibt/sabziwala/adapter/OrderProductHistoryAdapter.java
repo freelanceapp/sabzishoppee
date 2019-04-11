@@ -56,9 +56,23 @@ public class OrderProductHistoryAdapter extends RecyclerView.Adapter<OrderProduc
 
         int number = i+1;
         viewHolder.tv_product_name.setText(""+product.getProductName());
-        viewHolder.tv_product_price.setText("Rs. "+product.getProductPrice());
         viewHolder.tv_order_product_number.setText(""+number);
-        viewHolder.tv_product_quantity.setText(product.getProductQuantity());
+        viewHolder.tv_product_quantity.setText("Order Qua. "+product.getProductQuantity());
+
+
+        float price = Float.parseFloat(product.getProductPrice());
+        float percent = Float.parseFloat(product.getProductDiscount());
+        float dis1 =  price * ((100-percent)/100);
+        float round_pr = Math.round(dis1);
+        viewHolder.tv_product_price.setText("Rs. "+round_pr);
+
+
+        if (product.getProductType().equals("0"))
+        {
+            viewHolder.tv_order_product_type.setText("Fruits");
+        }else {
+            viewHolder.tv_order_product_type.setText("Vegitable");
+        }
 
        // viewHolder.tv_product_item.setText(""+product.getOrderNumber());
 
@@ -84,14 +98,14 @@ public class OrderProductHistoryAdapter extends RecyclerView.Adapter<OrderProduc
     public class ViewHolder extends RecyclerView.ViewHolder {
         private ImageView ivProductImg;
         private LinearLayout ll_history;
-        private TextView tv_product_price, tv_product_quantity, tv_product_name,tv_product_type, tv_order_product_number;
+        private TextView tv_product_price, tv_product_quantity, tv_product_name,tv_order_product_type, tv_order_product_number;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tv_product_price = itemView.findViewById(R.id.tv_product_price);
             tv_product_quantity = itemView.findViewById(R.id.tv_product_quantity);
             tv_product_name = itemView.findViewById(R.id.tv_product_name);
-            tv_product_type = itemView.findViewById(R.id.tv_order_product_status);
+            tv_order_product_type = itemView.findViewById(R.id.tv_order_product_type);
             tv_order_product_number = itemView.findViewById(R.id.tv_order_product_number);
            // tv_order_number = itemView.findViewById(R.id.tv_order_number);
             ll_history = itemView.findViewById(R.id.ll_product_history);

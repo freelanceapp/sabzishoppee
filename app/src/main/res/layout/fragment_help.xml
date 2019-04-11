@@ -1,9 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".ui.fragment.HelpFragment">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="We Are Here To Help!"
+        android:textAllCaps="true"
+        android:padding="10sp"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:layout_margin="10sp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,14 +25,15 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_margin="4sp">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="App Name"
                 android:padding="6sp"
-                android:textColor="@color/red_a"
+                android:textColor="@color/black"
                 android:textStyle="bold"
                 android:layout_weight="1.5"/>
 
@@ -29,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:text="App Name"
                 android:padding="6sp"
-                android:textColor="@color/red_a"
+                android:textColor="@color/gray_a"
                 android:layout_weight=".5"
                 android:id="@+id/tv_app_name"/>
 
@@ -44,7 +57,7 @@
                 android:layout_height="wrap_content"
                 android:text="Number"
                 android:padding="6sp"
-                android:textColor="@color/red_a"
+                android:textColor="@color/black"
                 android:textStyle="bold"
                 android:layout_weight="1.5"/>
 
@@ -53,7 +66,7 @@
                 android:layout_height="wrap_content"
                 android:text="97986"
                 android:padding="6sp"
-                android:textColor="@color/red_a"
+                android:textColor="@color/gray_a"
                 android:layout_weight=".5"
                 android:id="@+id/tv_number"/>
 
@@ -69,7 +82,7 @@
                 android:layout_height="wrap_content"
                 android:text="Email"
                 android:padding="6sp"
-                android:textColor="@color/red_a"
+                android:textColor="@color/black"
                 android:textStyle="bold"
                 android:layout_weight="1.5"/>
 
@@ -78,7 +91,7 @@
                 android:layout_height="wrap_content"
                 android:text="App Name"
                 android:padding="6sp"
-                android:textColor="@color/red_a"
+                android:textColor="@color/gray_a"
                 android:layout_weight=".5"
                 android:id="@+id/tv_email"/>
 
@@ -94,7 +107,7 @@
                 android:layout_height="wrap_content"
                 android:text="Address"
                 android:padding="6sp"
-                android:textColor="@color/red_a"
+                android:textColor="@color/black"
                 android:textStyle="bold"
                 android:layout_weight="1.5"/>
 
@@ -103,7 +116,7 @@
                 android:layout_height="wrap_content"
                 android:text="App Name"
                 android:padding="6sp"
-                android:textColor="@color/red_a"
+                android:textColor="@color/gray_a"
                 android:layout_weight=".5"
                 android:id="@+id/tv_address"/>
 
@@ -113,4 +126,4 @@
     </LinearLayout>
 
 
-</RelativeLayout>
+</LinearLayout>

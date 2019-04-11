@@ -69,9 +69,11 @@ public class AdapterCart extends RecyclerView.Adapter<AdapterCart.MyViewHolder> 
         float dis1 =  price * ((100-percent)/100);
         float round_pr = Math.round(dis1);
         holder.price_tv.setText("" + round_pr+"Rs");
-        holder.type_tv.setText(" " + productDetail.getQuantity_type());
         holder.quantity_tv.setText(productDetail.getOrder_quantity()+"Kg");
         holder.qty_tv.setText(dList.get(position).getQuantity() + "");
+
+        int total = (int) (round_pr * list.get(position).getQuantity());
+        holder.type_tv.setText(" " + total);
 
         if (productDetail.getImage() != null) {
 

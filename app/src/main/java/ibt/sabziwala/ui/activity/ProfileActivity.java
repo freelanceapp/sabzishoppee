@@ -24,6 +24,8 @@ import ibt.sabziwala.utils.BaseActivity;
 import ibt.sabziwala.utils.ConnectionDirector;
 import retrofit2.Response;
 
+import static ibt.sabziwala.ui.activity.HomeActivity.iv_ShowUserImage;
+
 public class ProfileActivity extends BaseActivity implements View.OnClickListener {
 
     private TextView tv_fullname, tv_email, tv_mobile , tv_address, tv_dob, tvGender;
@@ -88,6 +90,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
                                 byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
                                 Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                                 ci_profile.setImageBitmap(decodedByte);
+                                iv_ShowUserImage.setImageBitmap(decodedByte);
                             }else {
                                 ci_profile.setImageResource(R.drawable.ic_user);
                             }

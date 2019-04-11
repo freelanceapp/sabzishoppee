@@ -71,7 +71,7 @@
                     android:textColor="@color/black"
                     android:textSize="14sp"
                     android:textStyle="bold"
-                    android:id="@+id/tv_order_product_status"/>
+                    android:id="@+id/tv_order_product_type"/>
 
 
             </LinearLayout>
