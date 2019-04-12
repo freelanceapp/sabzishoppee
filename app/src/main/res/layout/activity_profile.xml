@@ -230,7 +230,8 @@
                 android:src="@drawable/ic_user"
                 android:id="@+id/ci_profile"
                 app:civ_border_width="1sp"
-                app:civ_border_color="@color/green_dark"/>
+                app:civ_border_color="@color/green_dark"
+                app:civ_circle_background_color="@color/green_dark"/>
 
         </RelativeLayout>
     </ScrollView>
