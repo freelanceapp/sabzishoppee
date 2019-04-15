@@ -52,7 +52,8 @@
 
         <activity
             android:name="ibt.sabziwala.ui.activity.MapsActivity"
-            android:label="@string/title_activity_maps" />
+            android:label="@string/title_activity_maps"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity
             android:name="ibt.sabziwala.ui.activity.OrderProductHistoryActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />

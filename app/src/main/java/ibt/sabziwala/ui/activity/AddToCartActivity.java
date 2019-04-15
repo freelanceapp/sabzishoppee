@@ -254,7 +254,9 @@ public class AddToCartActivity extends BaseActivity implements View.OnClickListe
             ArrayList<ProductDetail> cartlist = databaseCart.getAllUrlList();
             AppPreference.setStringPreference(ctx, Constant.TOTAL_AMOUNT, String.valueOf(total));
             if (cartlist.size() > 0) {
-                startActivity(new Intent(ctx, CheckOutActivity.class));
+                Intent intent = new Intent(mContext, CheckOutActivity.class);
+                intent.putExtra("FragmentPass", "ShoppingFragment");
+                startActivity(intent);
                 //finish();
             }
         }

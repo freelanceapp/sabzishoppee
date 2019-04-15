@@ -84,7 +84,7 @@ public class MyPlacesAdapter extends BaseAdapter implements Filterable {
         // according to distance
         double latitude=30.7333;
         double longitude=76.7794;
-        String API_KEY="AIzaSyD4DSZiiWMJdVgNid2yqrIIPhxKY7sFHqg";
+        String API_KEY="AIzaSyBwhwpxhz_rq-Qe9JnHgpxvM-ujbkrvDn4";
         String url= "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+latitude+","+longitude+"&rankby=distance&name="+constraint+"&key="+API_KEY;
         return getPlaces(url);
     }

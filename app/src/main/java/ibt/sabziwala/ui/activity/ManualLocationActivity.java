@@ -53,7 +53,6 @@ import ibt.sabziwala.adapter.PlaceArrayAdapter;
 public class ManualLocationActivity extends AppCompatActivity implements  GoogleApiClient.OnConnectionFailedListener,
         GoogleApiClient.ConnectionCallbacks, OnMapReadyCallback, LocationListener, View.OnClickListener{
 
-
     private static final String LOG_TAG = "MainActivity";
     private SupportMapFragment mapFragment;
     private Location mLocation;
@@ -92,8 +91,7 @@ public class ManualLocationActivity extends AppCompatActivity implements  Google
                 BOUNDS_MOUNTAIN_VIEW, null);
         actv.setAdapter(mPlaceArrayAdapter);
 
-        mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+        mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, fruits);
@@ -140,7 +138,6 @@ public class ManualLocationActivity extends AppCompatActivity implements  Google
                 }
             }
         });
-
     }
 
     private AdapterView.OnItemClickListener mAutocompleteClickListener
@@ -157,15 +154,12 @@ public class ManualLocationActivity extends AppCompatActivity implements  Google
         }
     };
 
-
-    private ResultCallback<PlaceBuffer> mUpdatePlaceDetailsCallback
-            = new ResultCallback<PlaceBuffer>() {
+    private ResultCallback<PlaceBuffer> mUpdatePlaceDetailsCallback = new ResultCallback<PlaceBuffer>() {
         @SuppressLint("RestrictedApi")
         @Override
         public void onResult(PlaceBuffer places) {
             if (!places.getStatus().isSuccess()) {
-                Log.e(LOG_TAG, "Place query did not complete. Error: " +
-                        places.getStatus().toString());
+                Log.e(LOG_TAG, "Place query did not complete. Error: " + places.getStatus().toString());
                 return;
             }
             // Selecting the first object buffer.
@@ -181,7 +175,6 @@ public class ManualLocationActivity extends AppCompatActivity implements  Google
             mapFragment.getMapAsync(googleMap -> {
                 googleMap.clear();
                 googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-
                 googleMap.addMarker(new MarkerOptions()
                         .position(new LatLng(place.getLatLng().latitude, place.getLatLng().longitude))
                         .title("" + place.getName())

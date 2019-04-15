@@ -7,13 +7,39 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:layout_above="@+id/ll_shopping_continuepay">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_margin="10sp"
             android:layout_weight="1"
             android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/bg_layout4"
+                android:id="@+id/btn_current_location"
+                android:gravity="center"
+                android:padding="10sp"
+                android:layout_margin="6sp">
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/ic_my_location"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Add New Address"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:layout_margin="4sp"/>
+            </LinearLayout>
+
+
 
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
@@ -25,17 +51,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginTop="6sp">
+                android:layout_marginTop="6sp"
+                android:visibility="gone">
 
-                <Button
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Current Location"
-                    android:layout_margin="6sp"
-                    android:background="@drawable/bg_layout4"
-                    android:textColor="@color/white"
-                    android:textSize="14sp"
-                    android:id="@+id/btn_current_location"/>
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
@@ -361,30 +379,31 @@
                     </android.support.design.widget.TextInputLayout>
                 </LinearLayout>
             </LinearLayout>
-            <LinearLayout
-                android:id="@+id/ll_shopping_continuepay"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginBottom="20sp"
-                android:layout_alignParentBottom="true"
-                android:background="@color/green_dark"
-                android:orientation="horizontal">
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="Continue to payment"
-                    android:textAllCaps="true"
-                    android:textColor="@color/white"
-                    android:textSize="16dp" />
-
-            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 
+    <LinearLayout
+        android:id="@+id/ll_shopping_continuepay"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/green_dark"
+        android:orientation="horizontal"
+        android:visibility="gone">
 
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Continue to payment"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="16dp"
+            />
+
+    </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:layout_width="wrap_content"

@@ -50,4 +50,6 @@ public class MyGooglePlaces {
         this.latitude=lat;
         this.longitude=lon;
     }
+
+
 }

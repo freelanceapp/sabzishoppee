@@ -72,6 +72,7 @@ public class Constant {
     public static final String ADDRESS_LAT = "ADDRESS_LAT";
     public static final String ADDRESS_LONG = "ADDRESS_LONG";
     public static final String ADDRESS_LANDMARK = "ADDRESS_LANDMARK";
+    public static final String CONTRY = "CONTRY";
     public static final String Password = "Password";
     public static final String SubcategoryName = "SubcategoryName";
     public static final String ProductName = "ProductName";

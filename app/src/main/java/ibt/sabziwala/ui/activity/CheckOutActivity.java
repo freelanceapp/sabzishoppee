@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import ibt.sabziwala.R;
 import ibt.sabziwala.constant.Constant;
 import ibt.sabziwala.database.DatabaseHandler;
+import ibt.sabziwala.ui.fragment.ConfirmationFragment;
 import ibt.sabziwala.ui.fragment.ShoppingFragment;
 import ibt.sabziwala.utils.Utility;
 
@@ -29,6 +30,7 @@ public class CheckOutActivity extends AppCompatActivity {
     private FrameLayout viewPager;
 
     public DatabaseHandler databaseCart;
+    private String fragmentPass;
     // private GoogleApiClient googleApiClient;
 
     @Override
@@ -45,6 +47,8 @@ public class CheckOutActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        fragmentPass = getIntent().getStringExtra("FragmentPass");
+
         back_iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -54,12 +58,22 @@ public class CheckOutActivity extends AppCompatActivity {
             }
         });
 
-        setFragment();
+        if (fragmentPass.equals("ConfirmationFragment"))
+        {
+            setFragment2();
+        }else {
+            setFragment();
+        }
     }
 
     private void setFragment() {
         ShoppingFragment fragment = new ShoppingFragment(ctx);
-        Utility.setFragment2(fragment, ctx, Constant.Home);
+        Utility.setFragment2(fragment, ctx, Constant.ShoppingFragment);
+    }
+
+    private void setFragment2() {
+        ConfirmationFragment fragment = new ConfirmationFragment(ctx);
+        Utility.setFragment1(fragment, ctx, Constant.ShoppingFragment);
     }
 
     @Override

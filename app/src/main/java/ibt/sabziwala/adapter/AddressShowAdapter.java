@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -69,10 +70,10 @@ public class AddressShowAdapter extends RecyclerView.Adapter<AddressShowAdapter.
 
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private LinearLayout ll_show_address;
-        private TextView tv_state, tv_city, tv_address1;
+        private TextView tv_state, tv_city, tv_address1, btn_edit;
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -81,8 +82,19 @@ public class AddressShowAdapter extends RecyclerView.Adapter<AddressShowAdapter.
             tv_city = itemView.findViewById(R.id.tv_city);
             tv_state = itemView.findViewById(R.id.tv_state);
             ll_show_address = itemView.findViewById(R.id.ll_show_address);
+            btn_edit = itemView.findViewById(R.id.btn_edit);
+            btn_edit.setOnClickListener(this);
 
         }
 
+        @Override
+        public void onClick(View view) {
+            switch (view.getId())
+            {
+                case R.id.btn_edit :
+                    Toast.makeText(mContext, productArrayList.get(getAdapterPosition()).getAddressId(), Toast.LENGTH_SHORT).show();
+                    break;
+            }
+        }
     }
 }

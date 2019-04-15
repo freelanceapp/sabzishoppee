@@ -20,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -39,6 +40,7 @@ import ibt.sabziwala.model.address_show_responce.AddressShowModel;
 import ibt.sabziwala.retrofit_provider.RetrofitService;
 import ibt.sabziwala.retrofit_provider.WebResponse;
 import ibt.sabziwala.ui.activity.AddressLocationActivity;
+import ibt.sabziwala.ui.activity.MapsActivity;
 import ibt.sabziwala.utils.Alerts;
 import ibt.sabziwala.utils.AppPreference;
 import ibt.sabziwala.utils.AppProgressDialog;
@@ -66,7 +68,7 @@ public class ShoppingFragment extends BaseFragment implements View.OnClickListen
     EditText name_et1, mobile_et1, address_et1, country_et1, state_et1, city_et1, zipcode_et1;
     Spinner sp_newaddress_type;
     String address = "";
-    Button btn_current_location;
+    LinearLayout btn_current_location;
    // ConnectionDetector connectionDetector;
     SessionManager sessionManager;
     FloatingActionButton btn_placeorder;
@@ -222,26 +224,40 @@ public class ShoppingFragment extends BaseFragment implements View.OnClickListen
                 break;
 
             case R.id.btn_placeorder:
-                Intent intent = new Intent(getActivity(), AddressLocationActivity.class);
-                getActivity().startActivity(intent);
+                /*Intent intent = new Intent(getActivity(), MapsActivity.class);
+                getActivity().startActivity(intent);*/
                 break;
 
             case R.id.btn_current_location :
-                setData();
+                Intent intent = new Intent(getActivity(), MapsActivity.class);
+                getActivity().startActivity(intent);
+                //setData();
                 break;
 
             case R.id.ll_show_address :
                 int pos = Integer.parseInt(v.getTag().toString());
                 ibt.sabziwala.model.address_show_responce.Address address = addressArrayList.get(pos);
 
-                strLat = String.valueOf(address.getLat());
-                strLong = String.valueOf(address.getLong());
-                address_et.setText(address.getAddress());
-                city_et.setText(address.getUserCity());
-                state_et.setText(address.getState());
-                country_et.setText("India");
-                hourse_no_et.setText(address.getHouseNumber());
-                zipcode_et.setText(address.getZipcode());
+               /* View view = rvAddress.getChildAt(pos);
+                ImageView icon = view.findViewById(R.id.icon);
+
+                icon.setBackgroundColor(getResources().getColor(R.color.red_d));*/
+
+                AppPreference.setStringPreference(ctx, Constant.Name, address.getUserCity());
+                AppPreference.setStringPreference(ctx, Constant.Address, address.getAddress());
+                AppPreference.setStringPreference(ctx, Constant.City, address.getUserCity());
+                AppPreference.setStringPreference(ctx, Constant.PinCode, address.getZipcode());
+                AppPreference.setStringPreference(ctx, Constant.State, address.getState());
+                AppPreference.setStringPreference(ctx, Constant.House_no, address.getHouseNumber());
+                AppPreference.setStringPreference(ctx, Constant.Address_Type, address.getAddressType());
+                AppPreference.setStringPreference(ctx, Constant.ADDRESS_LAT, address.getLat());
+                AppPreference.setStringPreference(ctx, Constant.ADDRESS_LONG, address.getLong());
+                AppPreference.setStringPreference(ctx, Constant.CONTRY, "India");
+               // AppPreference.setStringPreference(ctx, Constant.ADDRESS_LANDMARK, address.getL);
+
+                ConfirmationFragment fragment = new ConfirmationFragment(ctx);
+                Utility.setFragment1(fragment, ctx, Constant.ShoppingFragment);
+
                 break;
         }
     }
@@ -266,13 +282,13 @@ public class ShoppingFragment extends BaseFragment implements View.OnClickListen
         String city1 = city_et1.getText().toString();
         String zipcode1 = zipcode_et1.getText().toString();
 
-        if (strName.equals("") || strAddress.equals("") || strCountry.equals("") || strState.equals("") ||
+       /* if (strName.equals("") || strAddress.equals("") || strCountry.equals("") || strState.equals("") ||
                 strCity.equals("") || strZipCode.equals("") || strHouseNo.equals("") ) {
 
             Utility.toastView(ctx, "Enter all details");
-        } /*else if (mobile.length()>10 || mobile.length()<10){
+        } *//*else if (mobile.length()>10 || mobile.length()<10){
             Alerts.show(getActivity().getApplicationContext(),"Please enter valid mobile number");
-        }*/ else{
+        }*//* else{*/
 
             AppPreference.setStringPreference(ctx, Constant.Name, strCity);
             AppPreference.setStringPreference(ctx, Constant.Address, strAddress);
@@ -302,11 +318,10 @@ public class ShoppingFragment extends BaseFragment implements View.OnClickListen
             sessionManager.setData(SessionManager.KEY_ORDER_ZIPCODE1, zipcode1);
             sessionManager.setData(SessionManager.KEY_ORDER_CITY1, city1);
 
-            addAddressApi();
+           // addAddressApi();
             // ((CheckOutActivity) getActivity()).setPosition(1);
-        }
+       // }
     }
-
 
     private void addAddressApi() {
         String strUser_id = AppPreference.getStringPreference(mContext, Constant.User_Id);
