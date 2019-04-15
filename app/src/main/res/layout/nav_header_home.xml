@@ -24,7 +24,8 @@
             android:contentDescription="@string/nav_header_desc"
             android:src="@drawable/ic_user"
             app:civ_border_width="1dp"
-            app:civ_border_color="@color/gray_c"/>
+            app:civ_border_color="@color/gray_c"
+            app:civ_circle_background_color="@color/green_dark"/>
 
         <TextView
             android:layout_width="wrap_content"

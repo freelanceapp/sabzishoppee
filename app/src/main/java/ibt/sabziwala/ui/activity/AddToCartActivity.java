@@ -209,7 +209,7 @@ public class AddToCartActivity extends BaseActivity implements View.OnClickListe
         if (qty == minQty) {
             databaseCart.deleteContact(productDetail);
             startActivity(new Intent(mContext, AddToCartActivity.class));
-            finish();
+           // finish();
         } else {
             qty--;
             productDetail.setQuantity(qty);
@@ -260,7 +260,6 @@ public class AddToCartActivity extends BaseActivity implements View.OnClickListe
             AppPreference.setStringPreference(ctx, Constant.TOTAL_AMOUNT, String.valueOf(total));
             if (cartlist.size() > 0) {
                 startActivity(new Intent(ctx, CheckOutActivity.class));
-                /*finish();*/
             }
         }
     }

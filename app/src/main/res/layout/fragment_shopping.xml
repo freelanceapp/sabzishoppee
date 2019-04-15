@@ -101,8 +101,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="House No."
-                            android:inputType="text"
-                            android:paddingLeft="16dp" />
+                            android:paddingLeft="16dp"
+                            android:maxLength="5"
+                            android:digits="1234567890AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz"/>
 
                     </android.support.design.widget.TextInputLayout>
 
