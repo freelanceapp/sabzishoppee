@@ -121,6 +121,7 @@ public class SplashActivity extends BaseActivity {
 
                         }else {
                             Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+                            //Intent intent = new Intent(SplashActivity.this, SignInActivity.class);
                             startActivity(intent);
                             finish();
 
@@ -175,6 +176,7 @@ public class SplashActivity extends BaseActivity {
                         finish();
 
                     }else {
+                        //Intent intent = new Intent(SplashActivity.this, SignInActivity.class);
                         Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
                         startActivity(intent);
                         finish();

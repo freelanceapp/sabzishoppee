@@ -1,15 +1,11 @@
-package ibt.sabziwala.ui.fragment;
+package ibt.sabziwala.ui.activity;
 
 import android.app.Dialog;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
+import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -24,48 +20,42 @@ import ibt.sabziwala.model.User;
 import ibt.sabziwala.model.login_responce.LoginModel;
 import ibt.sabziwala.retrofit_provider.RetrofitService;
 import ibt.sabziwala.retrofit_provider.WebResponse;
-import ibt.sabziwala.ui.activity.HomeActivity;
 import ibt.sabziwala.utils.Alerts;
 import ibt.sabziwala.utils.AppPreference;
-import ibt.sabziwala.utils.BaseFragment;
-import ibt.sabziwala.utils.ConnectionDirector;
+import ibt.sabziwala.utils.BaseActivity;
 import ibt.sabziwala.utils.pinview.Pinview;
 import retrofit2.Response;
 
 import static ibt.sabziwala.ui.activity.LoginActivity.loginfragmentManager;
 
+public class VerifyOtpActivity extends BaseActivity implements View.OnClickListener {
 
-public class ForgotPasswordOtpFragment extends BaseFragment implements View.OnClickListener{
-    private View rootview;
     private Button btn_fplogin;
-    private TextView otpTime;
+    private TextView otpTime, tvChangeMobile;
     private LinearLayout resendLayout;
     private Pinview pinview1;
-    private String strMobile , strOtp, from;
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        rootview = inflater.inflate(R.layout.fragment_forgot_password,container,false);
-        activity = getActivity();
-        mContext = getActivity();
-        cd = new ConnectionDirector(mContext);
-        retrofitApiClient = RetrofitService.getRetrofit();
+    private String strMobile , strOtp;
 
-        from = getArguments().getString("From");
-        strMobile = getArguments().getString("Mobile_Number");
-        init();
-        return rootview;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_verify_otp);
+
+        strMobile = getIntent().getExtras().getString("Mobile_Number");
+        initViews();
     }
 
-    private void init() {
-        ((Button)rootview.findViewById(R.id.btn_fplogin)).setOnClickListener(this);
-        btn_fplogin = rootview.findViewById(R.id.btn_fplogin);
-        pinview1 = rootview.findViewById(R.id.pinview1);
-        otpTime = (TextView)rootview.findViewById(R.id.otpTime);
-        resendLayout = (LinearLayout) rootview.findViewById(R.id.resendLayout);
+    private void initViews() {
+        ((Button)findViewById(R.id.btn_fplogin)).setOnClickListener(this);
+        btn_fplogin = findViewById(R.id.btn_fplogin);
+        pinview1 = findViewById(R.id.pinview1);
+        tvChangeMobile = findViewById(R.id.tvChangeMobile);
+        otpTime = (TextView)findViewById(R.id.otpTime);
+        resendLayout = (LinearLayout) findViewById(R.id.resendLayout);
         btn_fplogin.setOnClickListener(this);
+        tvChangeMobile.setOnClickListener(this);
 
-        otptime();
+        otpTime();
     }
 
     private void startFragment(String tag, Fragment fragment){
@@ -75,7 +65,7 @@ public class ForgotPasswordOtpFragment extends BaseFragment implements View.OnCl
                 .replace(R.id.login_frame, fragment, tag).commit();
     }
 
-    private void otptime() {
+    private void otpTime() {
         new CountDownTimer(60000, 1000) {
             public void onTick(long millisUntilFinished) {
                 otpTime.setVisibility(View.VISIBLE);
@@ -95,16 +85,20 @@ public class ForgotPasswordOtpFragment extends BaseFragment implements View.OnCl
             case R.id.btn_fplogin:
                 otpApi();
                 //startFragment(Constant.SignUpFragment,new SignUpFragment());
-            break;
+                break;
+            case R.id.tvChangeMobile:
+                startActivity(new Intent(mContext, SignInActivity.class));
+                finish();
+                break;
         }
     }
 
     private void otpApi() {
         if (cd.isNetWorkAvailable()) {
-            //strMobile = ((EditText) rootview.findViewById(R.id.et_login_email)).getText().toString();
+            //strMobile = ((EditText) findViewById(R.id.et_login_email)).getText().toString();
             strOtp = pinview1.getValue();
             if (strOtp.isEmpty()) {
-                ((EditText) rootview.findViewById(R.id.et_login_password)).setError("Please enter otp");
+                ((EditText) findViewById(R.id.et_login_password)).setError("Please enter otp");
             } else {
                 RetrofitService.getLoginData(new Dialog(mContext), retrofitApiClient.otpApi(strMobile, strOtp), new WebResponse() {
                     @Override
@@ -113,23 +107,7 @@ public class ForgotPasswordOtpFragment extends BaseFragment implements View.OnCl
 
                         if (!loginModel.getError())
                         {
-                            if (from.equals("Forgot")) {
-                                Alerts.show(mContext, loginModel.getMessage());
-
-                                AppPreference.setBooleanPreference(mContext, Constant.Is_Login , true);
-                                AppPreference.setStringPreference(mContext, Constant.User_Id , loginModel.getUser().getId());
-
-                                Gson gson = new GsonBuilder().setLenient().create();
-                                String data = gson.toJson(loginModel);
-                                AppPreference.setStringPreference(mContext, Constant.User_Data, data);
-                                User.setUser(loginModel);
-
-                                NewPasswordFragment forgotPasswordFragment = new NewPasswordFragment();
-                                Bundle bundle = new Bundle();
-                                bundle.putString("user_id", loginModel.getUser().getId());
-                                forgotPasswordFragment.setArguments(bundle);
-                                startFragment(Constant.ForgotPasswordOtpFragment,forgotPasswordFragment);
-                            } else if (from.equals("Login")){
+                            
                                 Alerts.show(mContext, loginModel.getMessage());
 
                                 AppPreference.setBooleanPreference(mContext, Constant.Is_Login, true);
@@ -142,8 +120,7 @@ public class ForgotPasswordOtpFragment extends BaseFragment implements View.OnCl
 
                                 Intent intent = new Intent(mContext, HomeActivity.class);
                                 mContext.startActivity(intent);
-                                getActivity().finish();
-                            }
+                                finish();
 
 
                         }else {
@@ -161,4 +138,5 @@ public class ForgotPasswordOtpFragment extends BaseFragment implements View.OnCl
             cd.show(mContext);
         }
     }
+    
 }

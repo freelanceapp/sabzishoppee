@@ -6,6 +6,7 @@ public class Constant {
     public static final String IMAGE_BASE_URL = "http://kumarlifesciences.com/images/insert_gallery/";
     public static final String SIGNUP_API = "/api/user-signup.php";
     public static final String LOGIN_API = "api/user-login.php";
+    public static final String LOGIN_WITH_MOBILE_API = "api/user-login-otp.php";
     public static final String PRODUCTS_API = "api/select-product.php";
     public static final String PRODUCTS_DETAIL_API = "api/select-product-details.php";
     public static final String GALLERY_API = "kls-api/gallery.php";

@@ -140,6 +140,11 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         btn_vagitable.setBackgroundResource(R.color.green_50);
         btn_all.setBackgroundResource(R.color.green_dark);
 
+
+        btn_all.setTextColor(getResources().getColor(R.color.white));
+        btn_fruits.setTextColor(getResources().getColor(R.color.black));
+        btn_vagitable.setTextColor(getResources().getColor(R.color.black));
+
         adapter = new ProductListAdapter(mContext, productArrayListAll, this );
         rvproductList.setHasFixedSize(true);
         //rvproductList.setLayoutManager(new GridLayoutManager(mContext, 2));
@@ -484,7 +489,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                     cart_count = cart_count + 1;
                     cart_number.setText("" + cart_count);
                     AppPreference.setIntegerPreference(mContext, Constant.CART_ITEM_COUNT, cart_count);
-                    Toast.makeText(mContext, "Added to Cart", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(mContext, "Added to Cart", Toast.LENGTH_SHORT).show();
                     productArrayListAll.get(pos).setInCart(true);
                     adapter.notifyDataSetChanged();
                     ImageView minus_iv = (ImageView) v.findViewById(R.id.iv_product_minus);
@@ -497,7 +502,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                 cart_count = cart_count + 1;
                 cart_number.setText("" + cart_count);
                 AppPreference.setIntegerPreference(mContext, Constant.CART_ITEM_COUNT, cart_count);
-                Toast.makeText(mContext, "Added to Cart", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(mContext, "Added to Cart", Toast.LENGTH_SHORT).show();
                 productArrayListAll.get(pos).setInCart(true);
                 adapter.notifyDataSetChanged();
                 ImageView minus_iv = (ImageView) v.findViewById(R.id.iv_product_minus);
@@ -507,6 +512,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                 databaseCart.addItemCart(productDetail);
             }
         }
+        setTotal();
     }
 
     private void plusItem(View view, int pos) {

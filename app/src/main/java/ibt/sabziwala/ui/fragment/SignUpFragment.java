@@ -15,6 +15,9 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import ibt.sabziwala.R;
 import ibt.sabziwala.constant.Constant;
 import ibt.sabziwala.model.signup_responce.SignUpModel;
@@ -142,8 +145,8 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
             strMobile = cPhone.getText().toString();
             if (strMobile.length() != 10) {
                 cPhone.setError("Please enter Mobile !!!");
-            } else if (!strEmailAddress.matches(emailPattern)) {
-                emailAddress.setError("Please enter email address !!!");
+            } else if (!isValidEmailId(strEmailAddress)) {
+                emailAddress.setError("Please enter a valid email address !!!");
             } else if (!EmailChecker.isValid(strEmailAddress)) {
                 emailAddress.setError("Please enter valid email address !!!");
             } else if (strPassword.length() < 6) {
@@ -259,5 +262,14 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
             tvPasswordStrength.setText("Password Strength : HIGH");
             tvPasswordStrength.setTextColor(getResources().getColor(R.color.green_dark));
         }
+    }
+
+    private boolean isValidEmailId(String email){
+        Pattern pattern;
+        Matcher matcher;
+        final String EMAIL_PATTERN = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+        pattern = Pattern.compile(EMAIL_PATTERN);
+        matcher = pattern.matcher(email);
+        return matcher.matches();
     }
 }

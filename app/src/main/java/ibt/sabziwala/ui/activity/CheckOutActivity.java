@@ -48,9 +48,10 @@ public class CheckOutActivity extends AppCompatActivity {
         back_iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(CheckOutActivity.this, AddToCartActivity.class);
+                /*Intent intent = new Intent(CheckOutActivity.this, AddToCartActivity.class);
                 startActivity(intent);
-                finish();
+                finish();*/
+                onBackPressed();
             }
         });
 

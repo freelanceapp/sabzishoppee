@@ -81,6 +81,7 @@ public class ShoppingFragment extends BaseFragment implements View.OnClickListen
     @SuppressLint("ValidFragment")
     public ShoppingFragment(Context ctx) {
       //  connectionDetector = new ConnectionDetector();
+        // http://freshveggie.infobitetechnology.tech/api/add-user-address.php
 
     }
 
@@ -132,13 +133,13 @@ public class ShoppingFragment extends BaseFragment implements View.OnClickListen
         btn_placeorder.setOnClickListener(this);
         btn_current_location.setOnClickListener(this);
 
-        sp_newaddress_type.setOnItemSelectedListener(this);
+       /* sp_newaddress_type.setOnItemSelectedListener(this);
 
         //Creating the ArrayAdapter instance having the bank name list
         ArrayAdapter aa = new ArrayAdapter(ctx,android.R.layout.simple_spinner_item,AddressType);
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //Setting the ArrayAdapter data on the Spinner
-        sp_newaddress_type.setAdapter(aa);
+        sp_newaddress_type.setAdapter(aa);*/
 
 
         addressShowAdapter = new AddressShowAdapter(mContext, addressArrayList, this );
@@ -267,7 +268,7 @@ public class ShoppingFragment extends BaseFragment implements View.OnClickListen
         String zipcode1 = zipcode_et1.getText().toString();
 
         if (strName.equals("") || strAddress.equals("") || strCountry.equals("") || strState.equals("") ||
-                strCity.equals("") || strZipCode.equals("") || strHouseNo.equals("") ) {
+                strCity.equals("") || strZipCode.equals("") ) {
 
             Utility.toastView(ctx, "Enter all details");
         } /*else if (mobile.length()>10 || mobile.length()<10){

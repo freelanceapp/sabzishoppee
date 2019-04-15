@@ -298,7 +298,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
                     cart_count = cart_count + 1;
                     cart_number.setText("" + cart_count);
                     AppPreference.setIntegerPreference(mContext, Constant.CART_ITEM_COUNT, cart_count);
-                    Toast.makeText(mContext, "Added to Cart", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(mContext, "Added to Cart", Toast.LENGTH_SHORT).show();
                     productFilteredList.get(pos).setInCart(true);
                     //searchListAdapter.notifyDataSetChanged();
                     holder.btnAdd.setVisibility(View.GONE);
@@ -309,7 +309,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
                 cart_count = cart_count + 1;
                 cart_number.setText("" + cart_count);
                 AppPreference.setIntegerPreference(mContext, Constant.CART_ITEM_COUNT, cart_count);
-                Toast.makeText(mContext, "Added to Cart", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(mContext, "Added to Cart", Toast.LENGTH_SHORT).show();
                 productFilteredList.get(pos).setInCart(true);
                 //searchListAdapter.notifyDataSetChanged();
                 holder.btnAdd.setVisibility(View.GONE);

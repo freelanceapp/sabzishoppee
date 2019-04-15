@@ -44,12 +44,11 @@
                 android:layout_marginRight="10dp"
                 android:hint="Enter Full Name"
                 android:inputType="text"
+                android:imeOptions="actionNext"
                 android:padding="10dp"
                 android:textColor="@color/black"
                 android:background="@drawable/bg_layout"
-                android:textSize="14sp"
-                android:textStyle="normal"
-                android:digits="AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz" />
+                android:textSize="14sp"/>
 
             <EditText
                 android:id="@+id/et_email_address"
@@ -59,12 +58,12 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginRight="10dp"
                 android:hint="Enter Your Email"
+                android:imeOptions="actionNext"
                 android:background="@drawable/bg_layout"
                 android:inputType="textEmailAddress"
                 android:padding="10dp"
                 android:textColor="@color/black"
-                android:textSize="14sp"
-                android:textStyle="normal" />
+                android:textSize="14sp" />
 
             <EditText
                 android:id="@+id/et_mobile"
@@ -74,12 +73,12 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginRight="10dp"
                 android:hint="Enter Your Mobile"
+                android:imeOptions="actionNext"
                 android:inputType="phone"
                 android:background="@drawable/bg_layout"
                 android:padding="10dp"
                 android:textColor="@color/black"
                 android:textSize="14sp"
-                android:textStyle="normal"
                 android:maxLength="10" />
 
             <EditText
@@ -90,14 +89,12 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginRight="10dp"
                 android:hint="Enter Your Password"
+                android:imeOptions="actionNext"
                 android:inputType="textPassword"
                 android:padding="10dp"
                 android:background="@drawable/bg_layout"
                 android:textColor="@color/black"
-                android:textSize="14sp"
-                android:textStyle="normal"
-                android:digits="0123456789AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz@#$%*+_-':;"
-                />
+                android:textSize="14sp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -115,13 +112,12 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="10dp"
                 android:hint="Confirm Password"
+                android:imeOptions="actionDone"
                 android:inputType="textPassword"
                 android:padding="10dp"
                 android:background="@drawable/bg_layout"
                 android:textColor="@color/black"
-                android:textSize="14sp"
-                android:textStyle="normal"
-                android:digits="0123456789AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz@#$%*+_-':;"/>
+                android:textSize="14sp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

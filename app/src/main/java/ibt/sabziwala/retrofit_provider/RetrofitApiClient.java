@@ -73,6 +73,10 @@ public interface RetrofitApiClient {
                                              @Field("new_password") String new_password);
 
     @FormUrlEncoded
+    @POST(Constant.LOGIN_WITH_MOBILE_API)
+    Call<ResponseBody> loginWithMobile(@Field("contact") String email);
+
+    @FormUrlEncoded
     @POST(Constant.LOGIN_API)
     Call<LoginModel> loginData(@Field("username") String email,
                                @Field("password") String password);
