@@ -230,7 +230,16 @@ public class ProductDetailsActivity extends BaseActivity implements View.OnClick
         switch (view.getId())
         {
             case R.id.btnAddtoCart :
-               startActivity(new Intent(mContext, AddToCartActivity.class));
+                ArrayList<ProductDetail> cartProductList = new ArrayList<>();
+                if (databaseCart.getContactsCount()) {
+                    cartProductList = databaseCart.getAllUrlList();
+                }
+                if (cartProductList.size() > 0) {
+                    Intent intent = new Intent(ProductDetailsActivity.this, AddToCartActivity.class);
+                    startActivity(intent);
+                }else{
+                    Toast.makeText(mContext, "Cart is empty.", Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.btnAdd :
                 productDetail.setQuantity(Integer.parseInt(productDetail.getMin_quantity()));

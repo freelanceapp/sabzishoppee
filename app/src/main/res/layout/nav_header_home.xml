@@ -36,13 +36,14 @@
             android:id="@+id/tv_ShowUserName"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:padding="4sp"/>
+            android:padding="4sp"
+            android:layout_marginTop="4sp"/>
     </LinearLayout>
 
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1sp"
+        android:layout_height=".5sp"
         android:background="@color/gray_c"
         android:layout_alignParentBottom="true"/>
 

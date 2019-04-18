@@ -18,7 +18,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,7 +44,7 @@ public class Pinview extends LinearLayout implements TextWatcher, View.OnFocusCh
     private int mPinBackground = R.drawable.pinview_background;
     private boolean mPassword = false;
     private String mHint = "";
-    private InputType inputType = InputType.TEXT;
+    private InputType inputType = InputType.NUMBER;
     private boolean finalNumberPin = false;
     private PinViewEventListener mListener;
     private boolean fromSetValue = false;
@@ -209,7 +208,7 @@ public class Pinview extends LinearLayout implements TextWatcher, View.OnFocusCh
         styleEditText.setBackgroundResource(mPinBackground);
         styleEditText.setPadding(0, 0, 0, 0);
         styleEditText.setTag(tag);
-        styleEditText.setInputType(getKeyboardInputType());
+        styleEditText.setInputType(TYPE_CLASS_NUMBER);
         styleEditText.addTextChangedListener(this);
         styleEditText.setOnFocusChangeListener(this);
         styleEditText.setOnKeyListener(this);
@@ -612,7 +611,7 @@ public class Pinview extends LinearLayout implements TextWatcher, View.OnFocusCh
         this.inputType = inputType;
         int it = getKeyboardInputType();
         for (EditText editText : editTextList) {
-            editText.setInputType(it);
+            editText.setInputType(TYPE_CLASS_NUMBER);
         }
     }
 

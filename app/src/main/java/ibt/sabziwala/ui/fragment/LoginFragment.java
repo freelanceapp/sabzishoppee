@@ -16,6 +16,9 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import ibt.sabziwala.R;
 import ibt.sabziwala.constant.Constant;
 import ibt.sabziwala.model.User;
@@ -62,8 +65,6 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
         loginbutton.setOnClickListener(this);
         tv_signUp.setOnClickListener(this);
         tv_forgot_password.setOnClickListener(this);
-
-
     }
 
     private void startFragment(String tag, Fragment fragment) {
@@ -93,8 +94,13 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
         if (cd.isNetWorkAvailable()) {
             strEmail = ((EditText) rootview.findViewById(R.id.et_login_email)).getText().toString();
             strPassword = ((EditText) rootview.findViewById(R.id.et_login_password)).getText().toString();
-            if (strEmail.isEmpty()) {
-                et_login_email.setError("Please enter valid email address or mobile number !!!");
+
+
+
+
+
+            if (!isValidUserCredential()) {
+                //et_login_email.setError("Please enter valid user credential !!!");
             } else if (strPassword.isEmpty()) {
                 ((EditText) rootview.findViewById(R.id.et_login_password)).setError("Please enter password");
             } else if (strPassword.length() < 6) {
@@ -121,6 +127,14 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
                             getActivity().finish();
                         }else {
                             Alerts.show(mContext, loginModel.getMessage());
+                            if (loginModel.getMessage().equals("User is Not Verified")){
+                                ForgotPasswordOtpFragment forgotPasswordFragment = new ForgotPasswordOtpFragment();
+                                Bundle bundle = new Bundle();
+                                bundle.putString("From", "Login");
+                                bundle.putString("Mobile_Number", strEmail);
+                                forgotPasswordFragment.setArguments(bundle);
+                                startFragment(Constant.ForgotPasswordOtpFragment,forgotPasswordFragment);
+                            }
                         }
                     }
 
@@ -211,5 +225,34 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
             tvPasswordStrength.setText("Password Strength : HIGH");
             tvPasswordStrength.setTextColor(getResources().getColor(R.color.green_dark));
         }
+    }
+
+    private boolean isValidUserCredential(){
+        boolean flag = false;
+        if (strEmail.matches("[0-9]+")) {
+            if (strEmail.length() < 10 || strEmail.length() > 10) {
+                et_login_email.setError("Please Enter valid phone number");
+                et_login_email.requestFocus();
+            } else {
+                flag = true;
+            }
+        } else {
+            if (!isValidEmailId(strEmail)) {
+                et_login_email.setError("Please Enter valid email");
+                et_login_email.requestFocus();
+            }else {
+                flag = true;
+            }
+        }
+        return flag;
+    }
+
+    private boolean isValidEmailId(String email){
+        Pattern pattern;
+        Matcher matcher;
+        final String EMAIL_PATTERN = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+        pattern = Pattern.compile(EMAIL_PATTERN);
+        matcher = pattern.matcher(email);
+        return matcher.matches();
     }
 }

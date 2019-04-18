@@ -91,7 +91,7 @@
                         android:textSize="14sp"
                         android:textStyle="bold"/>
 
-                    <TextView
+                    <EditText
                         android:id="@+id/et_email_address"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

@@ -22,6 +22,7 @@ import ibt.sabziwala.model.productlist_responce.ProductListModel;
 import ibt.sabziwala.model.signup_responce.SignUpModel;
 import ibt.sabziwala.utils.AppProgressDialog;
 import okhttp3.OkHttpClient;
+import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -182,6 +183,28 @@ public class RetrofitService {
     }
 
 
+    public static void getResponseData(final Dialog dialog, final Call<ResponseBody> method, final WebResponse webResponse) {
+        if (dialog != null)
+            AppProgressDialog.show(dialog);
+
+        method.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (dialog != null)
+                    AppProgressDialog.hide(dialog);
+                WebServiceResponse.handleResponse(response, webResponse);
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable throwable) {
+                if (dialog != null)
+                    AppProgressDialog.hide(dialog);
+                webResponse.onResponseFailed(throwable.getMessage());
+            }
+        });
+    }
+
+
     public static void getProductData(final Dialog dialog, final Call<ProductListModel> method, final WebResponse webResponse) {
         if (dialog != null)
             AppProgressDialog.show(dialog);
@@ -267,6 +290,26 @@ public class RetrofitService {
         });
     }
 
+    public static void updateAddress(final Dialog dialog, final Call<SignUpModel> method, final WebResponse webResponse) {
+        if (dialog != null)
+            AppProgressDialog.show(dialog);
+
+        method.enqueue(new Callback<SignUpModel>() {
+            @Override
+            public void onResponse(Call<SignUpModel> call, Response<SignUpModel> response) {
+                if (dialog != null)
+                    AppProgressDialog.hide(dialog);
+                WebServiceResponse.handleResponse(response, webResponse);
+            }
+
+            @Override
+            public void onFailure(Call<SignUpModel> call, Throwable throwable) {
+                if (dialog != null)
+                    AppProgressDialog.hide(dialog);
+                webResponse.onResponseFailed(throwable.getMessage());
+            }
+        });
+    }
 
     public static void addAddress(final Dialog dialog, final Call<AddAddressModel> method, final WebResponse webResponse) {
         if (dialog != null)

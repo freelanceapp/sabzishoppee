@@ -104,11 +104,13 @@
             android:layout_marginLeft="15sp"
             android:padding="10dp"
             android:text="Note"
+            android:visibility="gone"
             android:textColor="@color/black" />
 
         <EditText
             android:textStyle="normal"
             android:textSize="14sp"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"

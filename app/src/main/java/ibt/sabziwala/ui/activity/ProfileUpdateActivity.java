@@ -1,15 +1,13 @@
-package ibt.sabziwala.ui.fragment;
+package ibt.sabziwala.ui.activity;
 
 import android.app.Dialog;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import android.content.Intent;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -23,48 +21,49 @@ import ibt.sabziwala.constant.Constant;
 import ibt.sabziwala.model.signup_responce.SignUpModel;
 import ibt.sabziwala.retrofit_provider.RetrofitService;
 import ibt.sabziwala.retrofit_provider.WebResponse;
+import ibt.sabziwala.ui.fragment.ForgotPasswordFragment;
+import ibt.sabziwala.ui.fragment.LoginFragment;
 import ibt.sabziwala.utils.Alerts;
-import ibt.sabziwala.utils.BaseFragment;
+import ibt.sabziwala.utils.BaseActivity;
 import ibt.sabziwala.utils.ConnectionDirector;
 import ibt.sabziwala.utils.EmailChecker;
 import retrofit2.Response;
 
 import static ibt.sabziwala.ui.activity.LoginActivity.loginfragmentManager;
 
-
-public class SignUpFragment extends BaseFragment implements View.OnClickListener {
-    private View rootview;
+public class ProfileUpdateActivity extends BaseActivity implements View.OnClickListener{
     private Button btn_signUp;
-    private EditText fullname, emailAddress, password, cPassword, cPhone;
+    private EditText fullname, emailAddress, password, cPassword;
+    private TextView cPhone;
     private String strName, strMobile, strEmailAddress, strPassword, strConfirmPassword;
     private String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
 
     private TextView tvConfirmPasswordStrength, tvPasswordStrength;
-
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        rootview = inflater.inflate(R.layout.fragment_signup_layout, container, false);
-        activity = getActivity();
-        mContext = getActivity();
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_profile_update);
+
+        mContext = this;
         cd = new ConnectionDirector(mContext);
         retrofitApiClient = RetrofitService.getRetrofit();
         init();
-        return rootview;
     }
 
     private void init() {
-        btn_signUp = rootview.findViewById(R.id.btn_signUp);
-        fullname = rootview.findViewById(R.id.et_fullname);
-        emailAddress = rootview.findViewById(R.id.et_email_address);
-        password = rootview.findViewById(R.id.et_password);
-        cPassword = rootview.findViewById(R.id.et_cpassword);
-        cPhone = rootview.findViewById(R.id.et_mobile);
-        tvConfirmPasswordStrength = rootview.findViewById(R.id.tvConfirmPasswordStrength);
-        tvPasswordStrength = rootview.findViewById(R.id.tvPasswordStrength);
-        btn_signUp.setOnClickListener(this);
-        ((LinearLayout) rootview.findViewById(R.id.tv_Login)).setOnClickListener(this);
+        strMobile = getIntent().getExtras().getString("Mobile_Number");
 
+        btn_signUp = findViewById(R.id.btn_signUp);
+        fullname = findViewById(R.id.et_fullname);
+        emailAddress = findViewById(R.id.et_email_address);
+        password = findViewById(R.id.et_password);
+        cPassword = findViewById(R.id.et_cpassword);
+        cPhone = findViewById(R.id.et_mobile);
+        tvConfirmPasswordStrength = findViewById(R.id.tvConfirmPasswordStrength);
+        tvPasswordStrength = findViewById(R.id.tvPasswordStrength);
+        btn_signUp.setOnClickListener(this);
+        ((LinearLayout) findViewById(R.id.tv_Login)).setOnClickListener(this);
+        cPhone.setText(strMobile);
 
         password.addTextChangedListener(new TextWatcher() {
             @Override
@@ -165,11 +164,11 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
                         {
                             Alerts.show(mContext , responseBody.getMessage());
 
-                            ForgotPasswordFragment forgotPasswordFragment = new ForgotPasswordFragment();
-                            Bundle bundle = new Bundle();
-                            bundle.putString("Mobile_Number", strMobile);
-                            forgotPasswordFragment.setArguments(bundle);
-                            startFragment(Constant.ForgotPasswordFragment, forgotPasswordFragment);
+
+
+                            Intent intent = new Intent(mContext, HomeActivity.class);
+                            mContext.startActivity(intent);
+                            finish();
 
                         }else {
                             Alerts.show(mContext , responseBody.getMessage());

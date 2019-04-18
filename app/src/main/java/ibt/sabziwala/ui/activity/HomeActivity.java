@@ -20,12 +20,16 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+
+import java.util.ArrayList;
 
 import ibt.sabziwala.R;
 import ibt.sabziwala.constant.Constant;
 import ibt.sabziwala.database.DatabaseHandler;
+import ibt.sabziwala.model.ProductDetail;
 import ibt.sabziwala.model.User;
 import ibt.sabziwala.model.login_responce.LoginModel;
 import ibt.sabziwala.retrofit_provider.RetrofitService;
@@ -44,8 +48,8 @@ import retrofit2.Response;
 
 public class HomeActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
-    public static Toolbar toolbar1,toolbar;
-    private LinearLayout rv_home,rv_cart, rv_history, rv_profile;
+    public static Toolbar toolbar1, toolbar;
+    private LinearLayout rv_home, rv_cart, rv_history, rv_profile;
     public static TextView cart_number;
     public static int cart_count = 0;
     public static ImageView iv_ShowUserImage;
@@ -54,6 +58,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
     private ImageView btnSearch;
     public DatabaseHandler databaseCart;
     private String DATABASE_CART = "cart.db";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,8 +66,8 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        cart_number = (TextView)findViewById(R.id.cart_number);
-        cart_price = (TextView)findViewById(R.id.cart_price);
+        cart_number = (TextView) findViewById(R.id.cart_number);
+        cart_price = (TextView) findViewById(R.id.cart_price);
         btnSearch = (ImageView) findViewById(R.id.btnSearch);
         //cart_count = AppPreference.getIntegerPreference(mContext, Constant.CART_ITEM_COUNT);
         cart_number.setText("" + cart_count);
@@ -76,10 +81,10 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         databaseCart = new DatabaseHandler(mContext, DATABASE_CART);
 
         HomeFragment fragment = new HomeFragment();
-        Utility.setFragment(fragment , mContext , Constant.Home);
+        Utility.setFragment(fragment, mContext, Constant.Home);
 
-        Log.e("User id" , AppPreference.getStringPreference(mContext , Constant.User_Id));
-        Log.e("Login" , String.valueOf(AppPreference.getBooleanPreference(mContext , Constant.Is_Login)));
+        Log.e("User id", AppPreference.getStringPreference(mContext, Constant.User_Id));
+        Log.e("Login", String.valueOf(AppPreference.getBooleanPreference(mContext, Constant.Is_Login)));
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -117,8 +122,8 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         } else {
             super.onBackPressed();
         }
-    }
 
+    }
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -127,22 +132,21 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         if (id == R.id.nav_home) {
             // Handle the camera action
             HomeFragment fragment = new HomeFragment();
-            Utility.setFragment(fragment , mContext , Constant.Home);
+            Utility.setFragment(fragment, mContext, Constant.Home);
         } else if (id == R.id.nav_about) {
             // Handle the camera action
             AboutFragment fragment = new AboutFragment();
-            Utility.setFragment(fragment , mContext , Constant.AboutFragment);
-        }
-        else if (id == R.id.nav_contact) {
+            Utility.setFragment(fragment, mContext, Constant.AboutFragment);
+        } else if (id == R.id.nav_contact) {
             ContactUsFragment fragment = new ContactUsFragment();
-            Utility.setFragment(fragment , mContext , Constant.ContactUsFragment);
+            Utility.setFragment(fragment, mContext, Constant.ContactUsFragment);
         } else if (id == R.id.nav_help) {
             HelpFragment fragment = new HelpFragment();
-            Utility.setFragment(fragment , mContext , Constant.ContactUsFragment);
+            Utility.setFragment(fragment, mContext, Constant.ContactUsFragment);
         } else if (id == R.id.nav_password) {
             ChangePasswordFragment fragment = new ChangePasswordFragment();
-            Utility.setFragment(fragment , mContext , Constant.ChangePasswordFragment);
-        }else if (id == R.id.nav_history) {
+            Utility.setFragment(fragment, mContext, Constant.ChangePasswordFragment);
+        } else if (id == R.id.nav_history) {
             startActivity(new Intent(mContext, OrderHistoryActivity.class));
         } else if (id == R.id.nav_logout) {
             doLogout();
@@ -156,26 +160,33 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
 
     @Override
     public void onClick(View view) {
-        switch (view.getId())
-        {
-            case R.id.rv_cart :
-                Intent intent = new Intent(HomeActivity.this , AddToCartActivity.class);
-                startActivity(intent);
+        switch (view.getId()) {
+            case R.id.rv_cart:
+                ArrayList<ProductDetail> cartProductList = new ArrayList<>();
+                if (databaseCart.getContactsCount()) {
+                    cartProductList = databaseCart.getAllUrlList();
+                }
+                if (cartProductList.size() > 0) {
+                    Intent intent = new Intent(HomeActivity.this, AddToCartActivity.class);
+                    startActivity(intent);
+                }else{
+                    Toast.makeText(mContext, "Cart is empty.", Toast.LENGTH_SHORT).show();
+                }
                 break;
 
-            case R.id.rv_home :
-                Intent intent3 = new Intent(HomeActivity.this , HomeActivity.class);
+            case R.id.rv_home:
+                Intent intent3 = new Intent(HomeActivity.this, HomeActivity.class);
                 startActivity(intent3);
                 finish();
                 break;
 
-            case R.id.rl_history :
-                Intent intent2 = new Intent(HomeActivity.this , OrderHistoryActivity.class);
+            case R.id.rl_history:
+                Intent intent2 = new Intent(HomeActivity.this, OrderHistoryActivity.class);
                 startActivity(intent2);
                 break;
 
-            case R.id.rl_profile :
-                Intent intent1 = new Intent(HomeActivity.this , ProfileActivity.class);
+            case R.id.rl_profile:
+                Intent intent1 = new Intent(HomeActivity.this, ProfileActivity.class);
                 startActivity(intent1);
                 break;
 
@@ -194,7 +205,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                         if (databaseCart.getContactsCount()) {
                             databaseCart.deleteallCart();
                         }
-                        Intent intent = new Intent(HomeActivity.this , LoginActivity.class);
+                        Intent intent = new Intent(HomeActivity.this, SignInActivity.class);
                         startActivity(intent);
                         finish();
                     }
@@ -205,14 +216,13 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     private void profileApi() {
-        String userId = AppPreference.getStringPreference(mContext , Constant.User_Id);
+        String userId = AppPreference.getStringPreference(mContext, Constant.User_Id);
         if (cd.isNetWorkAvailable()) {
             RetrofitService.getProfile(new Dialog(mContext), retrofitApiClient.getprofile(userId), new WebResponse() {
                 @Override
                 public void onResponseSuccess(Response<?> result) {
                     LoginModel responseBody = (LoginModel) result.body();
-                    if (!responseBody.getError())
-                    {
+                    if (!responseBody.getError()) {
                         tv_ShowUserName.setText(responseBody.getUser().getUserName());
                         if (!responseBody.getUser().getUserProfilePicture().isEmpty()) {
                             String base64String = responseBody.getUser().getUserProfilePicture();
@@ -220,20 +230,21 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                             byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
                             Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                             iv_ShowUserImage.setImageBitmap(decodedByte);
-                        }else {
+                        } else {
                             iv_ShowUserImage.setImageResource(R.drawable.ic_user);
                         }
                         //Glide.with(mContext).load(decodedByte).error(R.drawable.profile_img).fitCenter().into(ci_profile);
-                    }else {
-                        Alerts.show(mContext , responseBody.getMessage());
+                    } else {
+                        Alerts.show(mContext, responseBody.getMessage());
                     }
                 }
+
                 @Override
                 public void onResponseFailed(String error) {
                     Alerts.show(mContext, error);
                 }
             });
-        }else {
+        } else {
             cd.show(mContext);
         }
 

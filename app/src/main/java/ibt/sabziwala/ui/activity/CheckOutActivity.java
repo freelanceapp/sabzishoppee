@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import ibt.sabziwala.R;
 import ibt.sabziwala.constant.Constant;
@@ -32,7 +33,7 @@ public class CheckOutActivity extends AppCompatActivity {
     public DatabaseHandler databaseCart;
     private String fragmentPass;
     // private GoogleApiClient googleApiClient;
-
+    public static TextView tv_confirmation, tv_address;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +45,9 @@ public class CheckOutActivity extends AppCompatActivity {
         ctx = this;
         back_iv = findViewById(R.id.iv_chekout_back);
         toolbar = (Toolbar) findViewById(R.id.toolbar_checkout);
+        tv_confirmation = findViewById(R.id.tv_confirmation);
+        tv_address = findViewById(R.id.tv_confirm_address);
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -52,9 +56,10 @@ public class CheckOutActivity extends AppCompatActivity {
         back_iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(CheckOutActivity.this, AddToCartActivity.class);
+                /*Intent intent = new Intent(CheckOutActivity.this, AddToCartActivity.class);
                 startActivity(intent);
-                finish();
+                finish();*/
+                onBackPressed();
             }
         });
 

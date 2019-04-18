@@ -168,7 +168,12 @@ public class AddToCartActivity extends BaseActivity implements View.OnClickListe
         TextView tvQty = (TextView) v.findViewById(R.id.tv_adpcart_qty);
         ImageView minus_iv = (ImageView) v.findViewById(R.id.iv_adpcart_minus);
         int qty = Integer.parseInt(tvQty.getText().toString());
-        qty++;
+        int maxQty = Integer.parseInt(productDetail.getOrder_quantity());
+        if (qty<maxQty) {
+            qty++;
+        } else {
+            Toast.makeText(ctx, "You have reached maximum order quantity.", Toast.LENGTH_SHORT).show();
+        }
         productDetail.setQuantity(qty);
         databaseCart.updateUrl(productDetail);
         tvQty.setText(qty +"");
@@ -204,7 +209,7 @@ public class AddToCartActivity extends BaseActivity implements View.OnClickListe
         if (qty == minQty) {
             databaseCart.deleteContact(productDetail);
             startActivity(new Intent(mContext, AddToCartActivity.class));
-           // finish();
+            finish();
         } else {
             qty--;
             productDetail.setQuantity(qty);
@@ -248,7 +253,7 @@ public class AddToCartActivity extends BaseActivity implements View.OnClickListe
 
     private void placeThisOrder() {
         if (!AppPreference.getBooleanPreference(mContext, Constant.Is_Login)) {
-            startActivity(new Intent(ctx, LoginActivity.class));
+            startActivity(new Intent(ctx, SignInActivity.class));
             finish();
         } else {
             ArrayList<ProductDetail> cartlist = databaseCart.getAllUrlList();
@@ -273,7 +278,8 @@ public class AddToCartActivity extends BaseActivity implements View.OnClickListe
 
     private void deleteItem(int tag) {
         new AlertDialog.Builder(mContext)
-                .setTitle("Delete")
+                .setTitle("Delete" +
+                        "")
                 .setMessage("Are you sure want to delete ?")
                 .setPositiveButton("YES", new DialogInterface.OnClickListener() {
                     @Override

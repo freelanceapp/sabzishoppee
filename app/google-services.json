@@ -15,12 +15,16 @@
       },
       "oauth_client": [
         {
-          "client_id": "509361972677-6mfk91gp8hecpgtsnivvqs9on29bn9n8.apps.googleusercontent.com",
+          "client_id": "509361972677-99u6hiprad94r10e3jhs3hj6rkf371r5.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "ibt.sabziwala",
             "certificate_hash": "af6e7a438225bb46c5ab7585a31fb59ee4c135dd"
           }
+        },
+        {
+          "client_id": "509361972677-4je33o1pki64o6pifveklr1mm2i2eqmk.apps.googleusercontent.com",
+          "client_type": 3
         }
       ],
       "api_key": [

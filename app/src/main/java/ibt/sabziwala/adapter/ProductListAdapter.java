@@ -116,7 +116,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         if (product.getImage() != null) {
             Glide.with(mContext).load(product.getImage()).into(viewHolder.ivProductImg);
         } else {
-            viewHolder.ivProductImg.setImageResource(R.drawable.logo2);
+            viewHolder.ivProductImg.setImageResource(R.drawable.vf);
         }
         if (product.getType().equals("1")) {
             viewHolder.tvProductType.setText("Fruits");
@@ -243,8 +243,8 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private ImageView ivProductImg;
-        private LinearLayout llSubcategory;
-        private RelativeLayout llItem, ll_product_action;
+        private LinearLayout llItem;
+        private RelativeLayout ll_product_action;
         private TextView tvProductPrice,tvProductQuality,tvProductName,tvMinOrder, tvProductType, tvProductsellingPrice, tv_product_qty;
         private ImageView iv_product_plus, iv_product_minus;
         private CardView btnAdd;
@@ -298,7 +298,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
                     cart_count = cart_count + 1;
                     cart_number.setText("" + cart_count);
                     AppPreference.setIntegerPreference(mContext, Constant.CART_ITEM_COUNT, cart_count);
-                    Toast.makeText(mContext, "Added to Cart", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(mContext, "Added to Cart", Toast.LENGTH_SHORT).show();
                     productFilteredList.get(pos).setInCart(true);
                     //searchListAdapter.notifyDataSetChanged();
                     holder.btnAdd.setVisibility(View.GONE);
@@ -309,7 +309,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
                 cart_count = cart_count + 1;
                 cart_number.setText("" + cart_count);
                 AppPreference.setIntegerPreference(mContext, Constant.CART_ITEM_COUNT, cart_count);
-                Toast.makeText(mContext, "Added to Cart", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(mContext, "Added to Cart", Toast.LENGTH_SHORT).show();
                 productFilteredList.get(pos).setInCart(true);
                 //searchListAdapter.notifyDataSetChanged();
                 holder.btnAdd.setVisibility(View.GONE);

@@ -183,7 +183,7 @@
     </android.support.v7.widget.CardView>-->
 
     <RelativeLayout
-        android:id="@+id/llItem"
+
         android:layout_width="match_parent"
         android:layout_height="100dp">
 
@@ -204,7 +204,8 @@
             android:layout_toLeftOf="@+id/rlCart"
             android:layout_marginRight="4dp"
             android:layout_centerVertical="true"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:id="@+id/llItem">
 
         <TextView
             android:id="@+id/tvProductName"

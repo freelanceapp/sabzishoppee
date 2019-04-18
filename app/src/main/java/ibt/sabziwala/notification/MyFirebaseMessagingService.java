@@ -54,6 +54,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         retrofitApiClient = RetrofitService.getRetrofit();
 
         Log.d(TAG, "Refreshed token: " + s);
+        Log.e(TAG, "Refreshed token: " + s);
         AppPreference.setStringPreference(getApplicationContext(), Constant.DEVICE_TOKEN, s);
 
         if (!(AppPreference.getStringPreference(mContext, Constant.User_Id)).isEmpty()) {
@@ -139,13 +140,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String android_id = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
         String strId = AppPreference.getStringPreference(mContext, Constant.User_Id);
         if (cd.isNetworkAvailable()) {
-            RetrofitService.getSignData(new Dialog(mContext), retrofitApiClient.updateToken(android_id, strToken, strId), new WebResponse() {
+            RetrofitService.getSignData(new Dialog(mContext), retrofitApiClient.updateToken(android_id, strToken, strId, "user"), new WebResponse() {
                 @Override
                 public void onResponseSuccess(Response<?> result) {
                     SignUpModel loginModal = (SignUpModel) result.body();
                     assert loginModal != null;
                     if (!loginModal.getError()) {
-                        //Alerts.show(mContext, loginModal.getMessage());
+                        Alerts.show(mContext, loginModal.getMessage());
                     } else {
                         Alerts.show(mContext, loginModal.getMessage());
                     }

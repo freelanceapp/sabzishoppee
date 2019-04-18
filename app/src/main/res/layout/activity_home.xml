@@ -15,7 +15,7 @@
 
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
-        android:layout_width="220sp"
+        android:layout_width="250sp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
@@ -23,6 +23,6 @@
         app:menu="@menu/activity_home_drawer"
         android:background="@color/red_a"
         app:itemTextColor="@color/white"
-        />
+        app:itemIconTint="@color/white"/>
 
 </android.support.v4.widget.DrawerLayout>

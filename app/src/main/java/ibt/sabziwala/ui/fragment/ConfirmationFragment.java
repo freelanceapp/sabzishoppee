@@ -42,6 +42,8 @@ import ibt.sabziwala.utils.SessionManager;
 import retrofit2.Response;
 
 import static android.content.Context.MODE_PRIVATE;
+import static ibt.sabziwala.ui.activity.CheckOutActivity.tv_address;
+import static ibt.sabziwala.ui.activity.CheckOutActivity.tv_confirmation;
 import static ibt.sabziwala.ui.activity.SplashActivity.mypreference;
 
 @SuppressLint("ValidFragment")
@@ -80,6 +82,10 @@ public class ConfirmationFragment extends BaseFragment implements View.OnClickLi
         mContext = getActivity();
         cd = new ConnectionDirector(mContext);
         retrofitApiClient = RetrofitService.getRetrofit();
+
+        tv_address.setBackgroundColor(getResources().getColor(R.color.gray_g));
+        tv_confirmation.setBackgroundColor(getResources().getColor(R.color.red_d));
+
         initXml(view);
         setOrder();
         return view;
@@ -200,7 +206,7 @@ public class ConfirmationFragment extends BaseFragment implements View.OnClickLi
             Gson gson = new GsonBuilder().setLenient().create();
             String data = gson.toJson(productDataModelArrayList);
 
-            RetrofitService.setOrder(new Dialog(mContext), retrofitApiClient.setOrder(user_id, strPaymentType, "0", address,strHourseNo,strLandMark,city,strAddressType,totalAmount1,address,strLat, strLong,state,code,
+            RetrofitService.setOrder(new Dialog(mContext), retrofitApiClient.setOrder(user_id, "0", "0", address,strHourseNo,strLandMark,city,strAddressType,totalAmount1,address,strLat, strLong,state,code,
                     strNote,data), new WebResponse() {
                 @Override
                 public void onResponseSuccess(Response<?> result) {

@@ -38,6 +38,8 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import ibt.sabziwala.R;
@@ -61,8 +63,8 @@ import static ibt.sabziwala.ui.activity.HomeActivity.iv_ShowUserImage;
 
 public class EditProfileActivity extends BaseActivity implements View.OnClickListener {
 
-    private EditText et_fullname;
-    private TextView et_address, et_dob, et_email_address,et_email, et_mobile;
+    private EditText et_fullname, et_email_address;
+    private TextView et_address, et_dob,et_email, et_mobile;
     private RadioGroup rb_gender;
     private CircleImageView ci_profile;
     private ImageView btn_camera, btn_editprofile_back;
@@ -304,20 +306,58 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
     public void api() {
         String strUserId = AppPreference.getStringPreference(mContext, Constant.User_Id);
         String strName = et_fullname.getText().toString();
-
         String strEmail = et_email.getText().toString();
         String strDob = et_dob.getText().toString();
         Log.e("strUserId", "..." + strUserId);
-        if (file == null) {
-            if (profileImage.equals(""))
-            {
-                Toast.makeText(mContext, "Select Image", Toast.LENGTH_SHORT).show();
-            }else {
-                String base64String = profileImage;
-                String base64Image = base64String.split(",")[1];
-                byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
-                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                saveImage(decodedByte);
+        if (!isValidEmailId(strEmail)) {
+            et_email_address.setError("Please enter a valid email address !!!");
+        }else {
+            if (file == null) {
+                if (profileImage.equals("")) {
+                    Toast.makeText(mContext, "Select Image", Toast.LENGTH_SHORT).show();
+                } else {
+                    String base64String = profileImage;
+                    String base64Image = base64String.split(",")[1];
+                    byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
+                    Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                    saveImage(decodedByte);
+                    if (cd.isNetWorkAvailable()) {
+                        RequestBody mFile = RequestBody.create(MediaType.parse("image/*"), file);
+                        MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("user_profile_picture", file.getName(), mFile);
+                        RequestBody id = RequestBody.create(MediaType.parse("text/plain"), strUserId);
+                        RequestBody gender = RequestBody.create(MediaType.parse("text/plain"), strGender);
+                        RequestBody name = RequestBody.create(MediaType.parse("text/plain"), strName);
+                        RequestBody dob = RequestBody.create(MediaType.parse("text/plain"), strDob);
+                        RequestBody email = RequestBody.create(MediaType.parse("text/plain"), strEmail);
+                        RetrofitService.getUpdateProfile(new Dialog(mContext), retrofitApiClient.profileimage(id, gender, name, dob, email, fileToUpload), new WebResponse() {
+                            @Override
+                            public void onResponseSuccess(Response<?> result) {
+                                LoginModel loginModal = (LoginModel) result.body();
+                                assert loginModal != null;
+                                Gson gson = new GsonBuilder().setLenient().create();
+                                String data = gson.toJson(loginModal);
+                                AppPreference.setStringPreference(mContext, Constant.User_Data, data);
+                                User.setUser(loginModal);
+                                if (User.getUser().getUser().getUserProfilePicture() == null) {
+                                    iv_ShowUserImage.setImageResource(R.drawable.ic_user);
+                                } else {
+                                    Glide.with(mContext).load(loginModal.getUser().getUserProfilePicture()).error(R.drawable.ic_user).into(iv_ShowUserImage);
+                                }
+                                Intent intent = new Intent(EditProfileActivity.this, HomeActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }
+
+                            @Override
+                            public void onResponseFailed(String error) {
+                                Alerts.show(mContext, error);
+                            }
+                        });
+                    } else {
+                        cd.show(mContext);
+                    }
+                }
+            } else {
                 if (cd.isNetWorkAvailable()) {
                     RequestBody mFile = RequestBody.create(MediaType.parse("image/*"), file);
                     MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("user_profile_picture", file.getName(), mFile);
@@ -325,7 +365,8 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
                     RequestBody gender = RequestBody.create(MediaType.parse("text/plain"), strGender);
                     RequestBody name = RequestBody.create(MediaType.parse("text/plain"), strName);
                     RequestBody dob = RequestBody.create(MediaType.parse("text/plain"), strDob);
-                    RetrofitService.getUpdateProfile(new Dialog(mContext), retrofitApiClient.profileimage(id, gender, name, dob, fileToUpload), new WebResponse() {
+                    RequestBody email = RequestBody.create(MediaType.parse("text/plain"), strEmail);
+                    RetrofitService.getUpdateProfile(new Dialog(mContext), retrofitApiClient.profileimage(id, gender, name, dob, email, fileToUpload), new WebResponse() {
                         @Override
                         public void onResponseSuccess(Response<?> result) {
                             LoginModel loginModal = (LoginModel) result.body();
@@ -338,8 +379,13 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
                                 iv_ShowUserImage.setImageResource(R.drawable.ic_user);
                             } else {
                                 Glide.with(mContext).load(loginModal.getUser().getUserProfilePicture()).error(R.drawable.ic_user).into(iv_ShowUserImage);
+                                String base64String = loginModal.getUser().getUserProfilePicture();
+                                String base64Image = base64String.split(",")[1];
+                                byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
+                                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                                saveImage(decodedByte);
                             }
-                            Intent intent = new Intent(EditProfileActivity.this, ProfileActivity.class);
+                            Intent intent = new Intent(EditProfileActivity.this, HomeActivity.class);
                             startActivity(intent);
                             finish();
                         }
@@ -352,46 +398,6 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
                 } else {
                     cd.show(mContext);
                 }
-            }
-        }
-        else {
-            if (cd.isNetWorkAvailable()) {
-                RequestBody mFile = RequestBody.create(MediaType.parse("image/*"), file);
-                MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("user_profile_picture", file.getName(), mFile);
-                RequestBody id = RequestBody.create(MediaType.parse("text/plain"), strUserId);
-                RequestBody gender = RequestBody.create(MediaType.parse("text/plain"), strGender);
-                RequestBody name = RequestBody.create(MediaType.parse("text/plain"), strName);
-                RequestBody dob = RequestBody.create(MediaType.parse("text/plain"), strDob);
-                RetrofitService.getUpdateProfile(new Dialog(mContext), retrofitApiClient.profileimage(id, gender, name, dob, fileToUpload), new WebResponse() {
-                    @Override
-                    public void onResponseSuccess(Response<?> result) {
-                        LoginModel loginModal = (LoginModel) result.body();
-                        assert loginModal != null;
-                        Gson gson = new GsonBuilder().setLenient().create();
-                        String data = gson.toJson(loginModal);
-                        AppPreference.setStringPreference(mContext, Constant.User_Data, data);
-                        User.setUser(loginModal);
-                        if (User.getUser().getUser().getUserProfilePicture() == null) {
-                            iv_ShowUserImage.setImageResource(R.drawable.ic_user);
-                        } else {
-                            Glide.with(mContext).load(loginModal.getUser().getUserProfilePicture()).error(R.drawable.ic_user).into(iv_ShowUserImage);
-                            String base64String = loginModal.getUser().getUserProfilePicture();
-                            String base64Image = base64String.split(",")[1];
-                            byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
-                            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                            saveImage(decodedByte);
-                        }
-                        Intent intent = new Intent(EditProfileActivity.this, ProfileActivity.class);
-                        startActivity(intent);
-                        finish();
-                    }
-                    @Override
-                    public void onResponseFailed(String error) {
-                        Alerts.show(mContext, error);
-                    }
-                });
-            } else {
-                cd.show(mContext);
             }
         }
     }
@@ -484,5 +490,14 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
 
 
+    }
+
+    private boolean isValidEmailId(String email){
+        Pattern pattern;
+        Matcher matcher;
+        final String EMAIL_PATTERN = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+        pattern = Pattern.compile(EMAIL_PATTERN);
+        matcher = pattern.matcher(email);
+        return matcher.matches();
     }
 }

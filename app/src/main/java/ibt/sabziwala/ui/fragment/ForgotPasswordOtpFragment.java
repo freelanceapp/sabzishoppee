@@ -1,6 +1,7 @@
 package ibt.sabziwala.ui.fragment;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
@@ -23,6 +24,7 @@ import ibt.sabziwala.model.User;
 import ibt.sabziwala.model.login_responce.LoginModel;
 import ibt.sabziwala.retrofit_provider.RetrofitService;
 import ibt.sabziwala.retrofit_provider.WebResponse;
+import ibt.sabziwala.ui.activity.HomeActivity;
 import ibt.sabziwala.utils.Alerts;
 import ibt.sabziwala.utils.AppPreference;
 import ibt.sabziwala.utils.BaseFragment;
@@ -39,7 +41,7 @@ public class ForgotPasswordOtpFragment extends BaseFragment implements View.OnCl
     private TextView otpTime;
     private LinearLayout resendLayout;
     private Pinview pinview1;
-    private String strMobile , strOtp;
+    private String strMobile , strOtp, from;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -49,6 +51,7 @@ public class ForgotPasswordOtpFragment extends BaseFragment implements View.OnCl
         cd = new ConnectionDirector(mContext);
         retrofitApiClient = RetrofitService.getRetrofit();
 
+        from = getArguments().getString("From");
         strMobile = getArguments().getString("Mobile_Number");
         init();
         return rootview;
@@ -110,22 +113,37 @@ public class ForgotPasswordOtpFragment extends BaseFragment implements View.OnCl
 
                         if (!loginModel.getError())
                         {
-                            Alerts.show(mContext, loginModel.getMessage());
+                            if (from.equals("Forgot")) {
+                                Alerts.show(mContext, loginModel.getMessage());
 
-                            AppPreference.setBooleanPreference(mContext, Constant.Is_Login , true);
-                            AppPreference.setStringPreference(mContext, Constant.User_Id , loginModel.getUser().getId());
+                                AppPreference.setBooleanPreference(mContext, Constant.Is_Login , true);
+                                AppPreference.setStringPreference(mContext, Constant.User_Id , loginModel.getUser().getId());
 
-                            Gson gson = new GsonBuilder().setLenient().create();
-                            String data = gson.toJson(loginModel);
-                            AppPreference.setStringPreference(mContext, Constant.User_Data, data);
-                            User.setUser(loginModel);
+                                Gson gson = new GsonBuilder().setLenient().create();
+                                String data = gson.toJson(loginModel);
+                                AppPreference.setStringPreference(mContext, Constant.User_Data, data);
+                                User.setUser(loginModel);
 
-                            NewPasswordFragment forgotPasswordFragment = new NewPasswordFragment();
-                            Bundle bundle = new Bundle();
-                            bundle.putString("user_id", loginModel.getUser().getId());
-                            forgotPasswordFragment.setArguments(bundle);
-                            startFragment(Constant.ForgotPasswordOtpFragment,forgotPasswordFragment);
+                                NewPasswordFragment forgotPasswordFragment = new NewPasswordFragment();
+                                Bundle bundle = new Bundle();
+                                bundle.putString("user_id", loginModel.getUser().getId());
+                                forgotPasswordFragment.setArguments(bundle);
+                                startFragment(Constant.ForgotPasswordOtpFragment,forgotPasswordFragment);
+                            } else if (from.equals("Login")){
+                                Alerts.show(mContext, loginModel.getMessage());
 
+                                AppPreference.setBooleanPreference(mContext, Constant.Is_Login, true);
+                                AppPreference.setStringPreference(mContext, Constant.User_Id, loginModel.getUser().getId());
+
+                                Gson gson = new GsonBuilder().setLenient().create();
+                                String data = gson.toJson(loginModel);
+                                AppPreference.setStringPreference(mContext, Constant.User_Data, data);
+                                User.setUser(loginModel);
+
+                                Intent intent = new Intent(mContext, HomeActivity.class);
+                                mContext.startActivity(intent);
+                                getActivity().finish();
+                            }
 
 
                         }else {

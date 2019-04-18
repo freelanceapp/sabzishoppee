@@ -37,6 +37,7 @@ import ibt.sabziwala.constant.Constant;
 import ibt.sabziwala.model.User;
 import ibt.sabziwala.model.address_add_responce.AddAddressModel;
 import ibt.sabziwala.model.address_show_responce.AddressShowModel;
+import ibt.sabziwala.model.signup_responce.SignUpModel;
 import ibt.sabziwala.retrofit_provider.RetrofitService;
 import ibt.sabziwala.retrofit_provider.WebResponse;
 import ibt.sabziwala.ui.activity.AddressLocationActivity;
@@ -50,6 +51,9 @@ import ibt.sabziwala.utils.GpsTracker;
 import ibt.sabziwala.utils.SessionManager;
 import ibt.sabziwala.utils.Utility;
 import retrofit2.Response;
+
+import static ibt.sabziwala.ui.activity.CheckOutActivity.tv_address;
+import static ibt.sabziwala.ui.activity.CheckOutActivity.tv_confirmation;
 
 
 @SuppressLint("ValidFragment")
@@ -83,6 +87,7 @@ public class ShoppingFragment extends BaseFragment implements View.OnClickListen
     @SuppressLint("ValidFragment")
     public ShoppingFragment(Context ctx) {
       //  connectionDetector = new ConnectionDetector();
+        // http://freshveggie.infobitetechnology.tech/api/add-user-address.php
 
     }
 
@@ -98,6 +103,10 @@ public class ShoppingFragment extends BaseFragment implements View.OnClickListen
         mContext = getActivity();
         cd = new ConnectionDirector(mContext);
         retrofitApiClient = RetrofitService.getRetrofit();
+
+        tv_confirmation.setBackgroundColor(getResources().getColor(R.color.gray_g));
+        tv_address.setBackgroundColor(getResources().getColor(R.color.red_d));
+
         initXml(view);
         setData();
         return view;
@@ -134,13 +143,13 @@ public class ShoppingFragment extends BaseFragment implements View.OnClickListen
         btn_placeorder.setOnClickListener(this);
         btn_current_location.setOnClickListener(this);
 
-        sp_newaddress_type.setOnItemSelectedListener(this);
+       /* sp_newaddress_type.setOnItemSelectedListener(this);
 
         //Creating the ArrayAdapter instance having the bank name list
         ArrayAdapter aa = new ArrayAdapter(ctx,android.R.layout.simple_spinner_item,AddressType);
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //Setting the ArrayAdapter data on the Spinner
-        sp_newaddress_type.setAdapter(aa);
+        sp_newaddress_type.setAdapter(aa);*/
 
 
         addressShowAdapter = new AddressShowAdapter(mContext, addressArrayList, this );
@@ -259,6 +268,14 @@ public class ShoppingFragment extends BaseFragment implements View.OnClickListen
                 Utility.setFragment1(fragment, ctx, Constant.ShoppingFragment);
 
                 break;
+
+            case R.id.btn_edit :
+                int pos1 = Integer.parseInt(v.getTag().toString());
+                ibt.sabziwala.model.address_show_responce.Address address1 = addressArrayList.get(pos1);
+
+                updateAddressApi(address1.getAddressId());
+
+                break;
         }
     }
 
@@ -284,6 +301,10 @@ public class ShoppingFragment extends BaseFragment implements View.OnClickListen
 
        /* if (strName.equals("") || strAddress.equals("") || strCountry.equals("") || strState.equals("") ||
                 strCity.equals("") || strZipCode.equals("") || strHouseNo.equals("") ) {
+=======
+        if (strName.equals("") || strAddress.equals("") || strCountry.equals("") || strState.equals("") ||
+                strCity.equals("") || strZipCode.equals("") ) {
+>>>>>>> 39305a827e0de5d91487a4d565a2bfe190c12c12
 
             Utility.toastView(ctx, "Enter all details");
         } *//*else if (mobile.length()>10 || mobile.length()<10){
@@ -370,6 +391,26 @@ public class ShoppingFragment extends BaseFragment implements View.OnClickListen
                         Alerts.show(mContext, addressModel.getMessage());
                     }
                     addressShowAdapter.notifyDataSetChanged();
+                }
+                @Override
+                public void onResponseFailed(String error) {
+                    Alerts.show(mContext, error);
+                }
+            });
+        }else {
+            cd.show(mContext);
+        }
+    }
+
+    private void updateAddressApi(String addressId) {
+        if (cd.isNetWorkAvailable()) {
+            RetrofitService.updateAddress(new Dialog(mContext), retrofitApiClient.updateAddress("","","","","",""
+                    ,"","","","","","3",addressId), new WebResponse() {
+                @Override
+                public void onResponseSuccess(Response<?> result) {
+                    SignUpModel addressModel = (SignUpModel) result.body();
+                        Alerts.show(mContext, addressModel.getMessage());
+                        getAddressApi();
                 }
                 @Override
                 public void onResponseFailed(String error) {

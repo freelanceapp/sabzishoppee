@@ -1,6 +1,8 @@
 package ibt.sabziwala.adapter;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
@@ -8,14 +10,27 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import ibt.sabziwala.R;
+import ibt.sabziwala.constant.Constant;
 import ibt.sabziwala.model.address_show_responce.Address;
+import ibt.sabziwala.model.address_show_responce.AddressShowModel;
+import ibt.sabziwala.model.signup_responce.SignUpModel;
+import ibt.sabziwala.retrofit_provider.RetrofitApiClient;
+import ibt.sabziwala.retrofit_provider.RetrofitService;
+import ibt.sabziwala.retrofit_provider.WebResponse;
+import ibt.sabziwala.ui.activity.CheckOutActivity;
+import ibt.sabziwala.utils.Alerts;
+import ibt.sabziwala.utils.AppPreference;
+import ibt.sabziwala.utils.ConnectionDirector;
+import retrofit2.Response;
 
 
 public class AddressShowAdapter extends RecyclerView.Adapter<AddressShowAdapter.ViewHolder>  {
@@ -27,7 +42,6 @@ public class AddressShowAdapter extends RecyclerView.Adapter<AddressShowAdapter.
     private String strSubCategoryName;
     private Boolean cheked = false;
     private int pos1;
-
     public AddressShowAdapter(Context mContext, ArrayList<Address> productArrayList, View.OnClickListener onClickListener, int pos1) {
         this.mContext = mContext;
         this.productArrayList = productArrayList;
@@ -39,6 +53,7 @@ public class AddressShowAdapter extends RecyclerView.Adapter<AddressShowAdapter.
         this.mContext = mContext;
         this.productArrayList = productArrayList;
         this.onClickListener = onClickListener;
+
     }
 
     @NonNull
@@ -59,8 +74,8 @@ public class AddressShowAdapter extends RecyclerView.Adapter<AddressShowAdapter.
         viewHolder.tv_state.setText(address.getState());
         viewHolder.ll_show_address.setTag(i);
         viewHolder.ll_show_address.setOnClickListener(onClickListener);
-
-
+        viewHolder.btn_edit.setTag(i);
+        viewHolder.btn_edit.setOnClickListener(onClickListener);
     }
 
     @Override
@@ -68,13 +83,11 @@ public class AddressShowAdapter extends RecyclerView.Adapter<AddressShowAdapter.
         return productArrayList.size();
     }
 
-
-
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder  {
 
         private LinearLayout ll_show_address;
-        private TextView tv_state, tv_city, tv_address1, btn_edit;
-
+        private TextView tv_state, tv_city, tv_address1;
+        private ImageView btn_edit;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -83,18 +96,6 @@ public class AddressShowAdapter extends RecyclerView.Adapter<AddressShowAdapter.
             tv_state = itemView.findViewById(R.id.tv_state);
             ll_show_address = itemView.findViewById(R.id.ll_show_address);
             btn_edit = itemView.findViewById(R.id.btn_edit);
-            btn_edit.setOnClickListener(this);
-
-        }
-
-        @Override
-        public void onClick(View view) {
-            switch (view.getId())
-            {
-                case R.id.btn_edit :
-                    Toast.makeText(mContext, productArrayList.get(getAdapterPosition()).getAddressId(), Toast.LENGTH_SHORT).show();
-                    break;
-            }
         }
     }
 }

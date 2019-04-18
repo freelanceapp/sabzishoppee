@@ -92,6 +92,7 @@ public class ForgotPasswordFragment1 extends BaseFragment implements View.OnClic
 
                             ForgotPasswordOtpFragment forgotPasswordFragment = new ForgotPasswordOtpFragment();
                             Bundle bundle = new Bundle();
+                            bundle.putString("From", "Forgot");
                             bundle.putString("Mobile_Number", strMobile);
                             forgotPasswordFragment.setArguments(bundle);
                             startFragment(Constant.ForgotPasswordOtpFragment,forgotPasswordFragment);

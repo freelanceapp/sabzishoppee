@@ -24,7 +24,7 @@
                 <android.support.v4.view.ViewPager
                     android:id="@+id/pager"
                     android:layout_width="match_parent"
-                    android:layout_height="180sp"
+                    android:layout_height="180dp"
                     android:layout_alignParentTop="true" />
 
                 <com.viewpagerindicator.CirclePageIndicator
@@ -57,12 +57,12 @@
 
                     <TextView
                         android:id="@+id/btn_all"
-                        android:layout_width="100sp"
-                        android:layout_height="80sp"
+                        android:layout_width="100dp"
+                        android:layout_height="70dp"
                         android:background="@color/green_light"
                         android:gravity="center"
                         android:text="All"
-                        android:textSize="18sp"
+                        android:textSize="16sp"
                         android:textColor="@color/white"
                         android:textStyle="bold"/>
                 </android.support.v7.widget.CardView>
@@ -76,12 +76,12 @@
 
                     <TextView
                         android:id="@+id/btn_fruits"
-                        android:layout_width="100sp"
-                        android:layout_height="80sp"
+                        android:layout_width="100dp"
+                        android:layout_height="70dp"
                         android:background="@color/green_50"
                         android:gravity="center"
                         android:text="Fruits"
-                        android:textSize="18sp"
+                        android:textSize="16sp"
                         android:textStyle="bold"/>
                 </android.support.v7.widget.CardView>
 
@@ -94,12 +94,12 @@
 
                     <TextView
                         android:id="@+id/btn_vagitable"
-                        android:layout_width="100sp"
-                        android:layout_height="80sp"
+                        android:layout_width="100dp"
+                        android:layout_height="70dp"
                         android:background="@color/green_50"
                         android:gravity="center"
-                        android:text="Vegitable"
-                        android:textSize="18sp"
+                        android:text="Vegetable"
+                        android:textSize="16sp"
                         android:textStyle="bold"/>
                 </android.support.v7.widget.CardView>
 
@@ -115,13 +115,12 @@
                     android:id="@+id/tv_categoryName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_darkred"
                     android:paddingLeft="20sp"
                     android:paddingTop="6sp"
-                    android:paddingRight="50dp"
+                    android:paddingRight="20dp"
                     android:paddingBottom="6sp"
                     android:text="All"
-                    android:textColor="@color/white"
+                    android:textColor="@color/red_a"
                     android:textSize="16sp" />
 
                 <TextView
@@ -129,12 +128,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:paddingLeft="20sp"
+                    android:background="@drawable/bg_darkred"
+                    android:paddingLeft="30sp"
                     android:paddingTop="6sp"
                     android:paddingRight="30dp"
                     android:paddingBottom="6sp"
                     android:text="Filter"
-                    android:textColor="@color/red_a"
+                    android:textColor="@color/white"
                     android:textSize="16sp" />
             </RelativeLayout>
 
@@ -191,8 +191,7 @@
                 android:id="@+id/rvproductList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="2sp"
-                />
+                android:layout_margin="2sp"/>
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rvFruits"
                 android:visibility="gone"

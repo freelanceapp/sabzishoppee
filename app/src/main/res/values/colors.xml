@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#dadada</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorPrimary">#A11F07</color>
+    <color name="colorPrimaryDark">#A82007</color>
+    <color name="colorAccent">#A11F07</color>
 
     <color name="text_color_a">#121212</color>
     <color name="text_color_b">#212121</color>
@@ -287,4 +287,6 @@
     <color name="transparent">#12DFDEDE</color>
     <color name="transparent_b">#655C5C5C</color>
     <color name="transparent_a">#34000000</color>
+
+    <color name="profile_default_tint">#e0e0e0</color>
 </resources>

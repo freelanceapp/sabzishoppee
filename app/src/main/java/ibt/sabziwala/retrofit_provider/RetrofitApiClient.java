@@ -49,10 +49,12 @@ public interface RetrofitApiClient {
                              @Field("password") String password);
 
     @FormUrlEncoded
-    @POST(Constant.SUPPORT)
+    @POST(Constant.TOKEN_UPDATE)
     Call<SignUpModel> updateToken(@Field("user_id") String user_id,
                                    @Field("token") String token,
-                                   @Field("user_ip") String user_ip);
+                                   @Field("user_ip") String user_ip,
+                                   @Field("type") String type
+    );
 
     @FormUrlEncoded
     @POST(Constant.PROFILE)
@@ -71,6 +73,10 @@ public interface RetrofitApiClient {
     @POST(Constant.CHANGE_PASSWORD)
     Call<ChangePasswordModel> changePassword(@Field("user_id") String user_id ,
                                              @Field("new_password") String new_password);
+
+    @FormUrlEncoded
+    @POST(Constant.LOGIN_WITH_MOBILE_API)
+    Call<ResponseBody> loginWithMobile(@Field("contact") String email);
 
     @FormUrlEncoded
     @POST(Constant.LOGIN_API)
@@ -111,6 +117,7 @@ public interface RetrofitApiClient {
                                         @Part("user_gendar") RequestBody user_gendar,
                                         @Part("user_name") RequestBody user_name,
                                         @Part("user_dob") RequestBody user_dob,
+                                        @Part("user_email") RequestBody user_email,
                                         @Part MultipartBody.Part user_profile_picture);
 
 
@@ -149,6 +156,24 @@ public interface RetrofitApiClient {
     Call<AddressShowModel> getAddress(
             @Field("user_id") String user_id);
 
+
+    @FormUrlEncoded
+    @POST(Constant.UPDATE_ADDRESS)
+    Call<SignUpModel> updateAddress(
+            @Field("location") String location,
+            @Field("lang") String lang,
+            @Field("lati") String lati,
+            @Field("address_house_number") String address_house_number,
+            @Field("address_street_name") String address_street_name,
+            @Field("address_city") String address_city,
+            @Field("address_state") String address_state,
+            @Field("address_country") String address_country,
+            @Field("address_zipcode") String address_zipcode,
+            @Field("id") String id,
+            @Field("address_address_type") String address_address_type,
+            @Field("address_status") String address_status,
+            @Field("address_id") String address_id
+    );
 
     @FormUrlEncoded
     @POST(Constant.GET_ORDER_HISTORY)

@@ -6,29 +6,43 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_home"
-            android:title="Home" />
+            android:title="Home"
+            android:icon="@drawable/ic_home"
+            android:iconTint="@color/white" />
         <item
             android:id="@+id/nav_about"
-            android:title="About" />
+            android:title="About"
+            android:icon="@drawable/ic_about"
+            android:iconTint="@color/white"/>
         <item
             android:id="@+id/nav_contact"
-            android:title="Contact" />
+            android:title="Contact"
+            android:icon="@drawable/ic_contact"
+            android:iconTint="@color/white"/>
         <item
             android:id="@+id/nav_help"
-            android:title="Help" />
+            android:title="Help"
+            android:icon="@drawable/ic_help"
+            android:iconTint="@color/white"/>
         <item
             android:id="@+id/nav_history"
-            android:title="Order History" />
+            android:title="Order History"
+            android:icon="@drawable/ic_history"
+            android:iconTint="@color/white"/>
         <item
             android:id="@+id/nav_password"
-            android:title="Change Password" />
+            android:title="Change Password"
+            android:icon="@drawable/ic_change_password"
+            android:iconTint="@color/white"/>
     </group>
 
     <item android:title="">
         <menu>
             <item
                 android:id="@+id/nav_logout"
-                android:title="Logout" />
+                android:title="Logout"
+                android:icon="@drawable/ic_logout"
+                android:iconTint="@color/white"/>
 
         </menu>
     </item>
