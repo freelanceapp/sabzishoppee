@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:gravity="center"
-    tools:context="ibt.sabziwala.ui.activity.VerifyOtpActivity">
+    tools:context="ibt.pahadisabzi.ui.activity.VerifyOtpActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -25,7 +25,7 @@
             android:textSize="20sp"
             android:textStyle="bold" />
 
-        <ibt.sabziwala.utils.pinview.Pinview
+        <ibt.pahadisabzi.utils.pinview.Pinview
             android:id="@+id/pinview1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

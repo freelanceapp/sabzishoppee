@@ -388,6 +388,40 @@
                         android:gravity="end"
                         android:id="@+id/tvProductDetaildiscount"/>
                 </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginLeft="6sp"
+                    android:layout_marginRight="6sp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="2dp"
+                    android:id="@+id/llProductDetailRating">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Rating"
+                        android:textSize="14sp"
+                        android:padding="4sp"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Type"
+                        android:textSize="14sp"
+                        android:padding="4sp"
+                        android:textColor="@color/gray_d"
+                        android:textStyle="bold"
+                        android:gravity="end|center_vertical"
+                        android:id="@+id/tvProductDetailRating"
+                        android:drawableRight="@drawable/ic_star"
+                        android:drawablePadding="4sp"
+                        android:drawableTint="@color/red_900"/>
+                </LinearLayout>
 
                 <TextView
                     android:layout_width="match_parent"

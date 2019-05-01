@@ -29,15 +29,14 @@
             android:layout_height="wrap_content"
             android:background="@drawable/bg_layout1"
             android:hint="Name"
+            android:maxLength="60"
             android:padding="6sp"
             android:textSize="16sp"
             android:lines="1"
             android:layout_margin="6sp"
             android:textColor="@color/red_a"
             android:id="@+id/et_contact_name"
-            android:digits="AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz"
-            />
-
+            android:digits=" AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz" />
 
         <EditText
             android:layout_width="match_parent"
@@ -64,7 +63,8 @@
             android:layout_margin="6sp"
             android:textColor="@color/red_a"
             android:id="@+id/et_contact_subject"
-            android:digits="AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz"/>
+            android:maxLength="60"
+            android:digits=" AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz"/>
 
         <EditText
             android:layout_width="match_parent"
@@ -80,7 +80,7 @@
             android:layout_margin="6sp"
             android:textColor="@color/red_a"
             android:id="@+id/et_contact_message"
-            android:digits="1234567890AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz"/>
+            android:digits=" 1234567890AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz"/>
 
         <Button
             android:layout_width="match_parent"

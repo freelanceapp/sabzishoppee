@@ -72,7 +72,8 @@
                     android:text="120 Rs"
                     android:textColor="@color/black"
                     android:padding="4sp"
-                    android:layout_marginLeft="4sp"/>
+                    android:layout_marginLeft="4sp"
+                    android:visibility="gone"/>
             </LinearLayout>
 
 
@@ -116,14 +117,14 @@
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/iv_adpcart_plus"
+                android:id="@+id/iv_adpcart_plus1"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:padding="8dp"
                 android:src="@drawable/ic_plus" />
 
             <TextView
-                android:id="@+id/tv_adpcart_qty"
+                android:id="@+id/tv_adpcart_qty1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
@@ -133,7 +134,7 @@
                 android:textSize="20dp" />
 
             <ImageView
-                android:id="@+id/iv_adpcart_minus"
+                android:id="@+id/iv_adpcart_minus1"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_alignParentBottom="true"

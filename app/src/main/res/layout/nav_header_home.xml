@@ -19,8 +19,8 @@
         android:gravity="center">
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_ShowUserImage"
-            android:layout_width="100sp"
-            android:layout_height="100sp"
+            android:layout_width="90sp"
+            android:layout_height="90sp"
             android:contentDescription="@string/nav_header_desc"
             android:src="@drawable/ic_user"
             app:civ_border_width="1dp"
@@ -34,7 +34,7 @@
             android:textColor="@color/white"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:id="@+id/tv_ShowUserName"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:textStyle="bold"
             android:padding="4sp"
             android:layout_marginTop="4sp"/>

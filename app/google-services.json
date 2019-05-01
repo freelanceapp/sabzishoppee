@@ -1,42 +1,34 @@
 {
   "project_info": {
-    "project_number": "509361972677",
-    "firebase_url": "https://sabziwala-uki.firebaseio.com",
-    "project_id": "sabziwala-uki",
-    "storage_bucket": "sabziwala-uki.appspot.com"
+    "project_number": "153492641540",
+    "firebase_url": "https://pahadi-sabzi.firebaseio.com",
+    "project_id": "pahadi-sabzi",
+    "storage_bucket": "pahadi-sabzi.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:509361972677:android:c0a4f9243721997e",
+        "mobilesdk_app_id": "1:153492641540:android:ecc93ab898283927",
         "android_client_info": {
-          "package_name": "ibt.sabziwala"
+          "package_name": "ibt.pahadisabzi"
         }
       },
       "oauth_client": [
         {
-          "client_id": "509361972677-99u6hiprad94r10e3jhs3hj6rkf371r5.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "ibt.sabziwala",
-            "certificate_hash": "af6e7a438225bb46c5ab7585a31fb59ee4c135dd"
-          }
-        },
-        {
-          "client_id": "509361972677-4je33o1pki64o6pifveklr1mm2i2eqmk.apps.googleusercontent.com",
+          "client_id": "153492641540-kgem6vae5ho6a9m7a9lu1uhp0aend3j7.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDj95vP8jouxzcx6wWp4SO9S2sVAQ7Lxyw"
+          "current_key": "AIzaSyDGcRJ6YKYYLifxgJSO12lXtmfp4afBkxw"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "509361972677-4je33o1pki64o6pifveklr1mm2i2eqmk.apps.googleusercontent.com",
+              "client_id": "153492641540-kgem6vae5ho6a9m7a9lu1uhp0aend3j7.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

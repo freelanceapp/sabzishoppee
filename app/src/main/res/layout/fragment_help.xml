@@ -31,7 +31,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="App Name"
+                android:text="Name"
                 android:padding="6sp"
                 android:textColor="@color/black"
                 android:textStyle="bold"
@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:text="App Name"
                 android:padding="6sp"
-                android:textColor="@color/gray_a"
+                android:textColor="@color/red_a"
                 android:layout_weight=".5"
                 android:id="@+id/tv_app_name"/>
 
@@ -66,7 +66,7 @@
                 android:layout_height="wrap_content"
                 android:text="97986"
                 android:padding="6sp"
-                android:textColor="@color/gray_a"
+                android:textColor="@color/red_a"
                 android:layout_weight=".5"
                 android:id="@+id/tv_number"/>
 
@@ -91,7 +91,7 @@
                 android:layout_height="wrap_content"
                 android:text="App Name"
                 android:padding="6sp"
-                android:textColor="@color/gray_a"
+                android:textColor="@color/red_a"
                 android:layout_weight=".5"
                 android:id="@+id/tv_email"/>
 
@@ -116,7 +116,7 @@
                 android:layout_height="wrap_content"
                 android:text="App Name"
                 android:padding="6sp"
-                android:textColor="@color/gray_a"
+                android:textColor="@color/red_a"
                 android:layout_weight=".5"
                 android:id="@+id/tv_address"/>
 

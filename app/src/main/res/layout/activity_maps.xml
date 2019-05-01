@@ -106,7 +106,8 @@
                         android:textColor="@color/white"
                         android:textSize="14sp"
                         android:textStyle="bold"
-                        android:id="@+id/btn_confirm_location"/>
+                        android:id="@+id/btn_confirm_location"
+                        android:visibility="gone"/>
                 </LinearLayout>
             </LinearLayout>
         </android.support.v7.widget.CardView>
@@ -162,7 +163,7 @@
                     android:id="@+id/et_newaddress_hounse_no"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:digits="1234567890AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz"
+                    android:digits=" 1234567890AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz"
                     android:hint="House No."
                     android:maxLength="5"
                     android:paddingLeft="16dp" />

@@ -24,7 +24,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="100sp"
+                    android:layout_height="120sp"
                     android:background="@color/red_a"
                     android:orientation="horizontal"
                     android:paddingTop="6sp">
@@ -81,7 +81,8 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1sp"
-                        android:background="@color/gray_d"/>
+                        android:background="@color/gray_d"
+                        android:visibility="gone"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -90,7 +91,8 @@
                         android:text="Email"
                         android:textColor="@color/black"
                         android:textSize="14sp"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold"
+                        android:visibility="gone"/>
 
                     <TextView
                         android:id="@+id/tv_email_address"
@@ -103,7 +105,8 @@
                         android:padding="10dp"
                         android:textColor="@color/black"
                         android:textSize="14sp"
-                        android:textStyle="normal" />
+                        android:textStyle="normal"
+                        android:visibility="gone"/>
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1sp"
@@ -144,7 +147,8 @@
                         android:text="Date of birth"
                         android:textColor="@color/black"
                         android:textSize="14sp"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold"
+                        android:visibility="gone"/>
 
                     <TextView
                         android:id="@+id/tv_dob"
@@ -157,11 +161,13 @@
                         android:padding="10dp"
                         android:textColor="@color/black"
                         android:textSize="14sp"
-                        android:textStyle="normal" />
+                        android:textStyle="normal"
+                        android:visibility="gone"/>
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1sp"
-                        android:background="@color/gray_d"/>
+                        android:background="@color/gray_d"
+                        android:visibility="gone"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -197,7 +203,8 @@
                         android:layout_marginTop="16dp"
                         android:layout_marginBottom="30dp"
                         android:gravity="center"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:visibility="gone">
 
                         <TextView
                             android:layout_width="match_parent"
@@ -226,7 +233,7 @@
                 android:layout_width="120sp"
                 android:layout_height="120sp"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="60dp"
                 android:src="@drawable/ic_user"
                 android:id="@+id/ci_profile"
                 app:civ_border_width="1sp"
@@ -244,5 +251,6 @@
         android:textColor="@color/white"
         android:background="@color/red_a"
         android:textAllCaps="false"
-        android:id="@+id/btn_edit_profile"/>
+        android:id="@+id/btn_edit_profile"
+        android:visibility="gone"/>
 </RelativeLayout>

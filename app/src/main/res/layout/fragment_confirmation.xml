@@ -104,23 +104,126 @@
             android:layout_marginLeft="15sp"
             android:padding="10dp"
             android:text="Note"
-            android:visibility="gone"
+            android:visibility="visible"
             android:textColor="@color/black" />
 
         <EditText
             android:textStyle="normal"
             android:textSize="14sp"
-            android:visibility="gone"
+            android:visibility="visible"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15sp"
-            android:lines="5"
+            android:lines="2"
             android:gravity="start"
             android:padding="10dp"
             android:textColor="@color/gray_c"
             android:id="@+id/etNote"
             android:background="@drawable/bg_layout"/>
+
+        <TextView
+            android:textStyle="normal"
+            android:textSize="14sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="15sp"
+            android:layout_marginLeft="15sp"
+            android:padding="10dp"
+            android:text="Delivery Time"
+            android:visibility="visible"
+            android:textColor="@color/black" />
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15sp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:padding="4dp"
+            android:scrollbars="none">
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/rg_delivery_time">
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="8:00 AM - 10:00 AM"
+                    android:padding="6dp"
+                    android:textSize="14sp"
+                    android:background="@drawable/bg_layout6"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginLeft="4dp"
+                    android:id="@+id/tv_delivery_time6"/>
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="10:00 AM - 12:00 PM"
+                    android:padding="6dp"
+                    android:textSize="14sp"
+                    android:background="@drawable/bg_layout6"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginLeft="4dp"
+                    android:id="@+id/tv_delivery_time1"/>
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="12:00 PM - 2:00 PM"
+                    android:padding="6dp"
+                    android:textSize="14sp"
+                    android:background="@drawable/bg_layout6"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginLeft="4dp"
+                    android:id="@+id/tv_delivery_time2"/>
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2:00 PM - 4:00 PM"
+                    android:padding="6dp"
+                    android:textSize="14sp"
+                    android:background="@drawable/bg_layout6"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginLeft="4dp"
+                    android:id="@+id/tv_delivery_time3"/>
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="4:00 PM - 6:00 PM"
+                    android:padding="6dp"
+                    android:textSize="14sp"
+                    android:background="@drawable/bg_layout6"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginLeft="4dp"
+                    android:id="@+id/tv_delivery_time4"/>
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="6:00 PM - 8:00 PM"
+                    android:padding="6dp"
+                    android:textSize="14sp"
+                    android:background="@drawable/bg_layout6"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginLeft="4dp"
+                    android:id="@+id/tv_delivery_time5"/>
+            </RadioGroup>
+        </HorizontalScrollView>
+
     <TextView
         android:textStyle="normal"
         android:textSize="14sp"

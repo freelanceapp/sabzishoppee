@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="ibt.sabziwala.ui.activity.SignInActivity">
+    tools:context="ibt.pahadisabzi.ui.activity.SignInActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,7 +18,7 @@
 
         <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="120sp"
+            android:layout_height="200sp"
             android:src="@drawable/splash_logo"
             android:layout_gravity="center"
             android:layout_marginTop="20dp" />
@@ -40,14 +40,15 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="16dp"
             android:layout_marginRight="10dp"
-            android:hint="Mobile "
+            android:hint="10 digit mobile number"
             android:inputType="phone"
             android:maxLength="10"
             android:padding="10dp"
             android:textColor="@color/black"
             android:background="@drawable/bg_layout"
             android:textSize="14sp"
-            android:textStyle="normal" />
+            android:textStyle="normal"
+            android:digits="1234567890"/>
 
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
