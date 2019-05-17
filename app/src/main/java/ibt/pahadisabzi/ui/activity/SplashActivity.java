@@ -61,12 +61,7 @@ public class SplashActivity extends BaseActivity {
         String refreshedToken = FirebaseInstanceId.getInstance().getToken();
         Log.e("Firebase ", "Refreshed token: " + refreshedToken);
 
-
-
         getAppVersion();
-
-
-
     }
 
     protected void checkPermission() {
@@ -90,7 +85,7 @@ public class SplashActivity extends BaseActivity {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         ActivityCompat.requestPermissions(
                                 (Activity) mContext,
-                                new String[]{Manifest.permission.CAMERA, Manifest.permission.READ_SMS,
+                                new String[]{Manifest.permission.CAMERA,
                                         Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION
                                 },
                                 MY_PERMISSIONS_REQUEST_CODE
@@ -111,7 +106,8 @@ public class SplashActivity extends BaseActivity {
                         (Activity) mContext,
                         new String[]{
                                 Manifest.permission.CAMERA,
-                                Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                                Manifest.permission.ACCESS_FINE_LOCATION
                         },
                         MY_PERMISSIONS_REQUEST_CODE
                 );
@@ -131,9 +127,6 @@ public class SplashActivity extends BaseActivity {
                             String userData = AppPreference.getStringPreference(mContext, Constant.User_Data);
                             LoginModel loginModal = gson.fromJson(userData, LoginModel.class);
                             User.setUser(loginModal);
-
-
-
                             Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
                             startActivity(intent);
                             finish();
@@ -245,19 +238,39 @@ public class SplashActivity extends BaseActivity {
             public void onResponseSuccess(Response<?> result) {
                 AppversionModel responseBody = (AppversionModel) result.body();
                 AppVersion = responseBody.getVersion();
-                if (AppVersion.equals("1")) {
+                if (AppVersion.equals("2")) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         checkPermission();
                     } else {
                         testHandler();
                     }
                 }else {
-                    final String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
-                    try {
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
-                    } catch (android.content.ActivityNotFoundException anfe) {
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                        AlertDialog.Builder builder1 = new AlertDialog.Builder(mContext);
+                builder1.setTitle("Pahadi Sabziwala Update");
+                builder1.setMessage("The new updated version is available  on google play store . Get the update to enjoy latest features of Pahadi Sabziwala");
+                builder1.setCancelable(true);
+                builder1.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        final String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
+                        try {
+                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                        } catch (android.content.ActivityNotFoundException anfe) {
+                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                        }
                     }
+                });
+                builder1.setNegativeButton(
+                        "Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                                finish();
+                            }
+                        });
+
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
                 }
             }
 

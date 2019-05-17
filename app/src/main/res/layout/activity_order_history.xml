@@ -42,7 +42,8 @@
         android:layout_height="wrap_content"
         android:src="@drawable/no_order1"
         android:id="@+id/img_no_order"
-        android:padding="30sp"/>
+        android:padding="30sp"
+        />
 
 
 </LinearLayout>

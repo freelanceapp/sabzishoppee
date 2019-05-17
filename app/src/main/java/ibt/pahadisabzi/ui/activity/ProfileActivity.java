@@ -115,6 +115,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
     @Override
     public void onClick(View view) {
         Intent intent = new Intent(ProfileActivity.this, EditProfileActivity.class);
+        intent.putExtra("OneTime", "0");
         startActivity(intent);
         finish();
     }

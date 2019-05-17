@@ -64,7 +64,7 @@ import static ibt.pahadisabzi.ui.activity.HomeActivity.iv_ShowUserImage;
 public class EditProfileActivity extends BaseActivity implements View.OnClickListener {
 
     private EditText et_fullname, et_email_address;
-    private TextView et_address, et_dob,et_email, et_mobile;
+    private TextView et_address, et_dob,et_email, et_mobile, skip_btn;
     private RadioGroup rb_gender;
     private CircleImageView ci_profile;
     private ImageView btn_camera, btn_editprofile_back;
@@ -81,7 +81,7 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
     private DatePickerDialog fromDatePickerDialog;
     private SimpleDateFormat dateFormatter;
     private String profileImage = "";
-
+    String onetime = "0";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,7 +95,7 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
 
     private void init() {
         dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-
+        onetime = getIntent().getStringExtra("OneTime");
         et_fullname = findViewById(R.id.et_fullname);
         et_email = findViewById(R.id.et_email_address);
         et_address = findViewById(R.id.et_address);
@@ -106,6 +106,7 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
         btn_camera = findViewById(R.id.btn_camera);
         btnUpdate = findViewById(R.id.btnUpdate);
         rgGendar = findViewById(R.id.rgGender1);
+        skip_btn = findViewById(R.id.skip_btn);
         btn_editprofile_back = findViewById(R.id.btn_editprofile_back);
         myStringRandomGen = new MyStringRandomGen();
         btn_camera.setOnClickListener(this);
@@ -131,6 +132,21 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
                 fromDatePickerDialog.show();
             }
         });
+
+        skip_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(EditProfileActivity.this, HomeActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        if (onetime.equals("0"))
+        {
+             skip_btn.setVisibility(View.GONE);
+        }
+
     }
 
 
@@ -442,7 +458,7 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
 
 
                         }else {
-                            ci_profile.setImageResource(R.drawable.ic_user);
+                            ci_profile.setImageResource(R.drawable.ic_profile);
                         }
 
                         //Glide.with(mContext).load(decodedByte).error(R.drawable.profile_img).fitCenter().into(ci_profile);

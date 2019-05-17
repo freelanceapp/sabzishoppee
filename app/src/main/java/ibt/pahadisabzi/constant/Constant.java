@@ -24,6 +24,8 @@ public class Constant {
     public static final String CHANGE_PASSWORD = "api/user-set-password.php";
     public static final String APP_VERSION = "api/check-version.php";
     public static final String ORDER_CANCEL = "api/user_cancel_order.php";
+    public static final String DELIVARY_TIME = "api/select_delivery_timing.php";
+    public static final String CART_DATA = "api/check_cart.php";
 
 
 
@@ -41,12 +43,14 @@ public class Constant {
     public static final String ShoppingFragment = "ShoppingFragment";
     public static final String ContactUsFragment = "ContactUsFragment";
     public static final String TOTAL_AMOUNT = "TOTAL_AMOUNT";
+    public static final String MINIMUN_PRICE = "MINIMUN_PRICE";
 
 
     /*Preference*/
     public static final String Is_Login = "Is_Login";
     public static final String Is_SignUp = "Is_SignUp";
     public static final String User_Id = "User_Id";
+    public static final String User_Name = "User_Name";
     public static final String User_Data = "User_Data";
     public static final String CategoryName = "CategoryName";
     public static final String Name = "Name";

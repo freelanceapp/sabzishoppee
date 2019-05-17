@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -35,6 +36,7 @@ public class AdapterConfirmation extends RecyclerView.Adapter<AdapterConfirmatio
 
         TextView name_tv, quantity_tv, type_tv, price_tv, qty_tv, tv_adpcart_edit, tv_adpcart_total;
         ImageView pro_image_iv, plus_iv, minus_iv;
+        LinearLayout cartLayout;
 
         public MyViewHolder(View view) {
             super(view);
@@ -49,6 +51,7 @@ public class AdapterConfirmation extends RecyclerView.Adapter<AdapterConfirmatio
             minus_iv = view.findViewById(R.id.iv_adpcart_minus1);
             tv_adpcart_edit = view.findViewById(R.id.tv_adpcart_edit);
             tv_adpcart_total = view.findViewById(R.id.tv_adpcart_total);
+            cartLayout = view.findViewById(R.id.cartLayout);
         }
     }
 
@@ -70,19 +73,25 @@ public class AdapterConfirmation extends RecyclerView.Adapter<AdapterConfirmatio
         //float round_pr = Math.round(dis1);
 
 
+        if (productDetail.getAvailability().equals("0"))
+        {
+            holder.cartLayout.setVisibility(View.GONE);
+        }else {
+            holder.cartLayout.setVisibility(View.VISIBLE);
+        }
        // holder.price_tv.setText("" + dis1+"Rs");
         holder.type_tv.setText(" " + productDetail.getQuantity_type());
 
         if (productDetail.getQuantity_type().equals("0"))
         {
-            holder.quantity_tv.setText("Rs. "+new DecimalFormat("##.##").format(dis1)+" - "+productDetail.getDescription()+" Pcs");
+            holder.quantity_tv.setText("Rs. "+new DecimalFormat("##.##").format(dis1)+" for "+productDetail.getDescription()+" Pcs");
         }else if (productDetail.getQuantity_type().equals("1"))
         {
-            holder.quantity_tv.setText("Rs. "+new DecimalFormat("##.##").format(dis1)+" - "+productDetail.getDescription()+" Kg");
+            holder.quantity_tv.setText("Rs. "+new DecimalFormat("##.##").format(dis1)+" for "+productDetail.getDescription()+" Kg");
 
            // holder.quantity_tv.setText(productDetail.getOrder_quantity()+" Kg");
         }else {
-            holder.quantity_tv.setText("Rs. "+new DecimalFormat("##.##").format(dis1)+" - "+productDetail.getDescription()+" Gm");
+            holder.quantity_tv.setText("Rs. "+new DecimalFormat("##.##").format(dis1)+" for "+productDetail.getDescription()+" gm");
 
            // holder.quantity_tv.setText(productDetail.getOrder_quantity()+" Gm");
         }
@@ -90,8 +99,9 @@ public class AdapterConfirmation extends RecyclerView.Adapter<AdapterConfirmatio
 
         holder.qty_tv.setText(list.get(position).getQuantity() + "");
 
-        int total = (int) (dis1 * list.get(position).getQuantity());
-        holder.tv_adpcart_total.setText("Total "+ total);
+        double single_price = list.get(position).getQuantity()* dis1;
+        holder.tv_adpcart_total.setText("Total Item Price : "+new DecimalFormat("##.##").format(single_price));
+
 
         if (productDetail.getImage() != null) {
             Glide.with(context).load(productDetail.getImage()).error(R.drawable.splash_logo).into(holder.pro_image_iv);

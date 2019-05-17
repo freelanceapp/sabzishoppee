@@ -7,9 +7,11 @@ import ibt.pahadisabzi.model.address_add_responce.AddAddressModel;
 import ibt.pahadisabzi.model.address_show_responce.AddressShowModel;
 import ibt.pahadisabzi.model.app_version_responce.AppversionModel;
 import ibt.pahadisabzi.model.banner_responce.BannerModel;
+import ibt.pahadisabzi.model.cart_responce.AddtoCartModel;
 import ibt.pahadisabzi.model.change_password_responce.ChangePasswordModel;
 import ibt.pahadisabzi.model.contact_responce.ContcatModel;
 import ibt.pahadisabzi.model.contact_us_responce.ContactUsModel;
+import ibt.pahadisabzi.model.delivary_time_responce.DelivaryTimeModel;
 import ibt.pahadisabzi.model.history_single_order_responce.HistorySingleOrderModel;
 import ibt.pahadisabzi.model.login_responce.LoginModel;
 import ibt.pahadisabzi.model.order_history_responce.OrderHistoryModel;
@@ -44,6 +46,8 @@ public interface RetrofitApiClient {
     @GET(Constant.APP_VERSION)
     Call<AppversionModel> getVersion();
 
+    @GET(Constant.DELIVARY_TIME)
+    Call<DelivaryTimeModel> getDelivaryTime();
 
     @FormUrlEncoded
     @POST(Constant.SIGNUP_API)
@@ -165,6 +169,11 @@ public interface RetrofitApiClient {
     @POST(Constant.GET_ADDRESS)
     Call<AddressShowModel> getAddress(
             @Field("user_id") String user_id);
+
+
+    @FormUrlEncoded
+    @POST(Constant.CART_DATA)
+    Call<AddtoCartModel> getCartData(@Field("cart") String cart);
 
 
     @FormUrlEncoded

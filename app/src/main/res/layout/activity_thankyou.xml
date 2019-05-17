@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.activity.ThankyouActivity"
+    android:background="@color/white">
+
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerInParent="true">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:src="@drawable/thank_you"/>
+
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:text="Continue Shopping"
+            android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="20dp"
+            android:textSize="16dp"
+            android:textColor="@color/white"
+            android:id="@+id/tv_home_btn"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/side_nav_bar2"
+            android:paddingLeft="50dp"
+            android:paddingRight="50dp"
+            android:textAllCaps="false"/>
+
+    </LinearLayout>
+    
+
+</RelativeLayout>

@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -14,7 +15,9 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.GestureDetector;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -23,6 +26,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -33,9 +39,16 @@ import ibt.pahadisabzi.constant.Constant;
 import ibt.pahadisabzi.database.DatabaseHandler;
 import ibt.pahadisabzi.database.HelperManager;
 import ibt.pahadisabzi.model.ProductDetail;
+import ibt.pahadisabzi.model.cart_responce.AddtoCartModel;
+import ibt.pahadisabzi.model.cart_responce.CartDatum;
+import ibt.pahadisabzi.model.contact_responce.ContcatModel;
+import ibt.pahadisabzi.retrofit_provider.RetrofitService;
+import ibt.pahadisabzi.retrofit_provider.WebResponse;
+import ibt.pahadisabzi.utils.Alerts;
 import ibt.pahadisabzi.utils.AppPreference;
 import ibt.pahadisabzi.utils.BaseActivity;
 import ibt.pahadisabzi.utils.GpsTracker;
+import retrofit2.Response;
 
 import static ibt.pahadisabzi.ui.activity.HomeActivity.cart_count;
 import static ibt.pahadisabzi.ui.activity.HomeActivity.cart_number;
@@ -58,7 +71,8 @@ public class AddToCartActivity extends BaseActivity implements View.OnClickListe
     float total = 0;
     TextView tvQty;
     ImageView minus_iv;
-
+    String AppMinimumAmount = "0";
+    String data;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,7 +82,7 @@ public class AddToCartActivity extends BaseActivity implements View.OnClickListe
         recyclerView = findViewById(R.id.rv_wishlist_recyclerview);
         place_bt = findViewById(R.id.bt_wishlist_placeorder);
         helperManager = new HelperManager(ctx);
-
+        contactApi();
         list = helperManager.readAllCart();
         place_bt.setVisibility(View.VISIBLE);
         place_bt.setOnClickListener(this);
@@ -86,6 +100,12 @@ public class AddToCartActivity extends BaseActivity implements View.OnClickListe
         cartProductList.clear();
         if (databaseCart.getContactsCount()) {
             cartProductList.addAll(databaseCart.getAllUrlList());
+
+            Gson gson = new GsonBuilder().setLenient().create();
+            data = gson.toJson(cartProductList);
+            Log.e("Cart Json", " "+data);
+
+            CartDataApi();
         }
         adapterCart = new AdapterCart(cartProductList, ctx, this, databaseCart, this);
         LinearLayoutManager layoutManager = new LinearLayoutManager(ctx);
@@ -93,7 +113,6 @@ public class AddToCartActivity extends BaseActivity implements View.OnClickListe
         recyclerView.setHasFixedSize(true);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapterCart);
-
 
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(this,
                 recyclerView, new ClickListener() {
@@ -146,12 +165,17 @@ public class AddToCartActivity extends BaseActivity implements View.OnClickListe
         total = 0;
         AppPreference.setIntegerPreference(ctx, Constant.CART_ITEM_COUNT, total_list.size());
         for (int i = 0; i < total_list.size(); i++) {
-            float percent = Float.parseFloat(total_list.get(i).getDiscount());
-            float pr = Float.parseFloat(total_list.get(i).getPrice());
-            float dis1 = pr * ((100 - percent) / 100);
-            int qty = total_list.get(i).getQuantity();
-            float tot = dis1 * qty;
-            total += tot;
+            if (total_list.get(i).getAvailability().equals("0"))
+            {
+
+            }else {
+                float percent = Float.parseFloat(total_list.get(i).getDiscount());
+                float pr = Float.parseFloat(total_list.get(i).getPrice());
+                float dis1 = pr * ((100 - percent) / 100);
+                int qty = total_list.get(i).getQuantity();
+                float tot = dis1 * qty;
+                total += tot;
+            }
             //total = Math.round(total);
         }
         // place_bt.setText("Place this Order :   Rs " + total);
@@ -167,11 +191,16 @@ public class AddToCartActivity extends BaseActivity implements View.OnClickListe
         cart_number.setText(total_list.size());
         AppPreference.setIntegerPreference(ctx, Constant.CART_ITEM_COUNT, total_list.size());
         for (int i = 0; i < total_list.size(); i++) {
-            float pr = Float.parseFloat(total_list.get(i).getPrice());
-            int qty = total_list.get(i).getQuantity();
-            float tot = pr * qty;
-            total += tot;
-            round_total = Math.round(total);
+            if (total_list.get(i).getAvailability().equals("0"))
+            {
+
+            }else {
+                float pr = Float.parseFloat(total_list.get(i).getPrice());
+                int qty = total_list.get(i).getQuantity();
+                float tot = pr * qty;
+                total += tot;
+                round_total = Math.round(total);
+            }
         }
         return String.valueOf(round_total);
     }
@@ -180,6 +209,7 @@ public class AddToCartActivity extends BaseActivity implements View.OnClickListe
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.bt_wishlist_placeorder:
+                //CartDataApi();
                 locationPermission();
                 //placeThisOrder();
                 break;
@@ -207,7 +237,12 @@ public class AddToCartActivity extends BaseActivity implements View.OnClickListe
                 .setMessage("Are you sure want to delete all items from cart ?")
                 .setPositiveButton("YES", (dialog, which) -> {
                     databaseCart.deleteallCart();
+                    AppPreference.setIntegerPreference(mContext, Constant.CART_ITEM_COUNT,0);
+                    cart_price.setText("0" );
+                    cart_number.setText("0");
                     Toast.makeText(ctx, "Cart has empty.", Toast.LENGTH_SHORT).show();
+                   /* Intent intent = new Intent(AddToCartActivity.this, HomeActivity.class);
+                    startActivity(intent);*/
                     finish();
                 })
                 .setNegativeButton("NO", null)
@@ -223,7 +258,7 @@ public class AddToCartActivity extends BaseActivity implements View.OnClickListe
         int qty = Integer.parseInt(tvQty.getText().toString());
         int maxQty = Integer.parseInt(productDetail.getOrder_quantity());
 
-            if (qty < 1500) {
+            if (qty < 2500) {
                 qty++;
             } else {
                 Toast.makeText(ctx, "You have reached maximum order quantity.", Toast.LENGTH_SHORT).show();
@@ -310,13 +345,17 @@ public class AddToCartActivity extends BaseActivity implements View.OnClickListe
             startActivity(new Intent(ctx, SignInActivity.class));
             finish();
         } else {
-            ArrayList<ProductDetail> cartlist = databaseCart.getAllUrlList();
-            AppPreference.setStringPreference(ctx, Constant.TOTAL_AMOUNT, String.valueOf(total));
-            if (cartlist.size() > 0) {
-                Intent intent = new Intent(mContext, CheckOutActivity.class);
-                intent.putExtra("FragmentPass", "ShoppingFragment");
-                startActivity(intent);
-                //finish();
+            if (Integer.parseInt(AppMinimumAmount) < total) {
+                ArrayList<ProductDetail> cartlist = databaseCart.getAllUrlList();
+                AppPreference.setStringPreference(ctx, Constant.TOTAL_AMOUNT, String.valueOf(total));
+                if (cartlist.size() > 0) {
+                    Intent intent = new Intent(mContext, CheckOutActivity.class);
+                    intent.putExtra("FragmentPass", "ShoppingFragment");
+                    startActivity(intent);
+                    //finish();
+                }
+            }else {
+                Alerts.show(mContext, "minimun "+ AppMinimumAmount + " Order");
             }
         }
     }
@@ -485,4 +524,99 @@ public class AddToCartActivity extends BaseActivity implements View.OnClickListe
         dialog.show();
     }
 
+
+  /*  @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(AddToCartActivity.this, HomeActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            Intent intent = new Intent(AddToCartActivity.this, HomeActivity.class);
+            startActivity(intent);
+            finish();
+            return true;
+        }
+
+        return super.onKeyDown(keyCode, event);
+    }*/
+
+
+    private void contactApi() {
+        if (cd.isNetWorkAvailable()) {
+            RetrofitService.getContactData(new Dialog(mContext), retrofitApiClient.contact(), new WebResponse() {
+                @Override
+                public void onResponseSuccess(Response<?> result) {
+                    ContcatModel contcatModel = (ContcatModel) result.body();
+                    if (!contcatModel.getResult()) {
+                        AppPreference.setStringPreference(mContext, Constant.MINIMUN_PRICE, contcatModel.getContent().get(5).getContent());
+                        AppMinimumAmount = contcatModel.getContent().get(5).getContent();
+                    }else {
+
+                    }
+                }
+
+                @Override
+                public void onResponseFailed(String error) {
+                    Alerts.show(mContext, error);
+                }
+            });
+        } else {
+            cd.show(mContext);
+        }
+    }
+
+    private void CartDataApi() {
+        if (cd.isNetWorkAvailable()) {
+            RetrofitService.getCartData(new Dialog(mContext), retrofitApiClient.getCartData(data), new WebResponse() {
+                @Override
+                public void onResponseSuccess(Response<?> result) {
+                    AddtoCartModel addtoCartModel = (AddtoCartModel) result.body();
+                    if (addtoCartModel.getError())
+                    {
+                       // Alerts.show(mContext, addtoCartModel.getMessage());
+                        cartProductList.clear();
+                        for (int i = 0 ; i < addtoCartModel.getCartData().size() ; i++)
+                        {
+                            ProductDetail productDetail = new ProductDetail();
+                            productDetail.setId(addtoCartModel.getCartData().get(i).getId());
+                            productDetail.setDescription(addtoCartModel.getCartData().get(i).getDescription());
+                            productDetail.setAvailability(addtoCartModel.getCartData().get(i).getAvailability());
+                            productDetail.setDiscount(addtoCartModel.getCartData().get(i).getDiscount());
+                            productDetail.setImage(addtoCartModel.getCartData().get(i).getImage());
+                            productDetail.setInCart(addtoCartModel.getCartData().get(i).getInCart());
+                            productDetail.setKeyId(addtoCartModel.getCartData().get(i).getKeyId());
+                            productDetail.setMin_quantity(addtoCartModel.getCartData().get(i).getMinQuantity());
+                            productDetail.setOrder_quantity(addtoCartModel.getCartData().get(i).getOrderQuantity());
+                            productDetail.setPrice(addtoCartModel.getCartData().get(i).getPrice());
+                            productDetail.setQuantity(addtoCartModel.getCartData().get(i).getQuantity());
+                            productDetail.setQuantity_type(addtoCartModel.getCartData().get(i).getQuantityType());
+                            productDetail.setRating(addtoCartModel.getCartData().get(i).getRating());
+                            productDetail.setTitle(addtoCartModel.getCartData().get(i).getTitle());
+                            productDetail.setType(addtoCartModel.getCartData().get(i).getType());
+
+                            cartProductList.add(productDetail);
+                            databaseCart.updateUrl(productDetail);
+                            adapterCart.notifyDataSetChanged();
+
+                            setTotal();
+                        }
+
+                    }else {
+
+                    }
+                }
+
+                @Override
+                public void onResponseFailed(String error) {
+                    Alerts.show(mContext, error);
+                }
+            });
+        } else {
+            cd.show(mContext);
+        }
+    }
 }

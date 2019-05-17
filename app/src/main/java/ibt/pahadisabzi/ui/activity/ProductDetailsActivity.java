@@ -56,6 +56,7 @@ public class ProductDetailsActivity extends BaseActivity implements View.OnClick
     private String DATABASE_WISHLIST = "wishlist.db";
     private DatabaseHandler databaseCart, databaseWishlist;
     private ArrayList<ProductDetail> cartProductList = new ArrayList<>();
+    private RelativeLayout rlCart;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,6 +85,7 @@ public class ProductDetailsActivity extends BaseActivity implements View.OnClick
     private void init()
     {
         tvProductDetailAvailability = findViewById(R.id.tvProductDetailAvailability);
+        rlCart = findViewById(R.id.rlCart);
         tvProductDetailCostPrice = findViewById(R.id.tvProductDetailCostPrice);
         tvProductDetailDescription = findViewById(R.id.tvProductDetailDescription);
         tvProductDetaildiscount = findViewById(R.id.tvProductDetaildiscount);
@@ -115,6 +117,8 @@ public class ProductDetailsActivity extends BaseActivity implements View.OnClick
         iv_product_plus.setOnClickListener(this);
         iv_product_minus.setOnClickListener(this);
         btn_product_detail_back.setOnClickListener(this);
+
+
 
         productDetailApi();
     }
@@ -151,6 +155,13 @@ public class ProductDetailsActivity extends BaseActivity implements View.OnClick
                         double dis =  salling * ((100-percent)/100);
                        // double dis = 100-percent;
                        // double orizinal_price = (salling*100)/dis;
+
+                        if (productDetailModel.getProduct().getAvailability().equals("0"))
+                        {
+                            rlCart.setVisibility(View.GONE);
+                        }else {
+                            rlCart.setVisibility(View.VISIBLE);
+                        }
 
                         tvProductDetailSallingPrice.setText("Rs. "+productDetailModel.getProduct().getSellingPrice());
                         tvProductDetailSallingPrice.setPaintFlags(tvProductDetailSallingPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG );

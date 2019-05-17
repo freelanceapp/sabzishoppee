@@ -69,7 +69,7 @@ public class ShoppingFragment extends BaseFragment implements View.OnClickListen
     Spinner sp_newaddress_type;
     String address = "";
     LinearLayout btn_current_location;
-   // ConnectionDetector connectionDetector;
+    // ConnectionDetector connectionDetector;
     SessionManager sessionManager;
     FloatingActionButton btn_placeorder;
 
@@ -78,11 +78,12 @@ public class ShoppingFragment extends BaseFragment implements View.OnClickListen
     double latitude; // latitude
     double longitude; // longitude
     private Dialog dialog;
-    private String strName, strAddress, strHouseNo, strLandMark, strType, strCity, strState, strCountry, strZipCode, strAddressType, strLat,strLong;
-    String[] AddressType={"Home","Office"};
+    private String strName, strAddress, strHouseNo, strLandMark, strType, strCity, strState, strCountry, strZipCode, strAddressType, strLat, strLong;
+    String[] AddressType = {"Home", "Office"};
+
     @SuppressLint("ValidFragment")
     public ShoppingFragment(Context ctx) {
-      //  connectionDetector = new ConnectionDetector();
+        //  connectionDetector = new ConnectionDetector();
         // http://freshveggie.infobitetechnology.tech/api/add-user-address.php
 
     }
@@ -100,7 +101,7 @@ public class ShoppingFragment extends BaseFragment implements View.OnClickListen
         cd = new ConnectionDirector(mContext);
         retrofitApiClient = RetrofitService.getRetrofit();
 
-        tv_confirmation.setBackgroundColor(getResources().getColor(R.color.gray_g));
+        tv_confirmation.setBackgroundColor(getResources().getColor(R.color.gray_c));
         tv_address.setBackgroundColor(getResources().getColor(R.color.red_d));
 
         initXml(view);
@@ -111,7 +112,6 @@ public class ShoppingFragment extends BaseFragment implements View.OnClickListen
     private void initXml(View view) {
 
         ctx = getActivity();
-
         continue_pay_ll = view.findViewById(R.id.ll_shopping_continuepay);
         address_et = view.findViewById(R.id.et_newaddress_adress);
         country_et = view.findViewById(R.id.et_newaddress_country);
@@ -134,7 +134,6 @@ public class ShoppingFragment extends BaseFragment implements View.OnClickListen
         btn_placeorder = view.findViewById(R.id.btn_placeorder);
         rvAddress = view.findViewById(R.id.rv_address);
         btn_current_location = view.findViewById(R.id.btn_current_location);
-
         continue_pay_ll.setOnClickListener(this);
         btn_placeorder.setOnClickListener(this);
         btn_current_location.setOnClickListener(this);
@@ -148,7 +147,7 @@ public class ShoppingFragment extends BaseFragment implements View.OnClickListen
         sp_newaddress_type.setAdapter(aa);*/
 
 
-        addressShowAdapter = new AddressShowAdapter(mContext, addressArrayList, this );
+        addressShowAdapter = new AddressShowAdapter(mContext, addressArrayList, this);
         rvAddress.setHasFixedSize(true);
         rvAddress.setLayoutManager(new GridLayoutManager(mContext, 1));
         rvAddress.setAdapter(addressShowAdapter);
@@ -159,12 +158,11 @@ public class ShoppingFragment extends BaseFragment implements View.OnClickListen
 
     //Performing action onItemSelected and onNothing selected
     @Override
-    public void onItemSelected(AdapterView<?> arg0, View arg1, int position,long id) {
+    public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
         Toast.makeText(ctx, AddressType[position], Toast.LENGTH_LONG).show();
-        if (AddressType[position].equals("Home"))
-        {
+        if (AddressType[position].equals("Home")) {
             strAddressType = "0";
-        }else {
+        } else {
             strAddressType = "1";
         }
     }
@@ -174,6 +172,7 @@ public class ShoppingFragment extends BaseFragment implements View.OnClickListen
 // TODO Auto-generated method stub
 
     }
+
     private void setData() {
         dialog = new Dialog(ctx);
         String name = User.getUser().getUser().getUserName();
@@ -233,20 +232,15 @@ public class ShoppingFragment extends BaseFragment implements View.OnClickListen
                 getActivity().startActivity(intent);*/
                 break;
 
-            case R.id.btn_current_location :
+            case R.id.btn_current_location:
                 Intent intent = new Intent(getActivity(), MapsActivity.class);
                 getActivity().startActivity(intent);
                 //setData();
                 break;
 
-            case R.id.ll_show_address :
+            case R.id.ll_show_address:
                 int pos = Integer.parseInt(v.getTag().toString());
                 ibt.pahadisabzi.model.address_show_responce.Address address = addressArrayList.get(pos);
-
-               /* View view = rvAddress.getChildAt(pos);
-                ImageView icon = view.findViewById(R.id.icon);
-
-                icon.setBackgroundColor(getResources().getColor(R.color.red_d));*/
 
                 AppPreference.setStringPreference(ctx, Constant.Name, address.getUserCity());
                 AppPreference.setStringPreference(ctx, Constant.Address, address.getAddress());
@@ -258,14 +252,14 @@ public class ShoppingFragment extends BaseFragment implements View.OnClickListen
                 AppPreference.setStringPreference(ctx, Constant.ADDRESS_LAT, address.getLat());
                 AppPreference.setStringPreference(ctx, Constant.ADDRESS_LONG, address.getLong());
                 AppPreference.setStringPreference(ctx, Constant.CONTRY, "India");
-               // AppPreference.setStringPreference(ctx, Constant.ADDRESS_LANDMARK, address.getL);
+                // AppPreference.setStringPreference(ctx, Constant.ADDRESS_LANDMARK, address.getL);
 
                 ConfirmationFragment fragment = new ConfirmationFragment(ctx);
                 Utility.setFragment1(fragment, ctx, Constant.ShoppingFragment);
 
                 break;
 
-            case R.id.btn_edit :
+            case R.id.btn_edit:
                 int pos1 = Integer.parseInt(v.getTag().toString());
                 ibt.pahadisabzi.model.address_show_responce.Address address1 = addressArrayList.get(pos1);
 
@@ -276,16 +270,16 @@ public class ShoppingFragment extends BaseFragment implements View.OnClickListen
     }
 
     private void getData() {
-         strName = name_et.getText().toString();
+        strName = name_et.getText().toString();
         String strMobile = mobile_et.getText().toString();
-         strAddress = address_et.getText().toString();
-         strCountry = country_et.getText().toString();
-         strState = state_et.getText().toString();
-         strCity = city_et.getText().toString();
-         strZipCode = zipcode_et.getText().toString();
-         strHouseNo = hourse_no_et.getText().toString();
-         strLandMark = et_newaddress_landmark.getText().toString();
-         //strType = address_type_et.getText().toString();
+        strAddress = address_et.getText().toString();
+        strCountry = country_et.getText().toString();
+        strState = state_et.getText().toString();
+        strCity = city_et.getText().toString();
+        strZipCode = zipcode_et.getText().toString();
+        strHouseNo = hourse_no_et.getText().toString();
+        strLandMark = et_newaddress_landmark.getText().toString();
+        //strType = address_type_et.getText().toString();
 
         String name1 = name_et1.getText().toString();
         String mobile1 = mobile_et1.getText().toString();
@@ -295,65 +289,53 @@ public class ShoppingFragment extends BaseFragment implements View.OnClickListen
         String city1 = city_et1.getText().toString();
         String zipcode1 = zipcode_et1.getText().toString();
 
-       /* if (strName.equals("") || strAddress.equals("") || strCountry.equals("") || strState.equals("") ||
-                strCity.equals("") || strZipCode.equals("") || strHouseNo.equals("") ) {
-=======
-        if (strName.equals("") || strAddress.equals("") || strCountry.equals("") || strState.equals("") ||
-                strCity.equals("") || strZipCode.equals("") ) {
->>>>>>> 39305a827e0de5d91487a4d565a2bfe190c12c12
 
-            Utility.toastView(ctx, "Enter all details");
-        } *//*else if (mobile.length()>10 || mobile.length()<10){
-            Alerts.show(getActivity().getApplicationContext(),"Please enter valid mobile number");
-        }*//* else{*/
+        AppPreference.setStringPreference(ctx, Constant.Name, strCity);
+        AppPreference.setStringPreference(ctx, Constant.Address, strAddress);
+        AppPreference.setStringPreference(ctx, Constant.MobileNumber, strMobile);
+        AppPreference.setStringPreference(ctx, Constant.City, strCity);
+        AppPreference.setStringPreference(ctx, Constant.PinCode, strZipCode);
+        AppPreference.setStringPreference(ctx, Constant.State, strState);
+        AppPreference.setStringPreference(ctx, Constant.House_no, strHouseNo);
+        AppPreference.setStringPreference(ctx, Constant.Address_Type, strAddressType);
+        AppPreference.setStringPreference(ctx, Constant.ADDRESS_LAT, strLat);
+        AppPreference.setStringPreference(ctx, Constant.ADDRESS_LONG, strLong);
+        AppPreference.setStringPreference(ctx, Constant.ADDRESS_LANDMARK, strLandMark);
 
-            AppPreference.setStringPreference(ctx, Constant.Name, strCity);
-            AppPreference.setStringPreference(ctx, Constant.Address, strAddress);
-            AppPreference.setStringPreference(ctx, Constant.MobileNumber, strMobile);
-            AppPreference.setStringPreference(ctx, Constant.City, strCity);
-            AppPreference.setStringPreference(ctx, Constant.PinCode, strZipCode);
-            AppPreference.setStringPreference(ctx, Constant.State, strState);
-            AppPreference.setStringPreference(ctx, Constant.House_no, strHouseNo);
-            AppPreference.setStringPreference(ctx, Constant.Address_Type, strAddressType);
-            AppPreference.setStringPreference(ctx, Constant.ADDRESS_LAT, strLat);
-            AppPreference.setStringPreference(ctx, Constant.ADDRESS_LONG, strLong);
-            AppPreference.setStringPreference(ctx, Constant.ADDRESS_LANDMARK, strLandMark);
+        sessionManager.setData(SessionManager.KEY_ORDER_NAME, strName);
+        sessionManager.setData(SessionManager.KEY_ORDER_MOBILE, strMobile);
+        sessionManager.setData(SessionManager.KEY_ORDER_ADDRESS, address);
+        sessionManager.setData(SessionManager.KEY_ORDER_STATE, strState);
+        sessionManager.setData(SessionManager.KEY_ORDER_COUNTRY, strCountry);
+        sessionManager.setData(SessionManager.KEY_ORDER_ZIPCODE, strZipCode);
+        sessionManager.setData(SessionManager.KEY_ORDER_CITY, strCity);
 
-            sessionManager.setData(SessionManager.KEY_ORDER_NAME, strName);
-            sessionManager.setData(SessionManager.KEY_ORDER_MOBILE, strMobile);
-            sessionManager.setData(SessionManager.KEY_ORDER_ADDRESS, address);
-            sessionManager.setData(SessionManager.KEY_ORDER_STATE, strState);
-            sessionManager.setData(SessionManager.KEY_ORDER_COUNTRY, strCountry);
-            sessionManager.setData(SessionManager.KEY_ORDER_ZIPCODE, strZipCode);
-            sessionManager.setData(SessionManager.KEY_ORDER_CITY, strCity);
+        sessionManager.setData(SessionManager.KEY_ORDER_NAME1, name1);
+        sessionManager.setData(SessionManager.KEY_ORDER_MOBILE1, mobile1);
+        sessionManager.setData(SessionManager.KEY_ORDER_ADDRESS1, address1);
+        sessionManager.setData(SessionManager.KEY_ORDER_STATE1, state1);
+        sessionManager.setData(SessionManager.KEY_ORDER_COUNTRY1, country1);
+        sessionManager.setData(SessionManager.KEY_ORDER_ZIPCODE1, zipcode1);
+        sessionManager.setData(SessionManager.KEY_ORDER_CITY1, city1);
 
-            sessionManager.setData(SessionManager.KEY_ORDER_NAME1, name1);
-            sessionManager.setData(SessionManager.KEY_ORDER_MOBILE1, mobile1);
-            sessionManager.setData(SessionManager.KEY_ORDER_ADDRESS1, address1);
-            sessionManager.setData(SessionManager.KEY_ORDER_STATE1, state1);
-            sessionManager.setData(SessionManager.KEY_ORDER_COUNTRY1, country1);
-            sessionManager.setData(SessionManager.KEY_ORDER_ZIPCODE1, zipcode1);
-            sessionManager.setData(SessionManager.KEY_ORDER_CITY1, city1);
-
-           // addAddressApi();
-            // ((CheckOutActivity) getActivity()).setPosition(1);
-       // }
+        // addAddressApi();
+        // ((CheckOutActivity) getActivity()).setPosition(1);
+        // }
     }
 
     private void addAddressApi() {
         String strUser_id = AppPreference.getStringPreference(mContext, Constant.User_Id);
         if (cd.isNetWorkAvailable()) {
-            RetrofitService.addAddress(new Dialog(mContext), retrofitApiClient.addAddress(strUser_id,strAddress,strAddress,strCity,strState,strAddressType,strLong,strLat,strHouseNo,strZipCode), new WebResponse() {
+            RetrofitService.addAddress(new Dialog(mContext), retrofitApiClient.addAddress(strUser_id, strAddress, strAddress, strCity, strState, strAddressType, strLong, strLat, strHouseNo, strZipCode), new WebResponse() {
                 @Override
                 public void onResponseSuccess(Response<?> result) {
                     AddAddressModel addressModel = (AddAddressModel) result.body();
 
-                    if (!addressModel.getError())
-                    {
+                    if (!addressModel.getError()) {
                         ConfirmationFragment fragment = new ConfirmationFragment(ctx);
                         Utility.setFragment1(fragment, ctx, Constant.ShoppingFragment);
 
-                    }else {
+                    } else {
                         Alerts.show(mContext, addressModel.getMessage());
                     }
                 }
@@ -363,7 +345,7 @@ public class ShoppingFragment extends BaseFragment implements View.OnClickListen
                     Alerts.show(mContext, error);
                 }
             });
-        }else {
+        } else {
             cd.show(mContext);
         }
     }
@@ -376,44 +358,45 @@ public class ShoppingFragment extends BaseFragment implements View.OnClickListen
                 @Override
                 public void onResponseSuccess(Response<?> result) {
                     AddressShowModel addressModel = (AddressShowModel) result.body();
-                    if (!addressModel.getError())
-                    {
+                    if (!addressModel.getError()) {
                         addressArrayList.addAll(addressModel.getAddress());
                         HashSet<ibt.pahadisabzi.model.address_show_responce.Address> hashSet = new HashSet<>();
                         hashSet.addAll(addressArrayList);
                         addressArrayList.clear();
                         addressArrayList.addAll(hashSet);
-                    }else {
+                    } else {
                         Alerts.show(mContext, addressModel.getMessage());
                     }
                     addressShowAdapter.notifyDataSetChanged();
                 }
+
                 @Override
                 public void onResponseFailed(String error) {
                     Alerts.show(mContext, error);
                 }
             });
-        }else {
+        } else {
             cd.show(mContext);
         }
     }
 
     private void updateAddressApi(String addressId) {
         if (cd.isNetWorkAvailable()) {
-            RetrofitService.updateAddress(new Dialog(mContext), retrofitApiClient.updateAddress("","","","","",""
-                    ,"","","","","","3",addressId), new WebResponse() {
+            RetrofitService.updateAddress(new Dialog(mContext), retrofitApiClient.updateAddress("", "", "", "", "", ""
+                    , "", "", "", "", "", "3", addressId), new WebResponse() {
                 @Override
                 public void onResponseSuccess(Response<?> result) {
                     SignUpModel addressModel = (SignUpModel) result.body();
-                        Alerts.show(mContext, addressModel.getMessage());
-                        getAddressApi();
+                    Alerts.show(mContext, addressModel.getMessage());
+                    getAddressApi();
                 }
+
                 @Override
                 public void onResponseFailed(String error) {
                     Alerts.show(mContext, error);
                 }
             });
-        }else {
+        } else {
             cd.show(mContext);
         }
     }

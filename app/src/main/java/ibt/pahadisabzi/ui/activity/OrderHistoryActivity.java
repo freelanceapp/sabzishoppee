@@ -103,6 +103,8 @@ public class OrderHistoryActivity extends BaseActivity implements View.OnClickLi
                             rvOrderHistory.setVisibility(View.VISIBLE);
                         }
                     }else {
+                        img_no_order.setVisibility(View.VISIBLE);
+                        rvOrderHistory.setVisibility(View.GONE);
                         Alerts.show(mContext, orderHistoryModel.getMessage());
                     }
                     adapter.notifyDataSetChanged();
@@ -111,6 +113,8 @@ public class OrderHistoryActivity extends BaseActivity implements View.OnClickLi
                 @Override
                 public void onResponseFailed(String error) {
                     Alerts.show(mContext, error);
+                    img_no_order.setVisibility(View.VISIBLE);
+                    rvOrderHistory.setVisibility(View.GONE);
                 }
             });
         }else {

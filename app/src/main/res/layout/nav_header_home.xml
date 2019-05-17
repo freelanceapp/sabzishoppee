@@ -19,13 +19,13 @@
         android:gravity="center">
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_ShowUserImage"
-            android:layout_width="90sp"
-            android:layout_height="90sp"
+            android:layout_width="100sp"
+            android:layout_height="100sp"
             android:contentDescription="@string/nav_header_desc"
-            android:src="@drawable/ic_user"
+            android:src="@drawable/splash_logo"
             app:civ_border_width="1dp"
             app:civ_border_color="@color/gray_c"
-            app:civ_circle_background_color="@color/green_dark"/>
+            />
 
         <TextView
             android:layout_width="wrap_content"

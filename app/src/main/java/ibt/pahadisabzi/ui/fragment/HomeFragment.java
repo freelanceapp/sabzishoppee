@@ -83,6 +83,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     private ArrayList<ProductDetail> cartProductList = new ArrayList<>();
     private ProductDetail productDetail, productDetail1;
 
+    private String productApiCall = "0";
     private View rView;
 
     public HomeFragment() {
@@ -111,17 +112,29 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         init(rView);
         bannerApi();
         profileApi();
+
+        productDetailApi();
+        productApiCall = "1";
+
+        llFilter.setVisibility(View.GONE);
+        initAll();
+
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        llFilter.setVisibility(View.GONE);
+        initAll();
         cartProductList.clear();
         if (databaseCart.getContactsCount()) {
             cartProductList = databaseCart.getAllUrlList();
         }
+
         productDetailApi();
+
+
     }
 
     private void init(View view) {
@@ -164,6 +177,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
         productDetailApi();
         setTotal();
+
+
     }
 
 
@@ -415,7 +430,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     }
 
     private void initVegetable() {
-        tv_categoryName.setText("Vagitable");
+        tv_categoryName.setText("Vegetable");
         btn_fruits.setBackgroundResource(R.color.green_50);
         btn_vagitable.setBackgroundResource(R.color.green_dark);
         btn_all.setBackgroundResource(R.color.green_50);
@@ -782,6 +797,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                     LoginModel responseBody = (LoginModel) result.body();
                     if (!responseBody.getError()) {
                         tv_ShowUserName.setText(responseBody.getUser().getUserName());
+                        AppPreference.setStringPreference(mContext, Constant.User_Name, responseBody.getUser().getUserName());
+
                         if (responseBody.getUser().getUserContact().equals("")) {
 
                             AppPreference.setBooleanPreference(mContext, Constant.Is_Login, false);
@@ -797,7 +814,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                                 Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                                 iv_ShowUserImage.setImageBitmap(decodedByte);
                             } else {
-                                iv_ShowUserImage.setImageResource(R.drawable.ic_user);
+                                iv_ShowUserImage.setImageResource(R.drawable.splash_logo);
                             }
                         }
                         //Glide.with(mContext).load(decodedByte).error(R.drawable.profile_img).fitCenter().into(ci_profile);

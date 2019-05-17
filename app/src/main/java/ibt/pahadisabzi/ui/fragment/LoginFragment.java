@@ -95,10 +95,6 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
             strEmail = ((EditText) rootview.findViewById(R.id.et_login_email)).getText().toString();
             strPassword = ((EditText) rootview.findViewById(R.id.et_login_password)).getText().toString();
 
-
-
-
-
             if (!isValidUserCredential()) {
                 //et_login_email.setError("Please enter valid user credential !!!");
             } else if (strPassword.isEmpty()) {

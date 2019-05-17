@@ -22,8 +22,8 @@ android {
         applicationId "ibt.pahadisabzi"
         minSdkVersion 18
         targetSdkVersion 28
-        versionCode 8
-        versionName "1.0.7"
+        versionCode 15
+        versionName "1.0.14"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }

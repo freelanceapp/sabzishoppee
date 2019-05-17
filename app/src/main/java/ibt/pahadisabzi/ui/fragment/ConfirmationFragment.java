@@ -13,11 +13,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,14 +32,18 @@ import java.util.ArrayList;
 
 import ibt.pahadisabzi.R;
 import ibt.pahadisabzi.adapter.AdapterConfirmation;
+import ibt.pahadisabzi.adapter.DelivaryTimeAdapter;
 import ibt.pahadisabzi.constant.Constant;
 import ibt.pahadisabzi.database.DatabaseHandler;
 import ibt.pahadisabzi.model.ProductDetail;
+import ibt.pahadisabzi.model.delivary_time_responce.DelivaryTimeModel;
+import ibt.pahadisabzi.model.delivary_time_responce.Deliverytiming;
 import ibt.pahadisabzi.model.order_responce.Order;
 import ibt.pahadisabzi.model.order_responce.OrderModel;
 import ibt.pahadisabzi.retrofit_provider.RetrofitService;
 import ibt.pahadisabzi.retrofit_provider.WebResponse;
 import ibt.pahadisabzi.ui.activity.HomeActivity;
+import ibt.pahadisabzi.ui.activity.ThankyouActivity;
 import ibt.pahadisabzi.utils.Alerts;
 import ibt.pahadisabzi.utils.AppPreference;
 import ibt.pahadisabzi.utils.BaseFragment;
@@ -51,7 +57,7 @@ import static ibt.pahadisabzi.ui.activity.CheckOutActivity.tv_confirmation;
 import static ibt.pahadisabzi.ui.activity.SplashActivity.mypreference;
 
 @SuppressLint("ValidFragment")
-public class ConfirmationFragment extends BaseFragment implements View.OnClickListener {
+public class ConfirmationFragment extends BaseFragment implements View.OnClickListener, AdapterView.OnItemSelectedListener {
 
     Context ctx;
     RecyclerView recyclerView;
@@ -68,8 +74,9 @@ public class ConfirmationFragment extends BaseFragment implements View.OnClickLi
     private Button tvorderNow;
 
     ArrayList<Order> productDataModelArrayList = new ArrayList<>();
-    private RadioGroup rg_delivery_time;
     String strDelivaryTime = "";
+    Spinner spDelivaryTime;
+    ArrayList<Deliverytiming> deliverytimings = new ArrayList<>();
     @SuppressLint("ValidFragment")
     public ConfirmationFragment(Context ctx) {
         this.ctx = ctx;
@@ -88,7 +95,7 @@ public class ConfirmationFragment extends BaseFragment implements View.OnClickLi
         cd = new ConnectionDirector(mContext);
         retrofitApiClient = RetrofitService.getRetrofit();
 
-        tv_address.setBackgroundColor(getResources().getColor(R.color.gray_g));
+        tv_address.setBackgroundColor(getResources().getColor(R.color.gray_c));
         tv_confirmation.setBackgroundColor(getResources().getColor(R.color.red_d));
 
         initXml(view);
@@ -126,11 +133,10 @@ public class ConfirmationFragment extends BaseFragment implements View.OnClickLi
         total_tv = view.findViewById(R.id.tv_confirmation_total);
         tv_payment = view.findViewById(R.id.tv_payment);
         etNote = view.findViewById(R.id.etNote);
-        rg_delivery_time = view.findViewById(R.id.rg_delivery_time);
-        rg_delivery_time.clearCheck();
         tvorderNow = view.findViewById(R.id.tv_orderNow);
         tvorderNow.setOnClickListener(this);
 
+        spDelivaryTime = view.findViewById(R.id.spDelivaryTime);
         double i2 = Double.parseDouble(totalAmount1);
         total_tv.setText(new DecimalFormat("##.##").format(i2));
         tv_payment.setText(new DecimalFormat("##.##").format(i2));
@@ -139,17 +145,10 @@ public class ConfirmationFragment extends BaseFragment implements View.OnClickLi
         /*total_tv.setText(Utility.getCartTotal(databaseCart));
         Payment_Package = Utility.getCartTotal(databaseCart);*/
         Payment_Package = totalAmount1;
+        delivaryTimeApi();
+        spDelivaryTime.setOnItemSelectedListener(this);
 
-        rg_delivery_time.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                RadioButton rb = (RadioButton) group.findViewById(checkedId);
-                //rb.setBackground(getResources().getDrawable(R.drawable.bg_layout6));
-                    strDelivaryTime = rb.getText().toString();
-                    //Toast.makeText(mContext, strDelivaryTime, Toast.LENGTH_SHORT).show();
 
-            }
-        });
     }
 
     @Override
@@ -185,6 +184,34 @@ public class ConfirmationFragment extends BaseFragment implements View.OnClickLi
             totalAmount1 = prefs.getString("total_price", "0");*///"No name defined" is the default value.        }
         }
     }
+
+    private void delivaryTimeApi() {
+        if (cd.isNetWorkAvailable()) {
+            RetrofitService.getDelivaryDate(new Dialog(mContext), retrofitApiClient.getDelivaryTime(), new WebResponse() {
+                    @Override
+                    public void onResponseSuccess(Response<?> result) {
+                        DelivaryTimeModel delivaryTimeModel = (DelivaryTimeModel) result.body();
+                        if (!delivaryTimeModel.getResult()) {
+
+                            deliverytimings.addAll(delivaryTimeModel.getDeliverytiming());
+                            DelivaryTimeAdapter customAdapter = new DelivaryTimeAdapter(mContext, deliverytimings);
+                            spDelivaryTime.setAdapter(customAdapter);
+                        } else {
+                            Alerts.show(mContext, delivaryTimeModel.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onResponseFailed(String error) {
+                        Alerts.show(mContext, error);
+                    }
+                });
+
+        }else{
+            cd.show(mContext);
+        }
+    }
+
 
     private void orderApi() {
         if (cd.isNetWorkAvailable()) {
@@ -240,10 +267,10 @@ public class ConfirmationFragment extends BaseFragment implements View.OnClickLi
                     public void onResponseSuccess(Response<?> result) {
                         OrderModel orderModel = (OrderModel) result.body();
                         if (!orderModel.getError()) {
-                            Alerts.show(mContext, orderModel.getMessage());
+                           // Alerts.show(mContext, orderModel.getMessage());
                             if (databaseCart.getContactsCount()) {
                                 databaseCart.deleteallCart();
-                                Intent intent = new Intent(mContext, HomeActivity.class);
+                                Intent intent = new Intent(mContext, ThankyouActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 getActivity().startActivity(intent);
                                 getActivity().finish();
@@ -263,4 +290,15 @@ public class ConfirmationFragment extends BaseFragment implements View.OnClickLi
                 cd.show(mContext);
             }
         }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        // Alerts.show(mContext, deliverytimings.get(i).getDeliveryTimingStartTime()+ " - "+ deliverytimings.get(i).getDeliveryTimingEndTime());
+        strDelivaryTime = deliverytimings.get(i).getDeliveryTimingStartTime()+ " - "+ deliverytimings.get(i).getDeliveryTimingEndTime();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
+    }
 }

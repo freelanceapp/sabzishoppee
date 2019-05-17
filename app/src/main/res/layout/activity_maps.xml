@@ -147,11 +147,22 @@
         </android.support.design.widget.TextInputLayout>
 
 
-        <LinearLayout
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_weight="1"
             android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/et_newaddress_address1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:digits=" 1234567890AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz"
+                android:hint="delivary Address "
+                android:lines="1"
+                android:paddingLeft="16dp" />
+
+        </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -164,8 +175,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:digits=" 1234567890AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz"
-                    android:hint="House No."
-                    android:maxLength="5"
+                    android:hint="Name "
+                    android:lines="1"
                     android:paddingLeft="16dp" />
 
             </android.support.design.widget.TextInputLayout>
@@ -174,7 +185,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -193,7 +205,6 @@
                     android:paddingLeft="16dp" />
 
             </LinearLayout>
-        </LinearLayout>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"

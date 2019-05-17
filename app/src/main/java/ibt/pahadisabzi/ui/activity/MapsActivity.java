@@ -12,6 +12,7 @@ import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.ActivityCompat;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -64,13 +65,13 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Vi
     private double longitude = 0.0;
     private LatLng latLng;
     private LatLng latLngPick1;
-    private String strName, strAddress, strHouseNo, strLandMark, strType, strCity, strState, strCountry, strZipCode, strAddressType, strLat,strLong;
+    private String strName,strAddress1, strAddress, strHouseNo, strLandMark, strType, strCity, strState, strCountry, strZipCode, strAddressType, strLat,strLong;
     private TextView tvAddressShow;
     private ImageView btn_map_back;
     BottomSheetBehavior behavior;
     CoordinatorLayout coordinatorLayout;
     private Button btn_add_more, btn_address_confirm, btn_confirm_location;
-    private EditText et_newaddress_adress, et_newaddress_hounse_no, et_newaddress_landmark;
+    private EditText et_newaddress_adress, et_newaddress_hounse_no, et_newaddress_landmark, et_newaddress_address1;
     String[] AddressType={"Home","Office"};
     Spinner sp_newaddress_type;
     @Override
@@ -93,6 +94,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Vi
         btn_map_back = findViewById(R.id.btn_map_back);
         btn_add_more = findViewById(R.id.btn_add_more);
         et_newaddress_adress = findViewById(R.id.et_newaddress_adress);
+        et_newaddress_address1 = findViewById(R.id.et_newaddress_address1);
         et_newaddress_landmark = findViewById(R.id.et_newaddress_landmark);
         et_newaddress_hounse_no = findViewById(R.id.et_newaddress_hounse_no);
         btn_address_confirm = findViewById(R.id.btn_address_confirm);
@@ -103,6 +105,11 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Vi
         et_newaddress_adress.setOnClickListener(this);
         btn_address_confirm.setOnClickListener(this);
         btn_confirm_location.setOnClickListener(this);
+
+        strHouseNo = AppPreference.getStringPreference(mContext, Constant.User_Name);
+        et_newaddress_hounse_no.setText(strHouseNo);
+
+        Log.e("Name : ", strHouseNo);
 
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
         View bottomSheet = findViewById(R.id.bottom_sheet);
@@ -274,18 +281,19 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Vi
             case R.id.btn_address_confirm :
                 strHouseNo = et_newaddress_hounse_no.getText().toString();
                 strLandMark = et_newaddress_landmark.getText().toString();
-
-                if (strHouseNo.equals(""))
-                {
-                    Utility.toastView(mContext, "Enter all details");
-                }else {
-                    addAddressApi();
-                }
+                addAddressApi();
                 break;
 
             case R.id.btn_confirm_location :
+               strHouseNo =  et_newaddress_hounse_no.getText().toString();
+               strAddress1 = et_newaddress_address1.getText().toString();
 
-                addAddressApi();
+               if (strHouseNo.isEmpty())
+               {
+                  Alerts.show(mContext, "Please enter your name");
+               }else {
+                   addAddressApi();
+               }
                 break;
         }
     }
@@ -311,7 +319,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Vi
         String strUser_id = AppPreference.getStringPreference(mContext, Constant.User_Id);
 
         if (cd.isNetWorkAvailable()) {
-            RetrofitService.addAddress(new Dialog(mContext), retrofitApiClient.addAddress(strUser_id,strAddress,strAddress,strCity,strState,strAddressType,strLong,strLat,strHouseNo,strZipCode), new WebResponse() {
+            RetrofitService.addAddress(new Dialog(mContext), retrofitApiClient.addAddress(strUser_id,strAddress1,strAddress,strCity,strState,strType,strLong,strLat,strHouseNo,strZipCode), new WebResponse() {
                 @Override
                 public void onResponseSuccess(Response<?> result) {
                     AddAddressModel addressModel = (AddAddressModel) result.body();

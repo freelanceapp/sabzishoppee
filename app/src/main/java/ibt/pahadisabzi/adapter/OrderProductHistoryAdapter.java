@@ -69,7 +69,7 @@ public class OrderProductHistoryAdapter extends RecyclerView.Adapter<OrderProduc
             int quti = Integer.parseInt(product.getProductQuantity());
 
             if (quti < 1000) {
-                viewHolder.tv_product_quantity.setText("Order Qua. " + product.getProductQuantity() + " Gm");
+                viewHolder.tv_product_quantity.setText("Order Qua. " + product.getProductQuantity() + " gm");
             }else {
                 double quti1 = quti/1000 ;
                 viewHolder.tv_product_quantity.setText("Order Qua. " + quti1 + " Kg");

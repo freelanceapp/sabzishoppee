@@ -152,14 +152,14 @@ public class VerifyOtpActivity extends BaseActivity implements View.OnClickListe
                                 if (strUserProfile.equals("0"))
                                 {
                                     Intent intent = new Intent(mContext, EditProfileActivity.class);
-                                   // intent.putExtra("Mobile_Number", strMobile);
+                                    intent.putExtra("OneTime", "1");
                                     mContext.startActivity(intent);
                                     finish();
                                 }else {
                                     if (loginModel.getUser().getUserName().equals(""))
                                     {
                                         Intent intent = new Intent(mContext, EditProfileActivity.class);
-                                       // intent.putExtra("Mobile_Number", strMobile);
+                                        intent.putExtra("OneTime", "1");
                                         mContext.startActivity(intent);
                                         finish();
                                     }else {

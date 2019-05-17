@@ -90,12 +90,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 String TrueOrFlase = "true";
                 bitmap = getBitmapfromUrl(imageUri);
 
-                notificationHelper.createNotification1(strTitle, message, bitmap, TrueOrFlase);
+                sendNotification(message, bitmap, TrueOrFlase);
+
+               // notificationHelper.createNotification1(strTitle, message, bitmap, TrueOrFlase);
             } catch (Exception e) {
                 Log.e(TAG, "Exception: " + e.getMessage());
             }
         }
-        //sendNotification(message, bitmap, TrueOrFlase);
     }
 
     private void sendNotification(String messageBody, Bitmap image, String TrueOrFalse) {
@@ -107,7 +108,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 .setLargeIcon(image)/*Notification icon image*/
-                .setSmallIcon(R.drawable.logo)
+                .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle(messageBody)
                 .setStyle(new NotificationCompat.BigPictureStyle().bigPicture(image))/*Notification with Image*/
                 .setAutoCancel(true)

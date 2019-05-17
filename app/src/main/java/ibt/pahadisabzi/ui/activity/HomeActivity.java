@@ -26,6 +26,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import ibt.pahadisabzi.R;
@@ -62,7 +63,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
     private ImageView btnSearch;
     public DatabaseHandler databaseCart;
     private String DATABASE_CART = "cart.db";
-
+    private LinearLayout ll_cart_price;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +74,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         cart_number = (TextView) findViewById(R.id.cart_number);
         cart_price = (TextView) findViewById(R.id.cart_price);
         btnSearch = (ImageView) findViewById(R.id.btnSearch);
+        ll_cart_price = (LinearLayout) findViewById(R.id.ll_cart_price);
         //cart_count = AppPreference.getIntegerPreference(mContext, Constant.CART_ITEM_COUNT);
         cart_number.setText("" + cart_count);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -107,7 +109,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         rv_home.setOnClickListener(this);
         rv_history.setOnClickListener(this);
         rv_profile.setOnClickListener(this);
-
+        ll_cart_price.setOnClickListener(this);
 
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -152,7 +154,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         } else if (id == R.id.nav_share) {
             startActivity(new Intent(mContext, InviteFriendActivity.class));
         } else if (id == R.id.nav_customersupport) {
-            onCallBtnClick();
+            phoneCall();
         } else if (id == R.id.nav_logout) {
             doLogout();
         }
@@ -178,7 +180,19 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                     Toast.makeText(mContext, "Cart is empty.", Toast.LENGTH_SHORT).show();
                 }
                 break;
+            case  R.id.ll_cart_price :
+                ArrayList<ProductDetail> cartProductList1 = new ArrayList<>();
+                if (databaseCart.getContactsCount()) {
+                    cartProductList1 = databaseCart.getAllUrlList();
+                }
+                if (cartProductList1.size() > 0) {
+                    Intent intent = new Intent(HomeActivity.this, AddToCartActivity.class);
+                    startActivity(intent);
+                }else{
+                    Toast.makeText(mContext, "Cart is empty.", Toast.LENGTH_SHORT).show();
+                }
 
+                break;
             case R.id.rv_home:
                 Intent intent3 = new Intent(HomeActivity.this, HomeActivity.class);
                 startActivity(intent3);
@@ -192,6 +206,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
 
             case R.id.rl_profile:
                 Intent intent1 = new Intent(HomeActivity.this, ProfileActivity.class);
+                intent1.putExtra("OneTime", "0");
                 startActivity(intent1);
                 break;
 
@@ -286,14 +301,27 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
 
     private void phoneCall(){
         String mob_number = AppPreference.getStringPreference(mContext, Constant.CUSTOMER_SUPPORT);
-        if (ActivityCompat.checkSelfPermission(HomeActivity.this,
-                Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
-            Intent callIntent = new Intent(Intent.ACTION_CALL);
-            callIntent.setData(Uri.parse("tel:"+mob_number));
-            startActivity(callIntent);
-        }else{
-            Toast.makeText(HomeActivity.this, "You don't assign permission.", Toast.LENGTH_SHORT).show();
-        }
+
+      /*  AlertDialog.Builder builder1 = new AlertDialog.Builder(mContext);
+        builder1.setTitle("Customer Support Number");
+        builder1.setMessage(mob_number);
+        builder1.setCancelable(true);
+
+        builder1.setNegativeButton(
+                "Cancel",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog alert11 = builder1.create();
+        alert11.show();*/
+
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse("tel:"+mob_number));
+        startActivity(intent);
+
     }
 
     private void supportApi() {
@@ -320,4 +348,9 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
 }

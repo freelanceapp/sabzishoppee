@@ -11,9 +11,11 @@ import ibt.pahadisabzi.model.address_add_responce.AddAddressModel;
 import ibt.pahadisabzi.model.address_show_responce.AddressShowModel;
 import ibt.pahadisabzi.model.app_version_responce.AppversionModel;
 import ibt.pahadisabzi.model.banner_responce.BannerModel;
+import ibt.pahadisabzi.model.cart_responce.AddtoCartModel;
 import ibt.pahadisabzi.model.change_password_responce.ChangePasswordModel;
 import ibt.pahadisabzi.model.contact_responce.ContcatModel;
 import ibt.pahadisabzi.model.contact_us_responce.ContactUsModel;
+import ibt.pahadisabzi.model.delivary_time_responce.DelivaryTimeModel;
 import ibt.pahadisabzi.model.history_single_order_responce.HistorySingleOrderModel;
 import ibt.pahadisabzi.model.login_responce.LoginModel;
 import ibt.pahadisabzi.model.order_history_responce.OrderHistoryModel;
@@ -479,6 +481,50 @@ public class RetrofitService {
 
             @Override
             public void onFailure(Call<ContactUsModel> call, Throwable throwable) {
+                if (dialog != null)
+                    AppProgressDialog.hide(dialog);
+                webResponse.onResponseFailed(throwable.getMessage());
+            }
+        });
+    }
+
+
+    public static void getDelivaryDate(final Dialog dialog, final Call<DelivaryTimeModel> method, final WebResponse webResponse) {
+        if (dialog != null)
+            AppProgressDialog.show(dialog);
+
+        method.enqueue(new Callback<DelivaryTimeModel>() {
+            @Override
+            public void onResponse(Call<DelivaryTimeModel> call, Response<DelivaryTimeModel> response) {
+                if (dialog != null)
+                    AppProgressDialog.hide(dialog);
+                WebServiceResponse.handleResponse(response, webResponse);
+            }
+
+            @Override
+            public void onFailure(Call<DelivaryTimeModel> call, Throwable throwable) {
+                if (dialog != null)
+                    AppProgressDialog.hide(dialog);
+                webResponse.onResponseFailed(throwable.getMessage());
+            }
+        });
+    }
+
+
+    public static void getCartData(final Dialog dialog, final Call<AddtoCartModel> method, final WebResponse webResponse) {
+        if (dialog != null)
+            AppProgressDialog.show(dialog);
+
+        method.enqueue(new Callback<AddtoCartModel>() {
+            @Override
+            public void onResponse(Call<AddtoCartModel> call, Response<AddtoCartModel> response) {
+                if (dialog != null)
+                    AppProgressDialog.hide(dialog);
+                WebServiceResponse.handleResponse(response, webResponse);
+            }
+
+            @Override
+            public void onFailure(Call<AddtoCartModel> call, Throwable throwable) {
                 if (dialog != null)
                     AppProgressDialog.hide(dialog);
                 webResponse.onResponseFailed(throwable.getMessage());

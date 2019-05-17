@@ -8,14 +8,15 @@
          location permissions for the 'MyLocation' functionality.
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_SORAGE" />
+
     <uses-feature android:name="android.hardware.camera" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
+
+
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- For android.media.audiofx.Visualizer -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.VIBRATE" />
@@ -31,9 +32,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
+        android:largeHeap="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ui.activity.InviteFriendActivity"
-            android:theme="@style/AppTheme.Base"></activity>
+        <activity android:name=".ui.activity.ThankyouActivity"
+            android:theme="@style/AppTheme.Base" ></activity>
+        <activity
+            android:name=".ui.activity.InviteFriendActivity"
+            android:theme="@style/AppTheme.Base" />
         <activity android:name=".ui.activity.ProfileUpdateActivity" />
         <activity
             android:name=".ui.activity.VerifyOtpActivity"
@@ -58,8 +63,9 @@
             android:name=".ui.activity.MapsActivity"
             android:label="@string/title_activity_maps"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".ui.activity.NewProfileActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity
+            android:name=".ui.activity.NewProfileActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".ui.activity.OrderProductHistoryActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />

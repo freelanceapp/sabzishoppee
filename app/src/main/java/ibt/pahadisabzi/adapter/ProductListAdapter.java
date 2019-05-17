@@ -3,11 +3,14 @@ package ibt.pahadisabzi.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,11 +18,16 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -109,22 +117,31 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         viewHolder.tvProductsellingPrice.setText("Rs. " + new DecimalFormat("##.##").format(dis));
         viewHolder.tvProductPrice.setText("Rs. " + product.getSellingPrice());
 
+        if (product.getAvailability().equals("0"))
+        {
+            viewHolder.ivProductImg1.setVisibility(View.VISIBLE);
+            viewHolder.rlCart.setVisibility(View.GONE);
+        }else {
+            viewHolder.ivProductImg1.setVisibility(View.GONE);
+            viewHolder.rlCart.setVisibility(View.VISIBLE);
+        }
+
         if (product.getQuantityType().equals("0")) {
-            viewHolder.tvqutamount.setText("Rs. " + dis + " - " + product.getRateQuantity() + " Pcs");
+            viewHolder.tvqutamount.setText("Rs. " + dis + " for " + product.getRateQuantity() + " Pcs");
             if (product.getProductQuantity().equals("0")) {
                 viewHolder.tv_product_qty.setText(product.getMinQuantity());
             } else {
                 viewHolder.tv_product_qty.setText(product.getProductQuantity());
             }
         } else if (product.getQuantityType().equals("1")) {
-            viewHolder.tvqutamount.setText("Rs. " + dis + " - " + product.getRateQuantity() + " Kg");
+            viewHolder.tvqutamount.setText("Rs. " + dis + " for " + product.getRateQuantity() + " Kg");
             if (product.getProductQuantity().equals("0")) {
                 viewHolder.tv_product_qty.setText(product.getMinQuantity());
             } else {
                 viewHolder.tv_product_qty.setText(product.getProductQuantity());
             }
         } else {
-            viewHolder.tvqutamount.setText("Rs. " + dis + " - " + product.getRateQuantity() + " Gm");
+            viewHolder.tvqutamount.setText("Rs. " + dis + " for " + product.getRateQuantity() + " gm");
             if (product.getProductQuantity().equals("0")) {
                 viewHolder.tv_product_qty.setText(""+product.getMinQuantity());
             } else {
@@ -132,7 +149,22 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             }
         }
         if (product.getImage() != null) {
-            Glide.with(mContext).load(product.getImage()).into(viewHolder.ivProductImg);
+            Glide.with(mContext).load(product.getImage()).override(150, 150).error(R.drawable.vf).placeholder(R.drawable.vf)
+                    .listener(new RequestListener<Drawable>() {
+                        @Override
+                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                            // log exception
+                            viewHolder.image_progress.setVisibility(View.VISIBLE);
+                            Log.e("TAG", "Error loading image", e);
+                            return false; // important to return false so the error placeholder can be placed
+                        }
+
+                        @Override
+                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                            viewHolder.image_progress.setVisibility(View.GONE);
+                            return false;
+                        }
+                    }).into(viewHolder.ivProductImg);
         } else {
             viewHolder.ivProductImg.setImageResource(R.drawable.vf);
         }
@@ -255,16 +287,19 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private ImageView ivProductImg;
+        private ImageView ivProductImg, ivProductImg1;
         private LinearLayout llItem;
-        private RelativeLayout ll_product_action;
+        private RelativeLayout ll_product_action, rlCart;
         private TextView tvqutamount, tvProductPrice, tvProductQuality, tvProductName, tvMinOrder, tvProductType, tvProductsellingPrice, tv_product_qty, tv_rating;
         private ImageView iv_product_plus, iv_product_minus;
         private CardView btnAdd;
+        private ProgressBar image_progress;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             ivProductImg = itemView.findViewById(R.id.ivProductImg);
+            rlCart = itemView.findViewById(R.id.rlCart);
+            ivProductImg1 = itemView.findViewById(R.id.ivProductImg1);
             btnAdd = itemView.findViewById(R.id.btnAdd);
             tvProductPrice = itemView.findViewById(R.id.tvProductPrice);
             tvqutamount = itemView.findViewById(R.id.tvqutamount);
@@ -279,6 +314,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             ll_product_action = itemView.findViewById(R.id.ll_product_action);
             tv_rating = itemView.findViewById(R.id.tv_rating);
             llItem = itemView.findViewById(R.id.llItem);
+            image_progress = itemView.findViewById(R.id.image_progress);
         }
 
     }
@@ -349,8 +385,6 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         productDetail.setPrice(productFilteredList.get(pos).getSellingPrice());
         productDetail.setType(productFilteredList.get(pos).getType());
         productDetail.setQuantity(1);
-
-
         if (databaseCart.getContactsCount()) {
             cartProductList = databaseCart.getAllUrlList();
         }

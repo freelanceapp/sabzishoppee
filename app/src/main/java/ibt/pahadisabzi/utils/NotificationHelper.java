@@ -106,7 +106,7 @@ public class NotificationHelper {
                 PendingIntent.FLAG_ONE_SHOT);
         Log.v("dip", message);
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext)
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext,"k")
                 .setSmallIcon(R.mipmap.ic_launcher)
                 //.setSmallIcon(getNotificationIcon())
                 //.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))
@@ -149,10 +149,11 @@ public class NotificationHelper {
                 0 /* Request code */, resultIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
-        mBuilder = new NotificationCompat.Builder(mContext);
+        mBuilder = new NotificationCompat.Builder(mContext,"h");
         //mBuilder.setLargeIcon(image);
         mBuilder.setSmallIcon(R.mipmap.ic_launcher);
         mBuilder.setContentTitle(title)
+                .setLargeIcon(image)
                 .setContentText(message)
                 .setStyle(new NotificationCompat.BigPictureStyle().bigPicture(image))
                 .setAutoCancel(false)

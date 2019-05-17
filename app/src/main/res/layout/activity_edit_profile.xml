@@ -19,12 +19,13 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="120sp"
                     android:background="@color/red_a"
                     android:orientation="horizontal"
-                    android:paddingTop="6sp">
+                    android:paddingTop="6sp"
+                    android:id="@+id/ll1">
 
                     <ImageView
                         android:layout_width="35dp"
@@ -41,8 +42,12 @@
                         android:gravity="center"
                         android:text="Edit Profile"
                         android:textColor="@color/white"
-                        android:textSize="20sp" />
-                </LinearLayout>
+                        android:textSize="20sp"
+                        android:layout_toRightOf="@+id/btn_editprofile_back"/>
+
+
+
+                </RelativeLayout>
 
 
                 <LinearLayout
@@ -88,7 +93,7 @@
                         android:textColor="@color/black"
                         android:textSize="14sp"
                         android:textStyle="normal"
-                        android:background="@color/white"
+                        android:background="@android:color/transparent"
                         android:digits=" AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz"/>
                     <View
                         android:layout_width="match_parent"
@@ -221,10 +226,22 @@
                         android:textColor="@color/black"
                         android:textSize="14sp"
                         android:textStyle="normal" />
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1sp"
-                        android:background="@color/gray_d"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:gravity="end"
+                        android:layout_alignParentRight="true"
+                        android:text="Skip >>"
+                        android:textSize="22sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/red_a"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginTop="10dp"
+                        android:padding="10dp"
+                        android:id="@+id/skip_btn"/>
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -277,24 +294,25 @@
             </LinearLayout>
 
             <RelativeLayout
-                android:layout_width="120sp"
-                android:layout_height="120sp"
+                android:layout_width="100sp"
+                android:layout_height="100sp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="60dp">
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/ic_user"
+                    android:src="@drawable/ic_profile"
                     android:id="@+id/ci_profile"
+                    android:tint="@color/white"
                     app:civ_border_width="1sp"
-                    app:civ_border_color="@color/green_dark"
-                    app:civ_circle_background_color="@color/green_dark"/>
+                    app:civ_border_color="@color/white"
+                    app:civ_circle_background_color="@color/red_a"/>
                 <ImageView
                     android:layout_width="35sp"
                     android:layout_height="35sp"
                     android:layout_alignParentBottom="true"
                     android:src="@drawable/icf_rounded_add"
-                    android:tint="@color/red_900"
+                    android:tint="@color/green_900"
                     android:layout_centerHorizontal="true"
                     android:layout_alignParentRight="true"
                     android:id="@+id/btn_camera" />

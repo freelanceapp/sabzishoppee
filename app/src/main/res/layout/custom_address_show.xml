@@ -84,7 +84,7 @@
                 android:padding="6sp"
                 android:gravity="center"
                 android:src="@drawable/ic_delete"
-                android:tint="@color/red_a"
+                android:tint="@color/gray_c"
                 android:id="@+id/btn_edit"
                 android:layout_weight="1.5" />
         </LinearLayout>

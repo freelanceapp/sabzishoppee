@@ -20,6 +20,7 @@ import ibt.pahadisabzi.R;
 import ibt.pahadisabzi.database.DatabaseHandler;
 import ibt.pahadisabzi.database.HelperManager;
 import ibt.pahadisabzi.model.ProductDetail;
+import ibt.pahadisabzi.utils.Alerts;
 
 
 public class AdapterCart extends RecyclerView.Adapter<AdapterCart.MyViewHolder> {
@@ -73,25 +74,39 @@ public class AdapterCart extends RecyclerView.Adapter<AdapterCart.MyViewHolder> 
         float round_pr = Math.round(dis1);
        // holder.price_tv.setText("" + dis1+"Rs");
 
+        if (productDetail.getAvailability().equals("0"))
+        {
+            holder.ivSoldOut.setVisibility(View.VISIBLE);
+            holder.ll_adpcart_action.setVisibility(View.GONE);
+        }else {
+            holder.ivSoldOut.setVisibility(View.GONE);
+            holder.ll_adpcart_action.setVisibility(View.VISIBLE);
+        }
+
+
         if (productDetail.getQuantity_type().equals("0"))
         {
             /*holder.quantity_tv.setText(productDetail.getMin_quantity()+" Pcs");
             holder.tv_adpcart_qty_type.setText(" Pcs");
             holder.price_tv.setText("" +  new DecimalFormat("##.##").format(dis1)+"Rs");*/
-            holder.tv_adpcart_rate_quantity.setText("Rs. "+new DecimalFormat("##.##").format(dis1)+" - " +productDetail.getDescription()+ " Pcs" );
+            holder.tv_adpcart_rate_quantity.setText("Rs. "+new DecimalFormat("##.##").format(dis1)+" for " +productDetail.getDescription()+ " Pcs" );
         }else if (productDetail.getQuantity_type().equals("1"))
         {
            /* holder.quantity_tv.setText(productDetail.getMin_quantity()+" Kg");
             holder.tv_adpcart_qty_type.setText(" Kg");
             holder.price_tv.setText("" +  new DecimalFormat("##.##").format(dis1)+"Rs");*/
             //  holder.tv_adpcart_rate_quantity.setText(productDetail.getDescription()+ " Kg/ "+ dis1+" Rs");
-            holder.tv_adpcart_rate_quantity.setText("Rs. "+new DecimalFormat("##.##").format(dis1)+" - " +productDetail.getDescription()+ " Kg" );
+            holder.tv_adpcart_rate_quantity.setText("Rs. "+new DecimalFormat("##.##").format(dis1)+" for " +productDetail.getDescription()+ " Kg" );
 
         }else {
           //  holder.quantity_tv.setText(productDetail.getMin_quantity()+" Gm");
          //   holder.tv_adpcart_qty_type.setText(" Gm");
-            holder.tv_adpcart_rate_quantity.setText("Rs. "+new DecimalFormat("##.##").format(dis1)+" - " +productDetail.getDescription()+ " Gm" );
+            holder.tv_adpcart_rate_quantity.setText("Rs. "+new DecimalFormat("##.##").format(dis1)+" for " +productDetail.getDescription()+ " gm" );
         }
+
+        double single_price = dList.get(position).getQuantity()* dis1;
+        holder.tv_adpcart_total_rate.setText("Total Item Price : "+new DecimalFormat("##.##").format(single_price));
+
         holder.qty_tv.setText(dList.get(position).getQuantity() + "");
 
        /* float total = (float) (dis1 * list.get(position).getQuantity());
@@ -158,24 +173,27 @@ public class AdapterCart extends RecyclerView.Adapter<AdapterCart.MyViewHolder> 
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
-        public static TextView name_tv, quantity_tv, type_tv, price_tv, qty_tv, tv_adpcart_edit, tv_adpcart_qty_type, tv_adpcart_rate_quantity;
-        ImageView pro_image_iv, plus_iv, minus_iv;
-        LinearLayout cartLayout;
+        public static TextView tv_adpcart_total_rate, name_tv, quantity_tv, type_tv, price_tv, qty_tv, tv_adpcart_edit, tv_adpcart_qty_type, tv_adpcart_rate_quantity;
+        ImageView pro_image_iv, plus_iv, minus_iv, ivSoldOut;
+        LinearLayout cartLayout, ll_adpcart_action;
 
         public MyViewHolder(View view) {
             super(view);
             name_tv = view.findViewById(R.id.tv_adpcart_name);
+            tv_adpcart_total_rate = view.findViewById(R.id.tv_adpcart_total_rate);
             quantity_tv = view.findViewById(R.id.tv_adpcart_quantity);
            // type_tv = view.findViewById(R.id.tv_adpcart_type);
             price_tv = view.findViewById(R.id.tv_adpcart_price);
             qty_tv = view.findViewById(R.id.tv_adpcart_qty);
             cartLayout = view.findViewById(R.id.cartLayout);
+            ll_adpcart_action = view.findViewById(R.id.ll_adpcart_action);
             pro_image_iv = view.findViewById(R.id.iv_adpcart_image);
             plus_iv = view.findViewById(R.id.iv_adpcart_plus);
             minus_iv = view.findViewById(R.id.iv_adpcart_minus);
             tv_adpcart_edit = view.findViewById(R.id.tv_adpcart_edit);
             tv_adpcart_qty_type = view.findViewById(R.id.tv_adpcart_qty_type);
             tv_adpcart_rate_quantity = view.findViewById(R.id.tv_adpcart_rate_quantity);
+            ivSoldOut = view.findViewById(R.id.ivSoldOut);
         }
     }
 }

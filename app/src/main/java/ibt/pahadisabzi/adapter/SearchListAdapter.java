@@ -59,6 +59,15 @@ public class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.Vi
             viewHolder.ivProductImg.setImageResource(R.drawable.logo2);
         }
 
+        if (product.getAvailability().equals("0"))
+        {
+            viewHolder.ivProductImg1.setVisibility(View.VISIBLE);
+            viewHolder.rlCart.setVisibility(View.GONE);
+        }else {
+            viewHolder.ivProductImg1.setVisibility(View.GONE);
+            viewHolder.rlCart.setVisibility(View.VISIBLE);
+        }
+
         viewHolder.tvProductName.setText(product.getTitle());
         viewHolder.tvProductPrice.setText(product.getSellingPrice()+" Rs");
 
@@ -157,16 +166,18 @@ public class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.Vi
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private ImageView ivProductImg;
+        private ImageView ivProductImg,ivProductImg1;
         private LinearLayout ll_product1;
-        private RelativeLayout llItem, ll_product_action;
+        private RelativeLayout llItem, ll_product_action, rlCart;
         private TextView tvProductPrice,tvProductQuality,tvProductName,tvMinOrder, tvProductType, tv_product_qty;
         private ImageView iv_product_plus, iv_product_minus;
         CardView btnAdd;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             ivProductImg = itemView.findViewById(R.id.ivProductImg);
+            ivProductImg1 = itemView.findViewById(R.id.ivProductImg1);
             btnAdd = itemView.findViewById(R.id.btnAdd);
+            rlCart = itemView.findViewById(R.id.rlCart);
             tvProductPrice = itemView.findViewById(R.id.tvProductPrice);
             tvProductQuality = itemView.findViewById(R.id.tvProductQuality);
             tvProductName = itemView.findViewById(R.id.tvProductName);
