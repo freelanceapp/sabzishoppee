@@ -126,6 +126,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
 
+        cursor.close();
+        db.close(); // Closing database connection
+
         return urlModalList;
     }
 
@@ -170,16 +173,25 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     // Getting url Count
     public boolean getContactsCount() {
-        String countQuery = "SELECT  * FROM " + TABLE_URL;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(countQuery, null);
-        int i = cursor.getCount();
-        cursor.close();
-        if (i > 0) {
-            return true;
-        } else {
-            return false;
+        int i = 0;
+        Cursor cursor = null;
+        SQLiteDatabase db = null;
+        try {
+            String countQuery = "SELECT  * FROM " + TABLE_URL;
+            db = this.getReadableDatabase();
+            cursor = db.rawQuery(countQuery, null);
+            i = cursor.getCount();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor!=null) {
+                cursor.close();
+            }
+            if (db!=null){
+                db.close();
+            }
         }
+        return i>0;
     }
 
     //check exist data
@@ -197,6 +209,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         } finally {
             if (c != null) {
                 c.close();
+            }
+            if (db!=null){
+                db.close();
             }
         }
     }
@@ -216,6 +231,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         } finally {
             if (c != null) {
                 c.close();
+            }
+            if (db!=null){
+                db.close();
             }
         }
     }

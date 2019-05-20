@@ -72,8 +72,6 @@ public class AboutFragment extends BaseFragment {
                     Alerts.show(mContext, error);
                 }
             });
-        } else {
-            cd.show(mContext);
         }
     }
 

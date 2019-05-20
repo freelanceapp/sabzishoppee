@@ -100,8 +100,6 @@ public class ContactUsFragment extends BaseFragment {
                     }
                 });
             }
-        } else {
-            cd.show(mContext);
         }
     }
 

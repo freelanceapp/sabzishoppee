@@ -135,8 +135,6 @@ public class ForgotPasswordFragment extends BaseFragment implements View.OnClick
                     }
                 });
             }
-        }else {
-            cd.show(mContext);
         }
     }
 }

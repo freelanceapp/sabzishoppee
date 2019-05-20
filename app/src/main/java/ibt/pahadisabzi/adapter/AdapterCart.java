@@ -89,19 +89,19 @@ public class AdapterCart extends RecyclerView.Adapter<AdapterCart.MyViewHolder> 
             /*holder.quantity_tv.setText(productDetail.getMin_quantity()+" Pcs");
             holder.tv_adpcart_qty_type.setText(" Pcs");
             holder.price_tv.setText("" +  new DecimalFormat("##.##").format(dis1)+"Rs");*/
-            holder.tv_adpcart_rate_quantity.setText("Rs. "+new DecimalFormat("##.##").format(dis1)+" for " +productDetail.getDescription()+ " Pcs" );
+            holder.tv_adpcart_rate_quantity.setText("₹ "+new DecimalFormat("##.##").format(dis1)+" for " +productDetail.getDescription()+ " Pcs" );
         }else if (productDetail.getQuantity_type().equals("1"))
         {
            /* holder.quantity_tv.setText(productDetail.getMin_quantity()+" Kg");
             holder.tv_adpcart_qty_type.setText(" Kg");
             holder.price_tv.setText("" +  new DecimalFormat("##.##").format(dis1)+"Rs");*/
             //  holder.tv_adpcart_rate_quantity.setText(productDetail.getDescription()+ " Kg/ "+ dis1+" Rs");
-            holder.tv_adpcart_rate_quantity.setText("Rs. "+new DecimalFormat("##.##").format(dis1)+" for " +productDetail.getDescription()+ " Kg" );
+            holder.tv_adpcart_rate_quantity.setText("₹ "+new DecimalFormat("##.##").format(dis1)+" for " +productDetail.getDescription()+ " Kg" );
 
         }else {
           //  holder.quantity_tv.setText(productDetail.getMin_quantity()+" Gm");
          //   holder.tv_adpcart_qty_type.setText(" Gm");
-            holder.tv_adpcart_rate_quantity.setText("Rs. "+new DecimalFormat("##.##").format(dis1)+" for " +productDetail.getDescription()+ " gm" );
+            holder.tv_adpcart_rate_quantity.setText("₹ "+new DecimalFormat("##.##").format(dis1)+" for " +productDetail.getDescription()+ " gm" );
         }
 
         double single_price = dList.get(position).getQuantity()* dis1;

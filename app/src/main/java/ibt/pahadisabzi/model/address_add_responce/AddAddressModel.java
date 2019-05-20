@@ -9,6 +9,8 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import ibt.pahadisabzi.model.address_show_responce.Address;
+
 public class AddAddressModel implements Parcelable
 {
 
@@ -18,6 +20,9 @@ public class AddAddressModel implements Parcelable
     @SerializedName("message")
     @Expose
     private String message;
+    @SerializedName("new_address_id")
+    @Expose
+    private String newAddressId;
     @SerializedName("address")
     @Expose
     private List<Address> address = new ArrayList<Address>();
@@ -41,7 +46,8 @@ public class AddAddressModel implements Parcelable
     protected AddAddressModel(Parcel in) {
         this.error = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
         this.message = ((String) in.readValue((String.class.getClassLoader())));
-        in.readList(this.address, (ibt.pahadisabzi.model.address_add_responce.Address.class.getClassLoader()));
+        this.newAddressId = ((String) in.readValue((String.class.getClassLoader())));
+        in.readList(this.address, (Address.class.getClassLoader()));
     }
 
     public AddAddressModel() {
@@ -73,6 +79,14 @@ public class AddAddressModel implements Parcelable
         return this;
     }
 
+    public String getNewAddressId() {
+        return newAddressId;
+    }
+
+    public void setNewAddressId(String newAddressId) {
+        this.newAddressId = newAddressId;
+    }
+
     public List<Address> getAddress() {
         return address;
     }
@@ -89,6 +103,7 @@ public class AddAddressModel implements Parcelable
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(error);
         dest.writeValue(message);
+        dest.writeValue(newAddressId);
         dest.writeList(address);
     }
 

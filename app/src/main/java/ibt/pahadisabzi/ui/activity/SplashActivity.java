@@ -67,13 +67,11 @@ public class SplashActivity extends BaseActivity {
     protected void checkPermission() {
         if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.CAMERA)
                 + ContextCompat.checkSelfPermission(mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                + ContextCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
 
             // Do something, when permissions not granted
             if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) mContext, Manifest.permission.CAMERA)
-                    || ActivityCompat.shouldShowRequestPermissionRationale((Activity) mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    || ActivityCompat.shouldShowRequestPermissionRationale((Activity) mContext, Manifest.permission.ACCESS_FINE_LOCATION)) {
+                    || ActivityCompat.shouldShowRequestPermissionRationale((Activity) mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                 // If we should give explanation of requested permissions
                 // Show an alert dialog here with request explanation
                 AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
@@ -85,9 +83,7 @@ public class SplashActivity extends BaseActivity {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         ActivityCompat.requestPermissions(
                                 (Activity) mContext,
-                                new String[]{Manifest.permission.CAMERA,
-                                        Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION
-                                },
+                                new String[]{Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE},
                                 MY_PERMISSIONS_REQUEST_CODE
                         );
                     }
@@ -106,8 +102,7 @@ public class SplashActivity extends BaseActivity {
                         (Activity) mContext,
                         new String[]{
                                 Manifest.permission.CAMERA,
-                                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                                Manifest.permission.ACCESS_FINE_LOCATION
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE
                         },
                         MY_PERMISSIONS_REQUEST_CODE
                 );
@@ -140,8 +135,6 @@ public class SplashActivity extends BaseActivity {
                         }
                     }
                 }, 2000);
-            } else {
-                cd.show(mContext);
             }
         }
     }
@@ -154,7 +147,6 @@ public class SplashActivity extends BaseActivity {
                 if ((grantResults.length > 0) &&
                         (grantResults[0]
                                 + grantResults[1]
-                                + grantResults[2]
                                 == PackageManager.PERMISSION_GRANTED)) {
                     // Permissions are granted
                     //  Toast.makeText(mContext, "Permissions granted.", Toast.LENGTH_SHORT).show();
@@ -197,8 +189,6 @@ public class SplashActivity extends BaseActivity {
                     }
                 }
             }, 2000);
-        } else {
-            cd.show(mContext);
         }
     }
 
@@ -224,8 +214,6 @@ public class SplashActivity extends BaseActivity {
                     Alerts.show(mContext, error);
                 }
             });
-        } else {
-            cd.show(mContext);
         }
     }
 
@@ -238,7 +226,7 @@ public class SplashActivity extends BaseActivity {
             public void onResponseSuccess(Response<?> result) {
                 AppversionModel responseBody = (AppversionModel) result.body();
                 AppVersion = responseBody.getVersion();
-                if (AppVersion.equals("2")) {
+                if (AppVersion.equals("3")) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         checkPermission();
                     } else {

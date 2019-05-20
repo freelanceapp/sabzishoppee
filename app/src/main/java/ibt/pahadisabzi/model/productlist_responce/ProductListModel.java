@@ -1,11 +1,8 @@
-
 package ibt.pahadisabzi.model.productlist_responce;
 
-import java.util.ArrayList;
 import java.util.List;
 import android.os.Parcel;
 import android.os.Parcelable;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -20,12 +17,15 @@ public class ProductListModel implements Parcelable
     private String message;
     @SerializedName("product")
     @Expose
-    private List<Product> product = new ArrayList<Product>();
-    public final static Creator<ProductListModel> CREATOR = new Creator<ProductListModel>() {
+    private List<Product> product = null;
+    @SerializedName("appslider")
+    @Expose
+    private List<Appslider> appslider = null;
+    public final static Parcelable.Creator<ProductListModel> CREATOR = new Creator<ProductListModel>() {
 
 
         @SuppressWarnings({
-            "unchecked"
+                "unchecked"
         })
         public ProductListModel createFromParcel(Parcel in) {
             return new ProductListModel(in);
@@ -36,12 +36,13 @@ public class ProductListModel implements Parcelable
         }
 
     }
-    ;
+            ;
 
     protected ProductListModel(Parcel in) {
         this.error = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
         this.message = ((String) in.readValue((String.class.getClassLoader())));
-        in.readList(this.product, (Product.class.getClassLoader()));
+        in.readList(this.product, (ibt.pahadisabzi.model.productlist_responce.Product.class.getClassLoader()));
+        in.readList(this.appslider, (ibt.pahadisabzi.model.productlist_responce.Appslider.class.getClassLoader()));
     }
 
     public ProductListModel() {
@@ -55,22 +56,12 @@ public class ProductListModel implements Parcelable
         this.error = error;
     }
 
-    public ProductListModel withError(Boolean error) {
-        this.error = error;
-        return this;
-    }
-
     public String getMessage() {
         return message;
     }
 
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    public ProductListModel withMessage(String message) {
-        this.message = message;
-        return this;
     }
 
     public List<Product> getProduct() {
@@ -81,19 +72,23 @@ public class ProductListModel implements Parcelable
         this.product = product;
     }
 
-    public ProductListModel withProduct(List<Product> product) {
-        this.product = product;
-        return this;
+    public List<Appslider> getAppslider() {
+        return appslider;
+    }
+
+    public void setAppslider(List<Appslider> appslider) {
+        this.appslider = appslider;
     }
 
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(error);
         dest.writeValue(message);
         dest.writeList(product);
+        dest.writeList(appslider);
     }
 
     public int describeContents() {
-        return  0;
+        return 0;
     }
 
 }

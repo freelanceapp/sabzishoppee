@@ -2,13 +2,12 @@ package ibt.pahadisabzi.ui.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.location.Address;
-import android.location.Geocoder;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.GridLayoutManager;
@@ -17,40 +16,38 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
 
 import ibt.pahadisabzi.R;
 import ibt.pahadisabzi.adapter.AddressShowAdapter;
 import ibt.pahadisabzi.constant.Constant;
 import ibt.pahadisabzi.model.User;
 import ibt.pahadisabzi.model.address_add_responce.AddAddressModel;
+import ibt.pahadisabzi.model.address_show_responce.Address;
 import ibt.pahadisabzi.model.address_show_responce.AddressShowModel;
 import ibt.pahadisabzi.model.signup_responce.SignUpModel;
 import ibt.pahadisabzi.retrofit_provider.RetrofitService;
 import ibt.pahadisabzi.retrofit_provider.WebResponse;
-import ibt.pahadisabzi.ui.activity.MapsActivity;
+import ibt.pahadisabzi.ui.activity.HomeActivity;
+import ibt.pahadisabzi.ui.activity.SignInActivity;
 import ibt.pahadisabzi.utils.Alerts;
 import ibt.pahadisabzi.utils.AppPreference;
-import ibt.pahadisabzi.utils.AppProgressDialog;
 import ibt.pahadisabzi.utils.BaseFragment;
 import ibt.pahadisabzi.utils.ConnectionDirector;
-import ibt.pahadisabzi.utils.GpsTracker;
 import ibt.pahadisabzi.utils.SessionManager;
 import ibt.pahadisabzi.utils.Utility;
 import retrofit2.Response;
 
 import static ibt.pahadisabzi.ui.activity.CheckOutActivity.tv_address;
 import static ibt.pahadisabzi.ui.activity.CheckOutActivity.tv_confirmation;
-
 
 @SuppressLint("ValidFragment")
 public class ShoppingFragment extends BaseFragment implements View.OnClickListener, AdapterView.OnItemSelectedListener {
@@ -85,7 +82,6 @@ public class ShoppingFragment extends BaseFragment implements View.OnClickListen
     public ShoppingFragment(Context ctx) {
         //  connectionDetector = new ConnectionDetector();
         // http://freshveggie.infobitetechnology.tech/api/add-user-address.php
-
     }
 
     @Nullable
@@ -180,45 +176,7 @@ public class ShoppingFragment extends BaseFragment implements View.OnClickListen
         name_et.setText(name);
         mobile_et.setText(mobile);
 
-        getLatLong();
     }
-
-    private void getLatLong() {
-        GpsTracker gpsTracker = new GpsTracker(ctx);
-        latitude = gpsTracker.getLatitude();
-        longitude = gpsTracker.getLongitude();
-        getAddressList();
-    }
-
-    private void getAddressList() {
-        AppProgressDialog.show(dialog);
-        Geocoder geocoder = new Geocoder(ctx, Locale.getDefault());
-        try {
-            List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
-            if (addresses.size() > 0) {
-                AppProgressDialog.hide(dialog);
-
-                strLat = String.valueOf(addresses.get(0).getLatitude());
-                strLong = String.valueOf(addresses.get(0).getLongitude());
-                address_et.setText(addresses.get(0).getAddressLine(0));
-                city_et.setText(addresses.get(0).getLocality());
-                state_et.setText(addresses.get(0).getAdminArea());
-                country_et.setText(addresses.get(0).getCountryName());
-                zipcode_et.setText(addresses.get(0).getPostalCode());
-            } else {
-                AppProgressDialog.show(dialog);
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        getLatLong();
-                    }
-                }, 3000);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
 
     @Override
     public void onClick(View v) {
@@ -233,9 +191,7 @@ public class ShoppingFragment extends BaseFragment implements View.OnClickListen
                 break;
 
             case R.id.btn_current_location:
-                Intent intent = new Intent(getActivity(), MapsActivity.class);
-                getActivity().startActivity(intent);
-                //setData();
+                openAddAddressDialog();
                 break;
 
             case R.id.ll_show_address:
@@ -244,6 +200,7 @@ public class ShoppingFragment extends BaseFragment implements View.OnClickListen
 
                 AppPreference.setStringPreference(ctx, Constant.Name, address.getUserCity());
                 AppPreference.setStringPreference(ctx, Constant.Address, address.getAddress());
+                AppPreference.setStringPreference(ctx, Constant.ADDRESS_LANDMARK, address.getLocation());
                 AppPreference.setStringPreference(ctx, Constant.City, address.getUserCity());
                 AppPreference.setStringPreference(ctx, Constant.PinCode, address.getZipcode());
                 AppPreference.setStringPreference(ctx, Constant.State, address.getState());
@@ -263,7 +220,7 @@ public class ShoppingFragment extends BaseFragment implements View.OnClickListen
                 int pos1 = Integer.parseInt(v.getTag().toString());
                 ibt.pahadisabzi.model.address_show_responce.Address address1 = addressArrayList.get(pos1);
 
-                updateAddressApi(address1.getAddressId());
+                openUpdateDialog(address1);
 
                 break;
         }
@@ -323,33 +280,6 @@ public class ShoppingFragment extends BaseFragment implements View.OnClickListen
         // }
     }
 
-    private void addAddressApi() {
-        String strUser_id = AppPreference.getStringPreference(mContext, Constant.User_Id);
-        if (cd.isNetWorkAvailable()) {
-            RetrofitService.addAddress(new Dialog(mContext), retrofitApiClient.addAddress(strUser_id, strAddress, strAddress, strCity, strState, strAddressType, strLong, strLat, strHouseNo, strZipCode), new WebResponse() {
-                @Override
-                public void onResponseSuccess(Response<?> result) {
-                    AddAddressModel addressModel = (AddAddressModel) result.body();
-
-                    if (!addressModel.getError()) {
-                        ConfirmationFragment fragment = new ConfirmationFragment(ctx);
-                        Utility.setFragment1(fragment, ctx, Constant.ShoppingFragment);
-
-                    } else {
-                        Alerts.show(mContext, addressModel.getMessage());
-                    }
-                }
-
-                @Override
-                public void onResponseFailed(String error) {
-                    Alerts.show(mContext, error);
-                }
-            });
-        } else {
-            cd.show(mContext);
-        }
-    }
-
     private void getAddressApi() {
         String strUser_id = AppPreference.getStringPreference(mContext, Constant.User_Id);
         if (cd.isNetWorkAvailable()) {
@@ -375,19 +305,58 @@ public class ShoppingFragment extends BaseFragment implements View.OnClickListen
                     Alerts.show(mContext, error);
                 }
             });
-        } else {
-            cd.show(mContext);
         }
     }
 
-    private void updateAddressApi(String addressId) {
+    private void openUpdateDialog(Address address1) {
+        AlertDialog.Builder dialogBox = new AlertDialog.Builder(mContext);
+        dialogBox.setCancelable(true);
+
+        LayoutInflater li = LayoutInflater.from(mContext);
+        final View dialogBoxView = li.inflate(R.layout.dialog_add_address, null);
+        dialogBox.setView(dialogBoxView);
+
+
+        final AlertDialog alertDialog = dialogBox.create();
+        alertDialog.show();
+
+        TextView tvTitle = dialogBoxView.findViewById(R.id.tvTitle);
+        EditText tvAddress = dialogBoxView.findViewById(R.id.et_newaddress_address1);
+        EditText tvLandmark = dialogBoxView.findViewById(R.id.et_newaddress_landmark);
+        Button btnConfirmAddress = dialogBoxView.findViewById(R.id.btn_address_confirm);
+
+        tvTitle.setText("Edit Address");
+        tvAddress.setText(address1.getAddress());
+        tvLandmark.setText(address1.getLocation());
+        btnConfirmAddress.setText("Edit Address");
+
+        btnConfirmAddress.setOnClickListener(v -> {
+            String address, name, landmark;
+            address = tvAddress.getText().toString().trim();
+            landmark = tvLandmark.getText().toString().trim();
+
+            if (address.isEmpty()){
+                Alerts.show(mContext, "Please enter an Address");
+            }else{
+                updateAddressApi(address1.getAddressId(), address, landmark);
+            }
+
+            alertDialog.dismiss();
+
+        });
+    }
+
+    private void updateAddressApi(String addressId, String address, String landmark) {
         if (cd.isNetWorkAvailable()) {
-            RetrofitService.updateAddress(new Dialog(mContext), retrofitApiClient.updateAddress("", "", "", "", "", ""
-                    , "", "", "", "", "", "3", addressId), new WebResponse() {
+            RetrofitService.updateAddress(new Dialog(mContext), retrofitApiClient.updateAddress(landmark, "", "", "", address, ""
+                    , "", "", "", "", "", "1", addressId), new WebResponse() {
                 @Override
                 public void onResponseSuccess(Response<?> result) {
                     SignUpModel addressModel = (SignUpModel) result.body();
                     Alerts.show(mContext, addressModel.getMessage());
+
+
+
                     getAddressApi();
                 }
 
@@ -396,8 +365,119 @@ public class ShoppingFragment extends BaseFragment implements View.OnClickListen
                     Alerts.show(mContext, error);
                 }
             });
-        } else {
-            cd.show(mContext);
+        }
+    }
+
+    private void openAddAddressDialog() {
+        AlertDialog.Builder dialogBox = new AlertDialog.Builder(mContext);
+        dialogBox.setCancelable(true);
+
+        LayoutInflater li = LayoutInflater.from(mContext);
+        final View dialogBoxView = li.inflate(R.layout.dialog_add_address, null);
+        dialogBox.setView(dialogBoxView);
+
+
+        final AlertDialog alertDialog = dialogBox.create();
+        alertDialog.show();
+
+        TextView tvAddress = dialogBoxView.findViewById(R.id.et_newaddress_address1);
+        TextView tvLandmark = dialogBoxView.findViewById(R.id.et_newaddress_landmark);
+        Button btnConfirmAddress = dialogBoxView.findViewById(R.id.btn_address_confirm);
+
+        btnConfirmAddress.setOnClickListener(v -> {
+            String address, name, landmark;
+            address = tvAddress.getText().toString().trim();
+            landmark = tvLandmark.getText().toString().trim();
+
+            if (address.isEmpty()){
+                Alerts.show(mContext, "Please enter an Address");
+            }else{
+                addAddressApi(address, landmark);
+            }
+
+            alertDialog.dismiss();
+
+        });
+
+    }
+
+    private void addAddressApi(String address, String landmark) {
+        String strUser_id = AppPreference.getStringPreference(mContext, Constant.User_Id);
+
+        if (cd.isNetWorkAvailable()) {
+            RetrofitService.addAddress(new Dialog(mContext), retrofitApiClient.addAddress(strUser_id,address,landmark,strCity,strState,strType,strLong,strLat,strHouseNo,strZipCode), new WebResponse() {
+                @Override
+                public void onResponseSuccess(Response<?> result) {
+                    AddAddressModel addressModel = (AddAddressModel) result.body();
+
+                    if (!addressModel.getError())
+                    {
+                        AppPreference.setStringPreference(mContext, Constant.Name, strCity);
+                        AppPreference.setStringPreference(mContext, Constant.Address, strAddress);
+                        AppPreference.setStringPreference(mContext, Constant.City, strCity);
+                        AppPreference.setStringPreference(mContext, Constant.PinCode, strZipCode);
+                        AppPreference.setStringPreference(mContext, Constant.State, strState);
+                        AppPreference.setStringPreference(mContext, Constant.House_no, strHouseNo);
+                        AppPreference.setStringPreference(mContext, Constant.Address_Type, strAddressType);
+                        AppPreference.setStringPreference(mContext, Constant.ADDRESS_LAT, strLat);
+                        AppPreference.setStringPreference(mContext, Constant.ADDRESS_LONG, strLong);
+                        AppPreference.setStringPreference(mContext, Constant.ADDRESS_LANDMARK, strLandMark);
+
+                        addressArrayList.clear();
+                        addressArrayList.addAll(addressModel.getAddress());
+                        HashSet<Address> hashSet = new HashSet<>();
+                        hashSet.addAll(addressArrayList);
+                        addressArrayList.clear();
+                        addressArrayList.addAll(hashSet);
+
+                        new android.support.v7.app.AlertDialog.Builder(mContext)
+                                .setTitle("New Address")
+                                .setMessage("Use This Address.")
+                                .setPositiveButton("YES", (dialog, which) -> {
+
+                                    addressShowAdapter.notifyDataSetChanged();
+
+                                    Address newAddress = new Address();
+
+                                    for (Address adrs : addressArrayList){
+                                        if (adrs.getAddressId().equals(addressModel.getNewAddressId())){
+                                            newAddress = adrs;
+                                        }
+                                    }
+
+                                    AppPreference.setStringPreference(ctx, Constant.Name, newAddress.getUserCity());
+                                    AppPreference.setStringPreference(ctx, Constant.Address, newAddress.getAddress());
+                                    AppPreference.setStringPreference(ctx, Constant.ADDRESS_LANDMARK, newAddress.getLocation());
+                                    AppPreference.setStringPreference(ctx, Constant.City, newAddress.getUserCity());
+                                    AppPreference.setStringPreference(ctx, Constant.PinCode, newAddress.getZipcode());
+                                    AppPreference.setStringPreference(ctx, Constant.State, newAddress.getState());
+                                    AppPreference.setStringPreference(ctx, Constant.House_no, newAddress.getHouseNumber());
+                                    AppPreference.setStringPreference(ctx, Constant.Address_Type, newAddress.getAddressType());
+                                    AppPreference.setStringPreference(ctx, Constant.ADDRESS_LAT, newAddress.getLat());
+                                    AppPreference.setStringPreference(ctx, Constant.ADDRESS_LONG, newAddress.getLong());
+                                    AppPreference.setStringPreference(ctx, Constant.CONTRY, "India");
+                                    // AppPreference.setStringPreference(ctx, Constant.ADDRESS_LANDMARK, address.getL);
+
+                                    ConfirmationFragment fragment = new ConfirmationFragment(ctx);
+                                    Utility.setFragment1(fragment, ctx, Constant.ShoppingFragment);
+
+                                })
+                                .setNegativeButton("NO", null)
+                                .create()
+                                .show();
+
+                    }else {
+                        Alerts.show(mContext, addressModel.getMessage());
+                    }
+                    addressShowAdapter.notifyDataSetChanged();
+
+                }
+
+                @Override
+                public void onResponseFailed(String error) {
+                    Alerts.show(mContext, error);
+                }
+            });
         }
     }
 }

@@ -117,8 +117,6 @@ public class OrderHistoryActivity extends BaseActivity implements View.OnClickLi
                     rvOrderHistory.setVisibility(View.GONE);
                 }
             });
-        }else {
-            cd.show(mContext);
         }
     }
 

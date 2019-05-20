@@ -182,8 +182,6 @@ public class VerifyOtpActivity extends BaseActivity implements View.OnClickListe
                     }
                 });
             }
-        }else {
-            cd.show(mContext);
         }
     }
 

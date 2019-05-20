@@ -353,8 +353,6 @@ public class NewProfileActivity extends BaseActivity implements View.OnClickList
                                 Alerts.show(mContext, error);
                             }
                         });
-                    } else {
-                        cd.show(mContext);
                     }
                 }
             } else {
@@ -395,8 +393,6 @@ public class NewProfileActivity extends BaseActivity implements View.OnClickList
                             Alerts.show(mContext, error);
                         }
                     });
-                } else {
-                    cd.show(mContext);
                 }
             }
         }
@@ -460,8 +456,6 @@ public class NewProfileActivity extends BaseActivity implements View.OnClickList
                     Alerts.show(mContext, error);
                 }
             });
-        }else {
-            cd.show(mContext);
         }
 
     }

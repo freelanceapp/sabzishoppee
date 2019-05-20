@@ -54,7 +54,6 @@ import static ibt.pahadisabzi.ui.activity.HomeActivity.cart_count;
 import static ibt.pahadisabzi.ui.activity.HomeActivity.cart_number;
 import static ibt.pahadisabzi.ui.activity.HomeActivity.cart_price;
 
-
 public class AddToCartActivity extends BaseActivity implements View.OnClickListener, View.OnLongClickListener {
     Context ctx;
     RecyclerView recyclerView;
@@ -180,7 +179,7 @@ public class AddToCartActivity extends BaseActivity implements View.OnClickListe
         }
         // place_bt.setText("Place this Order :   Rs " + total);
         tvTotalItem.setText("Total Items :" + total_list.size());
-        tvTotalPrice.setText("Rs. " + new DecimalFormat("##.##").format(total));
+        tvTotalPrice.setText("₹ " + new DecimalFormat("##.##").format(total));
         cart_price.setText("" + new DecimalFormat("##.##").format(total));
     }
 
@@ -210,8 +209,8 @@ public class AddToCartActivity extends BaseActivity implements View.OnClickListe
         switch (view.getId()) {
             case R.id.bt_wishlist_placeorder:
                 //CartDataApi();
-                locationPermission();
-                //placeThisOrder();
+                //locationPermission();
+                placeThisOrder();
                 break;
            /* case R.id.iv_adpcart_minus:
                 minusItem(view);
@@ -564,8 +563,6 @@ public class AddToCartActivity extends BaseActivity implements View.OnClickListe
                     Alerts.show(mContext, error);
                 }
             });
-        } else {
-            cd.show(mContext);
         }
     }
 
@@ -615,8 +612,6 @@ public class AddToCartActivity extends BaseActivity implements View.OnClickListe
                     Alerts.show(mContext, error);
                 }
             });
-        } else {
-            cd.show(mContext);
         }
     }
 }

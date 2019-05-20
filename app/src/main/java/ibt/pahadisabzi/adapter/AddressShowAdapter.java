@@ -54,7 +54,8 @@ public class AddressShowAdapter extends RecyclerView.Adapter<AddressShowAdapter.
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         Address address = productArrayList.get(i);
 
-        viewHolder.tv_address1.setText(address.getLocation());
+        viewHolder.tv_address1.setText(address.getAddress());
+        viewHolder.tv_landmark.setText(address.getLocation());
         viewHolder.tv_city.setText(address.getUserCity());
         viewHolder.tv_state.setText(address.getState());
         viewHolder.ll_show_address.setTag(i);
@@ -71,12 +72,13 @@ public class AddressShowAdapter extends RecyclerView.Adapter<AddressShowAdapter.
     public class ViewHolder extends RecyclerView.ViewHolder  {
 
         private LinearLayout ll_show_address;
-        private TextView tv_state, tv_city, tv_address1;
+        private TextView tv_state, tv_city, tv_address1, tv_landmark;
         private ImageView btn_edit;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tv_address1 = itemView.findViewById(R.id.tv_address1);
+            tv_landmark = itemView.findViewById(R.id.tv_landmark);
             tv_city = itemView.findViewById(R.id.tv_city);
             tv_state = itemView.findViewById(R.id.tv_state);
             ll_show_address = itemView.findViewById(R.id.ll_show_address);

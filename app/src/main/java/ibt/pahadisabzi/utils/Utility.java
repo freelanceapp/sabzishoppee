@@ -42,7 +42,7 @@ public class Utility {
     }
 
    public static void setFragment1(Fragment fragment, Context ctx, String tag) {
-        ((CheckOutActivity) ctx).getSupportFragmentManager().beginTransaction().replace(R.id.viewpager, fragment).addToBackStack(null).commit();
+        ((CheckOutActivity) ctx).getSupportFragmentManager().beginTransaction().replace(R.id.viewpager, fragment).commit();
     }
 
 

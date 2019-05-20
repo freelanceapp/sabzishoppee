@@ -17,8 +17,6 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,13 +40,13 @@ import ibt.pahadisabzi.model.order_responce.Order;
 import ibt.pahadisabzi.model.order_responce.OrderModel;
 import ibt.pahadisabzi.retrofit_provider.RetrofitService;
 import ibt.pahadisabzi.retrofit_provider.WebResponse;
-import ibt.pahadisabzi.ui.activity.HomeActivity;
 import ibt.pahadisabzi.ui.activity.ThankyouActivity;
 import ibt.pahadisabzi.utils.Alerts;
 import ibt.pahadisabzi.utils.AppPreference;
 import ibt.pahadisabzi.utils.BaseFragment;
 import ibt.pahadisabzi.utils.ConnectionDirector;
 import ibt.pahadisabzi.utils.SessionManager;
+import ibt.pahadisabzi.utils.Utility;
 import retrofit2.Response;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -61,7 +59,7 @@ public class ConfirmationFragment extends BaseFragment implements View.OnClickLi
 
     Context ctx;
     RecyclerView recyclerView;
-    TextView total_tv, tv_payment;
+    TextView total_tv, tv_payment, tvAddress, tvChangeAddress;
     EditText etNote;
     LinearLayout ordernow_ll;
     public static String Payment_Package = "";
@@ -74,9 +72,10 @@ public class ConfirmationFragment extends BaseFragment implements View.OnClickLi
     private Button tvorderNow;
 
     ArrayList<Order> productDataModelArrayList = new ArrayList<>();
-    String strDelivaryTime = "";
-    Spinner spDelivaryTime;
+    String strDeliveryTime = "";
+    Spinner spDeliveryTime;
     ArrayList<Deliverytiming> deliverytimings = new ArrayList<>();
+
     @SuppressLint("ValidFragment")
     public ConfirmationFragment(Context ctx) {
         this.ctx = ctx;
@@ -104,7 +103,6 @@ public class ConfirmationFragment extends BaseFragment implements View.OnClickLi
     }
 
     private void setOrder() {
-
         ArrayList<ProductDetail> orderlist = databaseCart.getAllUrlList();
         AdapterConfirmation adapter = new AdapterConfirmation(orderlist, ctx);
         recyclerView.setHasFixedSize(true);
@@ -125,28 +123,44 @@ public class ConfirmationFragment extends BaseFragment implements View.OnClickLi
        /* totalAmount = sessionManager.getData(SessionManager.KEY_ORDER_PRICE);
         Log.e("total ",".."+totalAmount);*/
 
+       /*ConfirmationFragment fragment = new ConfirmationFragment(ctx);
+                                    Utility.setFragment1(fragment, ctx, Constant.ShoppingFragment);*/
+
         SharedPreferences prefs = getActivity().getSharedPreferences(mypreference, MODE_PRIVATE);
 
-       // totalAmount1 = prefs.getString("total_price", "0");//"No name defined" is the default value.
+        // totalAmount1 = prefs.getString("total_price", "0");//"No name defined" is the default value.
         totalAmount1 = AppPreference.getStringPreference(ctx, Constant.TOTAL_AMOUNT);
         recyclerView = view.findViewById(R.id.rv_conforder_recycler);
         total_tv = view.findViewById(R.id.tv_confirmation_total);
         tv_payment = view.findViewById(R.id.tv_payment);
+        tvAddress = view.findViewById(R.id.tvAddress);
+        tvChangeAddress = view.findViewById(R.id.tvChangeAddress);
         etNote = view.findViewById(R.id.etNote);
         tvorderNow = view.findViewById(R.id.tv_orderNow);
         tvorderNow.setOnClickListener(this);
 
-        spDelivaryTime = view.findViewById(R.id.spDelivaryTime);
+        spDeliveryTime = view.findViewById(R.id.spDelivaryTime);
         double i2 = Double.parseDouble(totalAmount1);
-        total_tv.setText(new DecimalFormat("##.##").format(i2));
+       // total_tv.setText(new DecimalFormat("##.##").format(i2));
+        total_tv.setText("₹ "+String.format("%.2f", i2));
         tv_payment.setText(new DecimalFormat("##.##").format(i2));
+
+        tvAddress.setText("Address : "+AppPreference.getStringPreference(ctx, Constant.Address)+"\nLandmark : "+AppPreference.getStringPreference(ctx, Constant.ADDRESS_LANDMARK));
+
+        tvChangeAddress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ShoppingFragment fragment = new ShoppingFragment(ctx);
+                Utility.setFragment1(fragment, ctx, Constant.ShoppingFragment);
+            }
+        });
 
 
         /*total_tv.setText(Utility.getCartTotal(databaseCart));
         Payment_Package = Utility.getCartTotal(databaseCart);*/
         Payment_Package = totalAmount1;
-        delivaryTimeApi();
-        spDelivaryTime.setOnItemSelectedListener(this);
+        deliveryTimeApi();
+        spDeliveryTime.setOnItemSelectedListener(this);
 
 
     }
@@ -185,30 +199,33 @@ public class ConfirmationFragment extends BaseFragment implements View.OnClickLi
         }
     }
 
-    private void delivaryTimeApi() {
+    private void deliveryTimeApi() {
         if (cd.isNetWorkAvailable()) {
             RetrofitService.getDelivaryDate(new Dialog(mContext), retrofitApiClient.getDelivaryTime(), new WebResponse() {
-                    @Override
-                    public void onResponseSuccess(Response<?> result) {
-                        DelivaryTimeModel delivaryTimeModel = (DelivaryTimeModel) result.body();
-                        if (!delivaryTimeModel.getResult()) {
+                @Override
+                public void onResponseSuccess(Response<?> result) {
+                    DelivaryTimeModel delivaryTimeModel = (DelivaryTimeModel) result.body();
+                    if (!delivaryTimeModel.getResult()) {
 
-                            deliverytimings.addAll(delivaryTimeModel.getDeliverytiming());
-                            DelivaryTimeAdapter customAdapter = new DelivaryTimeAdapter(mContext, deliverytimings);
-                            spDelivaryTime.setAdapter(customAdapter);
-                        } else {
-                            Alerts.show(mContext, delivaryTimeModel.getMessage());
-                        }
+                        Deliverytiming dTime = new Deliverytiming();
+                        dTime.setDeliveryTimingTitle("Select your delivery time");
+                        dTime.setDeliveryTimingId("0");
+
+                        deliverytimings.addAll(delivaryTimeModel.getDeliverytiming());
+                        deliverytimings.add(0, dTime);
+                        DelivaryTimeAdapter customAdapter = new DelivaryTimeAdapter(mContext, deliverytimings);
+                        spDeliveryTime.setAdapter(customAdapter);
+                    } else {
+                        Alerts.show(mContext, delivaryTimeModel.getMessage());
                     }
+                }
 
-                    @Override
-                    public void onResponseFailed(String error) {
-                        Alerts.show(mContext, error);
-                    }
-                });
+                @Override
+                public void onResponseFailed(String error) {
+                    Alerts.show(mContext, error);
+                }
+            });
 
-        }else{
-            cd.show(mContext);
         }
     }
 
@@ -247,27 +264,29 @@ public class ConfirmationFragment extends BaseFragment implements View.OnClickLi
 
                 gmquty = list.get(i).getQuantity() * Float.parseFloat(list.get(i).getDescription());
 
-                Order productDataModel = new Order();
-                productDataModel.setProductId(list.get(i).getId());
-                productDataModel.setProductDiscount(list.get(i).getDiscount());
-                productDataModel.setProductPrice(String.valueOf(tot));
-                productDataModel.setProductQuantity(String.valueOf(gmquty));
-                productDataModel.setProductType(list.get(i).getType());
-                productDataModel.setQuantityType(list.get(i).getQuantity_type());
-                productDataModelArrayList.add(productDataModel);
+                if (list.get(i).getAvailability().equals("1")) {
+                    Order productDataModel = new Order();
+                    productDataModel.setProductId(list.get(i).getId());
+                    productDataModel.setProductDiscount(list.get(i).getDiscount());
+                    productDataModel.setProductPrice(String.valueOf(tot));
+                    productDataModel.setProductQuantity(String.valueOf(gmquty));
+                    productDataModel.setProductType(list.get(i).getType());
+                    productDataModel.setQuantityType(list.get(i).getQuantity_type());
+                    productDataModelArrayList.add(productDataModel);
+                }
             }
             Gson gson = new GsonBuilder().setLenient().create();
             String data = gson.toJson(productDataModelArrayList);
 
-            if (strDelivaryTime.equals("")) {
+            if (strDeliveryTime.equals("")) {
                 Toast.makeText(mContext, "Please select delivery time", Toast.LENGTH_SHORT).show();
             } else {
-                RetrofitService.setOrder(new Dialog(mContext), retrofitApiClient.setOrder(user_id, "0", "0", strDelivaryTime, address, strHourseNo, strLandMark, city, strAddressType, totalAmount1, address, strLat, strLong, state, code, strNote, data), new WebResponse() {
+                RetrofitService.setOrder(new Dialog(mContext), retrofitApiClient.setOrder(user_id, "0", "0", strDeliveryTime, address, strHourseNo, strLandMark, city, strAddressType, totalAmount1, address, strLat, strLong, state, code, strNote, data), new WebResponse() {
                     @Override
                     public void onResponseSuccess(Response<?> result) {
                         OrderModel orderModel = (OrderModel) result.body();
                         if (!orderModel.getError()) {
-                           // Alerts.show(mContext, orderModel.getMessage());
+                            // Alerts.show(mContext, orderModel.getMessage());
                             if (databaseCart.getContactsCount()) {
                                 databaseCart.deleteallCart();
                                 Intent intent = new Intent(mContext, ThankyouActivity.class);
@@ -276,6 +295,7 @@ public class ConfirmationFragment extends BaseFragment implements View.OnClickLi
                                 getActivity().finish();
                             }
                         } else {
+                            productDataModelArrayList.clear();
                             Alerts.show(mContext, orderModel.getMessage());
                         }
                     }
@@ -286,15 +306,17 @@ public class ConfirmationFragment extends BaseFragment implements View.OnClickLi
                     }
                 });
             }
-            }else{
-                cd.show(mContext);
-            }
         }
+    }
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         // Alerts.show(mContext, deliverytimings.get(i).getDeliveryTimingStartTime()+ " - "+ deliverytimings.get(i).getDeliveryTimingEndTime());
-        strDelivaryTime = deliverytimings.get(i).getDeliveryTimingStartTime()+ " - "+ deliverytimings.get(i).getDeliveryTimingEndTime();
+        if (i>0) {
+            strDeliveryTime = deliverytimings.get(i).getDeliveryTimingStartTime() + " - " + deliverytimings.get(i).getDeliveryTimingEndTime();
+        }else{
+            strDeliveryTime = "";
+        }
     }
 
     @Override
@@ -302,3 +324,7 @@ public class ConfirmationFragment extends BaseFragment implements View.OnClickLi
 
     }
 }
+
+/*[{"product_discount":"20","product_id":"11","product_price":"88.0","product_quantity":"1.0","product_type":"1","quantity_type":"1"},{"product_discount":"0","product_id":"16","product_price":"50.0","product_quantity":"2.0","product_type":"1","quantity_type":"1"},{"product_discount":"5","product_id":"17","product_price":"51.3","product_quantity":"1.0","product_type":"1","quantity_type":"1"},{"product_discount":"0","product_id":"29","product_price":"40.0","product_quantity":"1.0","product_type":"1","quantity_type":"1"},{"product_discount":"1","product_id":"30","product_price":"99.0","product_quantity":"1.0","product_type":"1","quantity_type":"1"},{"product_discount":"33","product_id":"35","product_price":"20.1","product_quantity":"1.0","product_type":"1","quantity_type":"1"},{"product_discount":"10","product_id":"36","product_price":"90.0","product_quantity":"5.0","product_type":"1","quantity_type":"1"}]*/
+
+/**/

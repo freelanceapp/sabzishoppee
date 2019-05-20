@@ -356,6 +356,13 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
                                 } else {
                                     Glide.with(mContext).load(loginModal.getUser().getUserProfilePicture()).error(R.drawable.ic_user).into(iv_ShowUserImage);
                                 }
+
+
+                                AppPreference.setStringPreference(mContext, Constant.LOGIN_USER_ID, loginModal.getUser().getId());
+                                AppPreference.setStringPreference(mContext, Constant.LOGIN_USER_NAME, loginModal.getUser().getUserName());
+                                AppPreference.setStringPreference(mContext, Constant.LOGIN_USER_CONTACT, loginModal.getUser().getUserContact());
+                                AppPreference.setStringPreference(mContext, Constant.LOGIN_USER_PROFILE_IMAGE, loginModal.getUser().getUserProfilePicture());
+
                                 Intent intent = new Intent(EditProfileActivity.this, HomeActivity.class);
                                 startActivity(intent);
                                 finish();
@@ -366,8 +373,6 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
                                 Alerts.show(mContext, error);
                             }
                         });
-                    } else {
-                        cd.show(mContext);
                     }
                 }
             } else {
@@ -388,6 +393,13 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
                             String data = gson.toJson(loginModal);
                             AppPreference.setStringPreference(mContext, Constant.User_Data, data);
                             User.setUser(loginModal);
+
+
+                            AppPreference.setStringPreference(mContext, Constant.LOGIN_USER_ID, loginModal.getUser().getId());
+                            AppPreference.setStringPreference(mContext, Constant.LOGIN_USER_NAME, loginModal.getUser().getUserName());
+                            AppPreference.setStringPreference(mContext, Constant.LOGIN_USER_CONTACT, loginModal.getUser().getUserContact());
+                            AppPreference.setStringPreference(mContext, Constant.LOGIN_USER_PROFILE_IMAGE, loginModal.getUser().getUserProfilePicture());
+
                            /* if (User.getUser().getUser().getUserProfilePicture() == null) {
                                 iv_ShowUserImage.setImageResource(R.drawable.ic_user);
                             } else {
@@ -408,8 +420,6 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
                             Alerts.show(mContext, error);
                         }
                     });
-                } else {
-                    cd.show(mContext);
                 }
 
         }
@@ -473,8 +483,6 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
                     Alerts.show(mContext, error);
                 }
             });
-        }else {
-            cd.show(mContext);
         }
 
     }

@@ -85,8 +85,6 @@ public class ChangePasswordFragment extends BaseFragment {
                     }
                 });
             }
-        }else {
-            cd.show(mContext);
         }
     }
 

@@ -106,9 +106,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
                         Alerts.show(mContext, error);
                     }
                 });
-            }else {
-            cd.show(mContext);
-        }
+            }
 
     }
 

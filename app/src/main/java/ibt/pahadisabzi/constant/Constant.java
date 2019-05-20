@@ -2,6 +2,7 @@ package ibt.pahadisabzi.constant;
 
 public class Constant {
     public static final String BASE_URL = "http://pahadisabzi.com/";
+    //public static final String BASE_URL = "http://freshveggie.infobitetechnology.tech/";
     public static final String SIGNUP_API = "/api/user-signup.php";
     public static final String LOGIN_API = "api/user-login.php";
     public static final String LOGIN_WITH_MOBILE_API = "api/user-login-otp.php";
@@ -84,5 +85,14 @@ public class Constant {
     public static final String ProductImage = "ProductImage";
     public static final String DEVICE_TOKEN = "token";
     public static final String CUSTOMER_SUPPORT = "customer_support";
+
+
+
+    public static final String LOGIN_USER_NAME = "userName";
+    public static final String LOGIN_USER_ID = "userId";
+    public static final String LOGIN_USER_CONTACT = "userContact";
+    public static final String LOGIN_USER_PROFILE_IMAGE = "userProfileImage";
+
+
 
 }

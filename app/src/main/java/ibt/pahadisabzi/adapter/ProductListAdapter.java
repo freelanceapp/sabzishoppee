@@ -114,8 +114,8 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         double dis = cost * ((100 - percent) / 100);
         double orizinal_price = cost - dis;
 
-        viewHolder.tvProductsellingPrice.setText("Rs. " + new DecimalFormat("##.##").format(dis));
-        viewHolder.tvProductPrice.setText("Rs. " + product.getSellingPrice());
+        viewHolder.tvProductsellingPrice.setText("₹ " + new DecimalFormat("##.##").format(dis));
+        viewHolder.tvProductPrice.setText("₹ " + product.getSellingPrice());
 
         if (product.getAvailability().equals("0"))
         {
@@ -127,21 +127,21 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         }
 
         if (product.getQuantityType().equals("0")) {
-            viewHolder.tvqutamount.setText("Rs. " + dis + " for " + product.getRateQuantity() + " Pcs");
+            viewHolder.tvqutamount.setText("₹ " + new DecimalFormat("##.##").format(dis) + " for " + product.getRateQuantity() + " Pcs");
             if (product.getProductQuantity().equals("0")) {
                 viewHolder.tv_product_qty.setText(product.getMinQuantity());
             } else {
                 viewHolder.tv_product_qty.setText(product.getProductQuantity());
             }
         } else if (product.getQuantityType().equals("1")) {
-            viewHolder.tvqutamount.setText("Rs. " + dis + " for " + product.getRateQuantity() + " Kg");
+            viewHolder.tvqutamount.setText("₹ " + new DecimalFormat("##.##").format(dis) + " for " + product.getRateQuantity() + " Kg");
             if (product.getProductQuantity().equals("0")) {
                 viewHolder.tv_product_qty.setText(product.getMinQuantity());
             } else {
                 viewHolder.tv_product_qty.setText(product.getProductQuantity());
             }
         } else {
-            viewHolder.tvqutamount.setText("Rs. " + dis + " for " + product.getRateQuantity() + " gm");
+            viewHolder.tvqutamount.setText("₹ " + new DecimalFormat("##.##").format(dis) + " for " + product.getRateQuantity() + " gm");
             if (product.getProductQuantity().equals("0")) {
                 viewHolder.tv_product_qty.setText(""+product.getMinQuantity());
             } else {

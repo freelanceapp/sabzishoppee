@@ -235,6 +235,8 @@
             android:paddingTop="2sp"
             android:paddingBottom="2sp"
             android:text="Strawberry"
+            android:maxLines="2"
+            android:ellipsize="end"
             android:textStyle="bold"
             android:textColor="@color/black"
             android:textSize="16sp" />

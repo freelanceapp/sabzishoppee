@@ -2,14 +2,12 @@ package ibt.pahadisabzi.ui.fragment;
 
 import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,12 +32,10 @@ import ibt.pahadisabzi.database.DatabaseHandler;
 import ibt.pahadisabzi.model.PriceProductSorter;
 import ibt.pahadisabzi.model.ProductDetail;
 import ibt.pahadisabzi.model.banner_responce.BannerModel;
-import ibt.pahadisabzi.model.login_responce.LoginModel;
 import ibt.pahadisabzi.model.productlist_responce.Product;
 import ibt.pahadisabzi.model.productlist_responce.ProductListModel;
 import ibt.pahadisabzi.retrofit_provider.RetrofitService;
 import ibt.pahadisabzi.retrofit_provider.WebResponse;
-import ibt.pahadisabzi.ui.activity.EditProfileActivity;
 import ibt.pahadisabzi.ui.activity.ProductDetailsActivity;
 import ibt.pahadisabzi.utils.Alerts;
 import ibt.pahadisabzi.utils.AppPreference;
@@ -51,8 +47,6 @@ import retrofit2.Response;
 import static ibt.pahadisabzi.ui.activity.HomeActivity.cart_count;
 import static ibt.pahadisabzi.ui.activity.HomeActivity.cart_number;
 import static ibt.pahadisabzi.ui.activity.HomeActivity.cart_price;
-import static ibt.pahadisabzi.ui.activity.HomeActivity.iv_ShowUserImage;
-import static ibt.pahadisabzi.ui.activity.HomeActivity.tv_ShowUserName;
 
 
 public class HomeFragment extends BaseFragment implements View.OnClickListener {
@@ -70,7 +64,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     private int position;
 
     CirclePageIndicator indicator;
-    ConnectionDetector connectionDetector;
     private static ViewPager mPager;
     private static int currentPage = 0;
     private static int NUM_PAGES = 0;
@@ -83,7 +76,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     private ArrayList<ProductDetail> cartProductList = new ArrayList<>();
     private ProductDetail productDetail, productDetail1;
 
-    private String productApiCall = "0";
+    private int productApiCall = 0;
     private View rView;
 
     public HomeFragment() {
@@ -97,8 +90,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         mContext = getActivity();
@@ -106,18 +98,10 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         cd = new ConnectionDirector(mContext);
         retrofitApiClient = RetrofitService.getRetrofit();
         databaseCart = new DatabaseHandler(mContext, DATABASE_CART);
-        databaseWishlist = new DatabaseHandler(mContext, DATABASE_WISHLIST);
 
         rView = view;
         init(rView);
-        bannerApi();
-        profileApi();
-
         productDetailApi();
-        productApiCall = "1";
-
-        llFilter.setVisibility(View.GONE);
-        initAll();
 
         return view;
     }
@@ -125,6 +109,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
+
         llFilter.setVisibility(View.GONE);
         initAll();
         cartProductList.clear();
@@ -132,8 +117,9 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
             cartProductList = databaseCart.getAllUrlList();
         }
 
-        productDetailApi();
-
+        if (productApiCall>0) {
+            productDetailApi();
+        }
 
     }
 
@@ -175,7 +161,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         tv_LowtoHigh.setOnClickListener(this);
         tv_a_to_z.setOnClickListener(this);
 
-        productDetailApi();
+        //productDetailApi();
         setTotal();
 
 
@@ -196,7 +182,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                         for (int i = 0; i < bannerModel.getAppslider().size(); i++) {
                             ImagesArray.add(bannerModel.getAppslider().get(i).getImage());
                         }
-                        init(bannerModel.getAppslider().size());
+                        initBanner(bannerModel.getAppslider().size());
                     }
                 }
 
@@ -205,12 +191,10 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                     Alerts.show(mContext, error);
                 }
             });
-        } else {
-            cd.show(mContext);
         }
     }
 
-    private void init(int bannerLength) {
+    private void initBanner(int bannerLength) {
         SlidingImage_Adapter1 image_adapter1 = new SlidingImage_Adapter1(mContext, ImagesArray);
         mPager.setAdapter(image_adapter1);
         indicator.setViewPager(mPager);
@@ -401,6 +385,10 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     }
 
     private void initAll() {
+
+        cart_count = AppPreference.getIntegerPreference(mContext, Constant.CART_ITEM_COUNT);
+        cart_number.setText("" + cart_count);
+
         tv_categoryName.setText("All");
         btn_fruits.setBackgroundResource(R.color.green_50);
         btn_vagitable.setBackgroundResource(R.color.green_50);
@@ -686,19 +674,30 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     }
 
     private void productDetailApi() {
+
         if (cd.isNetWorkAvailable()) {
             RetrofitService.getProductData(new Dialog(mContext), retrofitApiClient.productData(), new WebResponse() {
                 @Override
                 public void onResponseSuccess(Response<?> result) {
+                    productApiCall = 1;
                     ProductListModel productListModel = (ProductListModel) result.body();
                     productArrayList.clear();
 
                     if (!productListModel.getError()) {
-                        //Alerts.show(mContext, productListModel.getMessage());
+
+                        if (productListModel.getAppslider().size() > 0) {
+                            ImagesArray.clear();
+                            for (int i = 0; i < productListModel.getAppslider().size(); i++) {
+                                ImagesArray.add(productListModel.getAppslider().get(i).getImage());
+                            }
+                            initBanner(productListModel.getAppslider().size());
+                        }
 
                         productArrayList = (ArrayList<Product>) productListModel.getProduct();
 
-                        if (databaseCart.getContactsCount()) {
+                        new validateCart().execute();
+
+                        /*if (databaseCart.getContactsCount()) {
                             cartProductList = databaseCart.getAllUrlList();
                         }
                         //productArrayListAtoZ.addAll(productListModel.getProduct());
@@ -728,12 +727,14 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                                 }
                             }
                             // productTreeSet.addAll(productListModel.getProduct());
-                        }
+
+                            Alerts.show(mContext,"###########");
+                        }*/
 
                     } else {
                         Alerts.show(mContext, productListModel.getMessage());
                     }
-                    adapter.notifyDataSetChanged();
+
 
 
                 }
@@ -743,8 +744,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                     Alerts.show(mContext, error);
                 }
             });
-        } else {
-            cd.show(mContext);
         }
     }
 
@@ -788,54 +787,58 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     }
 
 
-    private void profileApi() {
-        String userId = AppPreference.getStringPreference(mContext, Constant.User_Id);
-        if (cd.isNetWorkAvailable()) {
-            RetrofitService.getProfile(new Dialog(mContext), retrofitApiClient.getprofile(userId), new WebResponse() {
-                @Override
-                public void onResponseSuccess(Response<?> result) {
-                    LoginModel responseBody = (LoginModel) result.body();
-                    if (!responseBody.getError()) {
-                        tv_ShowUserName.setText(responseBody.getUser().getUserName());
-                        AppPreference.setStringPreference(mContext, Constant.User_Name, responseBody.getUser().getUserName());
 
-                        if (responseBody.getUser().getUserContact().equals("")) {
+    private class validateCart extends AsyncTask<String, Void, ArrayList<Product> > {
+        @Override
+        protected ArrayList<Product> doInBackground(String... strings) {
 
-                            AppPreference.setBooleanPreference(mContext, Constant.Is_Login, false);
-                            AppPreference.setStringPreference(mContext, Constant.User_Id, "0");
-                            Intent intent = new Intent(mContext, EditProfileActivity.class);
-                            mContext.startActivity(intent);
-                            getActivity().finish();
-                        } else {
-                            if (!responseBody.getUser().getUserProfilePicture().isEmpty()) {
-                                String base64String = responseBody.getUser().getUserProfilePicture();
-                                String base64Image = base64String.split(",")[1];
-                                byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
-                                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                                iv_ShowUserImage.setImageBitmap(decodedByte);
-                            } else {
-                                iv_ShowUserImage.setImageResource(R.drawable.splash_logo);
-                            }
-                        }
-                        //Glide.with(mContext).load(decodedByte).error(R.drawable.profile_img).fitCenter().into(ci_profile);
+            /*if (databaseCart.getContactsCount()) {
+                cartProductList = databaseCart.getAllUrlList();
+            }*/
+            //productArrayListAtoZ.addAll(productListModel.getProduct());
+            productArrayListFruits.clear();
+            productArrayListVagitable.clear();
+            productArrayListAll.clear();
+            if (productArrayList.size() > 0) {
+                for (int i = 0; i < productArrayList.size(); i++) {
+                    if (productArrayList.get(i).getType().equals("0")) {
+                        productArrayListFruits.add(productArrayList.get(i));
                     } else {
-                        Alerts.show(mContext, responseBody.getMessage());
-                        AppPreference.setBooleanPreference(mContext, Constant.Is_Login, false);
-                        AppPreference.setStringPreference(mContext, Constant.User_Id, "0");
-                        Intent intent = new Intent(mContext, EditProfileActivity.class);
-                        mContext.startActivity(intent);
-                        getActivity().finish();
+                        productArrayListVagitable.add(productArrayList.get(i));
                     }
                 }
-
-                @Override
-                public void onResponseFailed(String error) {
-                    Alerts.show(mContext, error);
+                productArrayListAll.addAll(productArrayList);
+                if (cartProductList.size() > 0) {
+                   /* cart_count = cartProductList.size();*/
+                    int x, y;
+                    for (x = 0; x < productArrayListAll.size(); x++) {
+                        Product prdct = productArrayListAll.get(x);
+                        for (y = 0; y < cartProductList.size(); y++) {
+                            ProductDetail crtPrdct = cartProductList.get(y);
+                            if (prdct.getId().equals(crtPrdct.getId())) {
+                                productArrayListAll.get(x).setInCart(true);
+                                productArrayListAll.get(x).setProductQuantity(String.valueOf(crtPrdct.getQuantity()));
+                            }
+                        }
+                    }
                 }
-            });
-        } else {
-            cd.show(mContext);
+                // productTreeSet.addAll(productListModel.getProduct());
+
+            }
+
+            return productArrayListAll;
         }
 
+        @Override
+        protected void onPostExecute(ArrayList<Product> result) {
+            adapter.notifyDataSetChanged();
+            cart_number.setText("" + cart_count);
+        }
+
+        @Override
+        protected void onPreExecute() {}
+
+        @Override
+        protected void onProgressUpdate(Void... values) {}
     }
 }

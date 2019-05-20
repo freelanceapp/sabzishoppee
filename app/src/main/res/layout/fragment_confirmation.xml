@@ -82,7 +82,7 @@
             android:textSize="16sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
+            android:padding="5dp"
             android:text="Your Order"
             android:textColor="@color/black" />
 
@@ -102,7 +102,79 @@
             android:layout_marginTop="15dp"
             android:layout_marginRight="15sp"
             android:layout_marginLeft="15sp"
+            android:padding="4dp"
+            android:text="Delivery Time"
+            android:visibility="visible"
+            android:textColor="@color/black" />
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15sp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/bg_layout">
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/spDelivaryTime"
+                android:padding="10dp"></Spinner>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="15sp"
+            android:layout_marginLeft="15sp">
+
+        <TextView
+            android:textStyle="normal"
+            android:textSize="14sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:text="Delivery Address"
+            android:visibility="visible"
+            android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/tvChangeAddress"
+                android:textStyle="normal"
+                android:textSize="12sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:text="Change Address"
+                android:layout_alignParentRight="true"
+                android:textColor="@color/green_dark" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:textStyle="normal"
+            android:textSize="14sp"
+            android:visibility="visible"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15sp"
+            android:gravity="start"
             android:padding="10dp"
+            android:textColor="@color/gray_c"
+            android:id="@+id/tvAddress"
+            android:background="@drawable/bg_layout"/>
+
+        <TextView
+            android:textStyle="normal"
+            android:textSize="14sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="15sp"
+            android:layout_marginLeft="15sp"
+            android:padding="4dp"
             android:text="Note"
             android:visibility="visible"
             android:textColor="@color/black" />
@@ -115,41 +187,16 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15sp"
-            android:lines="2"
+            android:minLines="2"
+            android:maxLines="5"
+            android:maxLength="500"
             android:gravity="start"
             android:padding="10dp"
             android:textColor="@color/gray_c"
             android:id="@+id/etNote"
             android:background="@drawable/bg_layout"/>
 
-        <TextView
-            android:textStyle="normal"
-            android:textSize="14sp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:layout_marginRight="15sp"
-            android:layout_marginLeft="15sp"
-            android:padding="10dp"
-            android:text="Delivery Time"
-            android:visibility="visible"
-            android:textColor="@color/black" />
 
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15sp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/bg_layout">
-            <Spinner
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/spDelivaryTime"
-                android:padding="10dp"></Spinner>
-        </RelativeLayout>
 
 
     <TextView
@@ -158,7 +205,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
-        android:padding="10dp"
+        android:padding="4dp"
+        android:visibility="gone"
         android:text="Payment Summary"
         android:textColor="@color/black" />
 
@@ -195,6 +243,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height=".5dp"
+        android:layout_marginTop="24dp"
         android:background="@color/black"
         android:visibility="visible" />
 

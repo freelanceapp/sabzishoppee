@@ -117,9 +117,6 @@ public class ProductDetailsActivity extends BaseActivity implements View.OnClick
         iv_product_plus.setOnClickListener(this);
         iv_product_minus.setOnClickListener(this);
         btn_product_detail_back.setOnClickListener(this);
-
-
-
         productDetailApi();
     }
 
@@ -163,11 +160,11 @@ public class ProductDetailsActivity extends BaseActivity implements View.OnClick
                             rlCart.setVisibility(View.VISIBLE);
                         }
 
-                        tvProductDetailSallingPrice.setText("Rs. "+productDetailModel.getProduct().getSellingPrice());
+                        tvProductDetailSallingPrice.setText("₹ "+productDetailModel.getProduct().getSellingPrice());
                         tvProductDetailSallingPrice.setPaintFlags(tvProductDetailSallingPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG );
                         tvProductDetailRating.setText(""+productDetailModel.getProduct().getRating());
-                        tvProductDetailPrice.setText("Rs. "+new DecimalFormat("##.##").format(dis));
-                        tvProductDetailCostPrice.setText("Rs. "+new DecimalFormat("##.##").format(dis));
+                        tvProductDetailPrice.setText("₹ "+new DecimalFormat("##.##").format(dis));
+                        tvProductDetailCostPrice.setText("₹ "+new DecimalFormat("##.##").format(dis));
                         tvProductDetaildiscount.setText(productDetailModel.getProduct().getDiscount()+"%");
                         if (productDetailModel.getProduct().getQuantityType().equals("0")) {
                             tvProductDetailMinOrder.setText(productDetailModel.getProduct().getMinQuantity() + " Gm");
@@ -216,6 +213,8 @@ public class ProductDetailsActivity extends BaseActivity implements View.OnClick
                                     if (productDetail.getQuantity()==Integer.parseInt(productDetail.getMin_quantity())){
                                         iv_product_minus.setImageResource(R.drawable.ic_delete);
                                     }
+                                }else{
+
                                 }
                             }
                         }
@@ -230,8 +229,6 @@ public class ProductDetailsActivity extends BaseActivity implements View.OnClick
                     Alerts.show(mContext, error);
                 }
             });
-        }else {
-            cd.show(mContext);
         }
     }
 

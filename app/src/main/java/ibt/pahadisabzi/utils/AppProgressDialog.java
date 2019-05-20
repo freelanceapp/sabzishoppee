@@ -26,8 +26,12 @@ public class AppProgressDialog {
     }
 
     public static void hide(Dialog mProcessDialog) {
-        if (mProcessDialog != null && mProcessDialog.isShowing()) {
-            mProcessDialog.dismiss();
+        try {
+            if (mProcessDialog != null && mProcessDialog.isShowing()) {
+                mProcessDialog.dismiss();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

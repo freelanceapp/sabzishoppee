@@ -48,8 +48,7 @@ public class User implements Parcelable
             return (new User[size]);
         }
 
-    }
-    ;
+    };
 
     protected User(Parcel in) {
         this.id = ((String) in.readValue((String.class.getClassLoader())));
@@ -64,6 +63,8 @@ public class User implements Parcelable
 
     public User() {
     }
+
+
 
     public String getId() {
         return id;

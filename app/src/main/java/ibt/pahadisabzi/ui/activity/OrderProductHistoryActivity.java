@@ -126,8 +126,6 @@ public class OrderProductHistoryActivity extends BaseActivity implements View.On
                     Alerts.show(mContext, error);
                 }
             });
-        }else {
-            cd.show(mContext);
         }
     }
 }

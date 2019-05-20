@@ -75,8 +75,6 @@ public class HelpFragment extends BaseFragment {
                     Alerts.show(mContext, error);
                 }
             });
-        } else {
-            cd.show(mContext);
         }
     }
 

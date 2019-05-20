@@ -87,8 +87,6 @@ public class NewPasswordFragment extends BaseFragment {
                     }
                 });
             }
-        }else {
-            cd.show(mContext);
         }
     }
 

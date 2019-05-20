@@ -47,8 +47,13 @@ public class DelivaryTimeAdapter extends BaseAdapter {
         view = inflter.inflate(R.layout.custom_delivery_time, null);
         TextView title = (TextView) view.findViewById(R.id.tvTimeTitle);
         TextView titleTime = (TextView) view.findViewById(R.id.tvTimeDelivary);
-        title.setText("( "+doctorSpecializationData.get(i).getDeliveryTimingTitle()+" )");
-        titleTime.setText(doctorSpecializationData.get(i).getDeliveryTimingStartTime() + " - "+ doctorSpecializationData.get(i).getDeliveryTimingEndTime());
+        if (doctorSpecializationData.get(i).getDeliveryTimingId().equals("0")) {
+            title.setText(doctorSpecializationData.get(i).getDeliveryTimingTitle());
+            titleTime.setVisibility(View.GONE);
+        } else {
+            title.setText("( "+doctorSpecializationData.get(i).getDeliveryTimingTitle()+" )");
+            titleTime.setText(doctorSpecializationData.get(i).getDeliveryTimingStartTime() + " - "+ doctorSpecializationData.get(i).getDeliveryTimingEndTime());
+        }
         return view;
     }
 }

@@ -89,9 +89,7 @@ public class SignInActivity extends BaseActivity {
                       Alerts.show(mContext, error);
                   }
               });
-          }else {
-            cd.show(mContext);
-        }
+          }
         });
     }
 }

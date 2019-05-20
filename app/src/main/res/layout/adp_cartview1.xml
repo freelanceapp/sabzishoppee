@@ -14,7 +14,7 @@
         android:layout_height="wrap_content">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_height="wrap_content"
         android:paddingLeft="8dp"
         android:paddingBottom="8dp"
         android:paddingRight="8dp"
@@ -26,6 +26,7 @@
         <ImageView
             android:id="@+id/iv_adpcart_image"
             android:layout_width="120dp"
+            android:visibility="gone"
             android:layout_height="match_parent"
             android:scaleType="fitXY" />
 
@@ -33,18 +34,19 @@
             android:gravity="center_vertical"
             android:layout_gravity="center"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:paddingTop="10dp">
+            android:paddingTop="5dp">
 
             <TextView
                 android:id="@+id/tv_adpcart_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxHeight="70dp"
+                android:singleLine="true"
+                android:ellipsize="end"
                 android:paddingBottom="8dp"
                 android:textColor="@color/black"
                 android:textSize="16sp"
@@ -59,9 +61,8 @@
                     android:id="@+id/tv_adpcart_quantity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="12dp"
+                    android:textSize="12sp"
                     android:text="2kg"
-                    android:padding="4sp"
                     android:textColor="@color/green_dark" />
 
                 <TextView
@@ -123,6 +124,7 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:padding="8dp"
+                android:visibility="gone"
                 android:src="@drawable/ic_plus" />
 
             <TextView
@@ -141,6 +143,7 @@
                 android:layout_height="40dp"
                 android:layout_alignParentBottom="true"
                 android:padding="8dp"
+                android:visibility="gone"
                 android:src="@drawable/ic_delete" />
 
         </RelativeLayout>

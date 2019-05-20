@@ -79,8 +79,6 @@ public class FirebaseIDService extends FirebaseInstanceIdService {
                     Alerts.show(mContext, error);
                 }
             });
-        } else {
-            cd.show(mContext);
         }
     }
 }

@@ -112,6 +112,10 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
 
                             AppPreference.setBooleanPreference(mContext, Constant.Is_Login, true);
                             AppPreference.setStringPreference(mContext, Constant.User_Id, loginModel.getUser().getId());
+                            AppPreference.setStringPreference(mContext, Constant.LOGIN_USER_ID, loginModel.getUser().getId());
+                            AppPreference.setStringPreference(mContext, Constant.LOGIN_USER_NAME, loginModel.getUser().getUserName());
+                            AppPreference.setStringPreference(mContext, Constant.LOGIN_USER_CONTACT, loginModel.getUser().getUserContact());
+                            AppPreference.setStringPreference(mContext, Constant.LOGIN_USER_PROFILE_IMAGE, loginModel.getUser().getUserProfilePicture());
 
                             Gson gson = new GsonBuilder().setLenient().create();
                             String data = gson.toJson(loginModel);
@@ -140,8 +144,6 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
                     }
                 });
             }
-        } else {
-            cd.show(mContext);
         }
     }
 

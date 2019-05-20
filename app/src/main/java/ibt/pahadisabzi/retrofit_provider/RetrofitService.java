@@ -232,20 +232,20 @@ public class RetrofitService {
 
     public static void getProductData(final Dialog dialog, final Call<ProductListModel> method, final WebResponse webResponse) {
         if (dialog != null)
-           // AppProgressDialog.show(dialog);
+            //AppProgressDialog.show(dialog);
 
         method.enqueue(new Callback<ProductListModel>() {
             @Override
             public void onResponse(Call<ProductListModel> call, Response<ProductListModel> response) {
                 if (dialog != null)
-                  //  AppProgressDialog.hide(dialog);
+                    //AppProgressDialog.hide(dialog);
                 WebServiceResponse.handleResponse(response, webResponse);
             }
 
             @Override
             public void onFailure(Call<ProductListModel> call, Throwable throwable) {
                 if (dialog != null)
-                   // AppProgressDialog.hide(dialog);
+                    //AppProgressDialog.hide(dialog);
                 webResponse.onResponseFailed(throwable.getMessage());
             }
         });

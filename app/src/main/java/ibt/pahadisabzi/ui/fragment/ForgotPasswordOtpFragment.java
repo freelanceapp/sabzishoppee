@@ -157,8 +157,6 @@ public class ForgotPasswordOtpFragment extends BaseFragment implements View.OnCl
                     }
                 });
             }
-        }else {
-            cd.show(mContext);
         }
     }
 }

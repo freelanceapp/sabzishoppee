@@ -352,8 +352,6 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Vi
                     Alerts.show(mContext, error);
                 }
             });
-        }else {
-            cd.show(mContext);
         }
     }
 }

@@ -26,6 +26,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
@@ -237,35 +239,11 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
 
     private void profileApi() {
         String userId = AppPreference.getStringPreference(mContext, Constant.User_Id);
-        if (cd.isNetWorkAvailable()) {
-            RetrofitService.getProfile(new Dialog(mContext), retrofitApiClient.getprofile(userId), new WebResponse() {
-                @Override
-                public void onResponseSuccess(Response<?> result) {
-                    LoginModel responseBody = (LoginModel) result.body();
-                    if (!responseBody.getError()) {
-                        tv_ShowUserName.setText(responseBody.getUser().getUserName());
-                        if (!responseBody.getUser().getUserProfilePicture().isEmpty()) {
-                            String base64String = responseBody.getUser().getUserProfilePicture();
-                            String base64Image = base64String.split(",")[1];
-                            byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
-                            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                            iv_ShowUserImage.setImageBitmap(decodedByte);
-                        } else {
-                            iv_ShowUserImage.setImageResource(R.drawable.ic_user);
-                        }
-                        //Glide.with(mContext).load(decodedByte).error(R.drawable.profile_img).fitCenter().into(ci_profile);
-                    } else {
-                        Alerts.show(mContext, responseBody.getMessage());
-                    }
-                }
-                @Override
-                public void onResponseFailed(String error) {
-                    Alerts.show(mContext, error);
-                }
-            });
-        } else {
-            cd.show(mContext);
-        }
+        Glide.with(mContext)
+                .load(AppPreference.getStringPreference(mContext, Constant.LOGIN_USER_PROFILE_IMAGE))
+                .placeholder(R.drawable.ic_user)
+                .into(iv_ShowUserImage);
+        tv_ShowUserName.setText(AppPreference.getStringPreference(mContext, Constant.LOGIN_USER_NAME));
     }
 
     private void onCallBtnClick(){
@@ -343,8 +321,6 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                     Alerts.show(mContext, error);
                 }
             });
-        } else {
-            cd.show(mContext);
         }
     }
 

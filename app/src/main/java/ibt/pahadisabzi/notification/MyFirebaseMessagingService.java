@@ -158,8 +158,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     Alerts.show(mContext, error);
                 }
             });
-        } else {
-            cd.show(mContext);
         }
     }
 
